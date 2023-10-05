@@ -1,0 +1,2 @@
+evoman_with_alpha.py --headless --experiment_name no square root
+evoman_with_alpha.py --headless --experiment_name no square root

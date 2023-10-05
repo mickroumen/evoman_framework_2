@@ -1,0 +1,3 @@
+evoman_with_alpha.py --headless --experiment_name square root fitness and less selection beginning and more and and 50 generations
+evoman_with_alpha.py --headless --experiment_name square root fitness and less selection beginning and more and and 50 generations
+evoman_with_alpha.py --headless --experiment_name square root fitness and less selection beginning and more and and 50 generations
