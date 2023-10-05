@@ -2,7 +2,7 @@ import numpy as np
 from pyDOE2 import lhs
 from scipy.optimize import minimize
 from sklearn.gaussian_process import GaussianProcessRegressor
-from BitFlip_3point_Elitism import run_evoman
+from Bitflip_3_point_elitism import run_evoman
 import csv
 import os
 

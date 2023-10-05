@@ -16,7 +16,7 @@ class EvoMan:
     def __init__(self, experiment_name, enemy, population_size, generations, mutation_rate, crossover_rate, 
                  mode, n_hidden_neurons, headless, dom_l, dom_u, speed, number_of_crossovers, n_elitism, k_tournament, sel_pres_incr, k_tournament_final_linear_increase_factor):
         self.experiment_name = experiment_name
-        self.enemy = enemy
+        self.enemies = enemy
         self.n_pop = population_size
         self.gens = generations
         self.mutation_rate = mutation_rate
@@ -66,7 +66,8 @@ class EvoMan:
         experiment_path = os.path.join("Results", self.experiment_name)
 
         env = Environment(experiment_name=experiment_path,
-                          enemies=self.enemy,
+                          enemies=self.enemies,
+                          multiplemode="yes",
                           playermode="ai",
                           player_controller=player_controller(self.n_hidden_neurons),
                           enemymode="static",
@@ -298,7 +299,7 @@ if __name__ == "__main__":
         parser = argparse.ArgumentParser(description="Evolutionary Algorithm for EvoMan")
         
         parser.add_argument("--experiment_name", type=str, default="experiment_enemy=6_k_increase=3", help="Name of the experiment")
-        parser.add_argument("--enemy", type=int, nargs='+',default=[6], help="Enemy number")
+        parser.add_argument("--enemies", type=int, nargs='+',default=[6], help="Enemy number")
         parser.add_argument("--npop", type=int, default=100, help="Size of the population")
         parser.add_argument("--gens", type=int, default=30, help="Number of generations")
         parser.add_argument("--mutation_rate", type=float, default=0.1, help="Mutation rate")
@@ -317,6 +318,6 @@ if __name__ == "__main__":
 
         args = parser.parse_args()
 
-        run_evoman(args.experiment_name, args.enemy, args.npop, args.gens, args.mutation_rate, args.crossover_rate,
+        run_evoman(args.experiment_name, args.enemies, args.npop, args.gens, args.mutation_rate, args.crossover_rate,
                args.mode, args.n_hidden_neurons, args.headless, args.dom_l, args.dom_u, args.speed, args.number_of_crossovers,
                args.n_elitism, args.k_tournament, args.selection_pressure_increase, args.k_tournament_final_linear_increase_factor)
