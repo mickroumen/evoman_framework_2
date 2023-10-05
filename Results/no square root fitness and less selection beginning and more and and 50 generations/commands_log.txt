@@ -1,0 +1,1 @@
+evoman_with_alpha.py --headless --experiment_name no square root fitness and less selection beginning and more and and 50 generations

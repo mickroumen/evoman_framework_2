@@ -1,0 +1,3 @@
+changed_k_tournament_increase.py --headless --experiment_name no square root and exponential selection pressure --type_of_selection_pressure exponential
+changed_k_tournament_increase.py --headless --experiment_name no square root and exponential selection pressure --type_of_selection_pressure exponential
+individual_mutation_rate.py --headless --experiment_name no square root and exponential selection pressure --type_of_selection_pressure exponential
