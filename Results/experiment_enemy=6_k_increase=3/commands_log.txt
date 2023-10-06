@@ -1,0 +1,15 @@
+individual_mutation_rate.py --enemies 1 4 6 7 --headless
+individual_mutation_rate.py --enemies 1 4 7 --headless
+individual_mutation_rate.py --enemies 3 4 6 7 --headless
+individual_mutation_rate.py --enemies 3 4 6 7 --headless
+individual_mutation_rate.py --enemies 3 4 6 7 --headless
+individual_mutation_rate.py --enemies 3 4 6 7 --headless
+individual_mutation_rate.py --enemies 3 4 6 7 --headless
+individual_mutation_rate.py --enemies 3 4 6 7 --headless
+individual_mutation_rate.py --enemies 7 --headless
+individual_mutation_rate.py --enemies 6 7 --headless
+individual_mutation_rate.py --enemies 3 4 --headless
+individual_mutation_rate.py --enemies 6 7 --headless
+individual_mutation_rate.py --enemies 6 7 --headless --gens 2 --npop 10
+individual_mutation_rate.py --enemies 6 7 --headless --gens 2 --npop 10
+individual_mutation_rate.py --enemies 6 7 --headless --gens 2 --npop 10
