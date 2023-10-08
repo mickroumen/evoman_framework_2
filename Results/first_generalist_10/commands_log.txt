@@ -1,1 +1,2 @@
 repeat.py
+evoman_with_alpha.py --experiment_name first_generalist_10 --speed normal --enemies 1 2 3 4 5 6 7 8

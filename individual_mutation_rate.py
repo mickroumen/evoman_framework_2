@@ -194,6 +194,28 @@ class EvoMan:
 
         return selected_indices
     
+    def update_enemies(self, enemies, best_individual):
+        #change the fitness and gain function so that it returns np.array of the fitness and gain for each enemy
+        def cons_multi2(self,values):
+            return values
+        
+        self.env.cons_multi = cons_multi2.__get__(self.env)
+
+        # Run the simulation with the best individual
+        fitnesses, health_gains, times, player_lifes, enemy_lifes = self.simulation(best_individual)
+
+        enemies_to_remove = {enemy for enemy, health_gain in zip(enemies, health_gains) if health_gain > 40}
+        remaining_enemies = [enemy for enemy in enemies if enemy not in enemies_to_remove]
+
+        for _ in enemies_to_remove:
+            while True:
+                new_enemy = random.randint(1, 8)
+                if new_enemy not in enemies:
+                    remaining_enemies.append(new_enemy)
+                    break
+        
+        return remaining_enemies
+    
     def run(self):
         if self.mode == "train":
             fitness = self.train()
@@ -267,6 +289,17 @@ class EvoMan:
                 writer.writerow([gen, np.max(fitness), np.mean(fitness), np.std(fitness),
                                     np.max(health_gain), np.mean(health_gain), np.std(health_gain),
                                     np.min(time_game), np.mean(time_game), np.std(time_game)])
+                
+                print(self.enemies)
+                # change enemies if met threshold
+                self.enemies = self.update_enemies(self.enemies, best_individual)
+                print(self.enemies)
+
+                def cons_multi2(self,values):
+                    values = np.array([np.sqrt(value) if value > 0 else value for value in values])
+                    return values.mean()
+                
+                self.env.cons_multi = cons_multi2.__get__(self.env)
                 
                 print(f"Generation {gen}, Best Fitness: {np.max(fitness)} and index {np.argmax(fitness)}")
                 print(f"Generation {gen}, Best Health: {np.max(health_gain)} and index {np.argmax(health_gain)}")               
