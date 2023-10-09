@@ -15,7 +15,7 @@ script_dir = os.path.dirname(os.path.abspath(__file__))
 class EvoMan:
     def __init__(self, experiment_name, enemies, population_size, generations, mutation_rate, crossover_rate, 
                  mode, n_hidden_neurons, headless, dom_l, dom_u, speed, number_of_crossovers, n_elitism, k_tournament, type_of_selection_pressure, k_tournament_final_linear_increase_factor,
-                 alpha):
+                 alpha, enemy_threshold):
         self.experiment_name = experiment_name
         self.enemies = enemies
         self.n_pop = population_size
@@ -36,6 +36,7 @@ class EvoMan:
         self.current_generation = 0
         self.speed = speed
         self.counter = 0
+        self.enemy_threshold = enemy_threshold
 
         # Setup directories
         self.setup_directories()
@@ -204,7 +205,7 @@ class EvoMan:
         # Run the simulation with the best individual
         fitnesses, health_gains, times, player_lifes, enemy_lifes = self.simulation(best_individual)
 
-        enemies_to_remove = {enemy for enemy, health_gain in zip(enemies, health_gains) if health_gain > 40}
+        enemies_to_remove = {enemy for enemy, health_gain in zip(enemies, health_gains) if health_gain > self.enemy_threshold}
         remaining_enemies = [enemy for enemy in enemies if enemy not in enemies_to_remove]
 
         for _ in enemies_to_remove:
@@ -215,6 +216,27 @@ class EvoMan:
                     break
         
         return remaining_enemies
+    
+    def test_best_individual(self, best_individual):
+        self.enemies = [1, 2, 3, 4, 5, 6, 7, 8]
+
+        self.env.enemies = self.enemies
+
+        #change the fitness and gain function so that it returns np.array of the fitness and gain for each enemy
+        def cons_multi2(self,values):
+            return values
+        
+        self.env.cons_multi = cons_multi2.__get__(self.env)
+
+        # Run the simulation with the best individual
+        fitnesses, health_gains, times, player_lifes, enemy_lifes = self.simulation(best_individual)
+
+        enemies_to_remove = {enemy for enemy, health_gain in zip(self.enemies, health_gains) if health_gain > 0}
+        remaining_enemies = [enemy for enemy in self.enemies if enemy not in enemies_to_remove]
+
+        print(remaining_enemies)
+        return remaining_enemies
+
     
     def run(self):
         if self.mode == "train":
@@ -293,6 +315,7 @@ class EvoMan:
                 print(self.enemies)
                 # change enemies if met threshold
                 self.enemies = self.update_enemies(self.enemies, best_individual)
+                self.env.enemies = self.enemies
                 print(self.enemies)
 
                 def cons_multi2(self,values):
@@ -306,6 +329,11 @@ class EvoMan:
                 
                 # Save the best individual's neural network weights
                 np.save(os.path.join(self.experiment_dir, "best_individual.npy"), best_individual)
+
+        # remaining_enemies = self.test_best_individual(best_individual)
+
+        # while remaining_enemies
+
 
         end_time = time.time()
         elapsed_time = end_time - start_time
@@ -344,9 +372,9 @@ class EvoMan:
 
 
 def run_evoman(experiment_name, enemies, population_size, generations, mutation_rate, crossover_rate, mode, 
-               n_hidden_neurons, headless, dom_l, dom_u, speed, number_of_crossovers, n_elitism, k_tournament, type_of_selection_pressure, k_tournament_final_linear_increase_factor, alpha):
+               n_hidden_neurons, headless, dom_l, dom_u, speed, number_of_crossovers, n_elitism, k_tournament, type_of_selection_pressure, k_tournament_final_linear_increase_factor, alpha, enemy_threshold):
         evoman = EvoMan(experiment_name, enemies, population_size, generations, mutation_rate, crossover_rate, 
-                        mode, n_hidden_neurons, headless, dom_l, dom_u, speed, number_of_crossovers, n_elitism, k_tournament, type_of_selection_pressure, k_tournament_final_linear_increase_factor, alpha)
+                        mode, n_hidden_neurons, headless, dom_l, dom_u, speed, number_of_crossovers, n_elitism, k_tournament, type_of_selection_pressure, k_tournament_final_linear_increase_factor, alpha, enemy_threshold)
         
         # Log the command
         if mode == "train":
@@ -380,10 +408,11 @@ if __name__ == "__main__":
         parser.add_argument("--type_of_selection_pressure", type=str, default="linear", help="if set to linear the selection pressure will linearly increase over time from k_tournament till k_tournament_final_linear_increase_factor*k_tournament, if set to exponential the selection pressure will increase exponentially from k_tournament till 2*k_tournament, if set to anything else the selection pressure will stay the same")
         parser.add_argument("--k_tournament_final_linear_increase_factor", type=int, default= 4, help="The factor with which k_tournament should linearly increase (if type_of_selection_pressure = True), if the value is 4 the last quarter of generations have tournaments of size k_tournament*4")
         parser.add_argument("--alpha", type=float, default=0.5, help="Weight for enemy damage")
+        parser.add_argument("--enemy_threshold", type=int, default=40, help="The threshold health gain from which an enemy will be swapped with another enemy to train.")
 
         args = parser.parse_args()
 
         run_evoman(args.experiment_name, args.enemies, args.npop, args.gens, args.mutation_rate, args.crossover_rate,
                args.mode, args.n_hidden_neurons, args.headless, args.dom_l, args.dom_u, args.speed, args.number_of_crossovers,
                args.n_elitism, args.k_tournament, args.type_of_selection_pressure, args.k_tournament_final_linear_increase_factor,
-               args.alpha)
+               args.alpha, args.enemy_threshold)
