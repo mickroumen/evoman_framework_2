@@ -74,6 +74,40 @@ class EvoMan:
             values = np.array([np.sqrt(value) if value > 0 else value for value in values])
             return values.mean()
         
+        def pareto_dominance(self, values):
+            # Implement Pareto dominance and keep non-dominated solutions
+            non_dominated_solutions = []
+            for i, value1 in enumerate(values):
+                is_dominated = False
+                for j, value2 in enumerate(values):
+                    if i != j:
+                        if all(v1 >= v2 for v1, v2 in zip(value1, value2)) and any(v1 > v2 for v1, v2 in zip(value1, value2)):
+                            is_dominated = True
+                            break
+                if not is_dominated:
+                    non_dominated_solutions.append(value1)
+            
+            # Calculate the average fitness of non-dominated solutions
+            if non_dominated_solutions:
+                return np.mean(non_dominated_solutions, axis=0)
+            else:
+                return 0  # No non-dominated solutions
+            
+        def niched_fitness_sharing(self, values, sigma_share):
+            n = len(values)
+            shared_fitness = np.zeros(n)
+            
+            for i in range(n):
+                for j in range(n):
+                    if i != j:
+                        distance = np.linalg.norm(np.array(values[i]) - np.array(values[j]))
+                        if distance < sigma_share:
+                            shared_fitness[i] += 1 - (distance / sigma_share)
+            
+            return np.mean(shared_fitness)
+
+
+        
         env = Environment(experiment_name=experiment_path,
                           enemies=self.enemies,
                           multiplemode="yes",
@@ -84,7 +118,7 @@ class EvoMan:
                           speed=self.speed,
                           visuals=not self.headless)
         
-        env.cons_multi = cons_multi2.__get__(env)
+        env.cons_multi = pareto_dominance.__get__(env)
         env.fitness_single = fitness_single.__get__(env)
         return env
     
