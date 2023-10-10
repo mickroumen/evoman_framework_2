@@ -12,3 +12,10 @@ individual_mutation_rate.py --mode train --headless --experiment_name mini_test 
 individual_mutation_rate.py --mode train --headless --experiment_name mini_test --npop 20 --gens 3 --enemies 1 4 6 7
 individual_mutation_rate.py --mode train --headless --experiment_name mini_test --npop 20 --gens 3 --enemies 1 4 6 7
 individual_mutation_rate.py --mode train --headless --experiment_name mini_test --npop 20 --gens 3 --enemies 1 4 6 7
+individual_mutation_rate.py --mode train --headless --experiment_name mini_test --enemies 1 4 6 7
+individual_mutation_rate.py --mode train --headless --experiment_name mini_test --enemies 1 4 6 7
+individual_mutation_rate.py --mode train --headless --experiment_name mini_test --enemies 1 4 6 7 --mutation_rate 0.058178978426563575 --crossover_rate 0.2574110793458289 --number_of_crossovers 7 --n_elitism 7 --k_tournament 13 --k_tournament_final_linear_increase_factor 3
+individual_mutation_rate.py --mode train --headless --experiment_name mini_test --enemies 1 4 6 7 --mutation_rate 0.058178978426563575 --crossover_rate 0.2574110793458289 --number_of_crossovers 7 --n_elitism 7 --k_tournament 13 --k_tournament_final_linear_increase_factor 3
+individual_mutation_rate.py --mode train --headless --experiment_name mini_test --enemies 1 4 6 7 --mutation_rate 0.058178978426563575 --crossover_rate 0.2574110793458289 --number_of_crossovers 7 --n_elitism 7 --k_tournament 13 --k_tournament_final_linear_increase_factor 3
+individual_mutation_rate.py --headless --experiment_name mini_test --enemies 1 4 6 7 --mutation_rate 0.058178978426563575 --crossover_rate 0.2574110793458289 --number_of_crossovers 7 --n_elitism 7 --k_tournament 3 --k_tournament_final_linear_increase_factor 3
+individual_mutation_rate.py --headless --experiment_name mini_test --enemies 1 4 6 7 --mutation_rate 0.058178978426563575 --crossover_rate 0.2574110793458289 --number_of_crossovers 7 --n_elitism 7 --k_tournament 13 --k_tournament_final_linear_increase_factor 3

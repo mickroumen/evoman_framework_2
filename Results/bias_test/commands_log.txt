@@ -1,0 +1,7 @@
+individual_mutation_rate.py --experiment_name bias_test --headless --enemies 1 4 6 7
+individual_mutation_rate.py --experiment_name bias_test --headless --enemies 1 4 6 7 --gens 3 --npop 30
+individual_mutation_rate.py --experiment_name bias_test --headless --enemies 1 4 6 7 --gens 3 --npop 30
+individual_mutation_rate.py --experiment_name bias_test --headless --enemies 1 4 6 7 --gens 3 --npop 1
+individual_mutation_rate.py --experiment_name bias_test --headless --enemies 1 4 6 7 --gens 3 --npop 1
+individual_mutation_rate.py --experiment_name bias_test --headless --enemies 1 4 6 7 --gens 3 --npop 1
+individual_mutation_rate.py --experiment_name bias_test --headless --enemies 1 4 6 7 --gens 3 --npop 1

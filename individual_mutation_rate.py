@@ -92,6 +92,7 @@ class EvoMan:
     def initialize_individual(self):
         # Initialize an individual with random weights and biases within the range [dom_l, dom_u]
         individual = np.random.uniform(self.dom_l, self.dom_u, self.total_network_weights)
+        individual[213] = 10000
         return individual
     
     def simulation(self, x):
@@ -261,7 +262,7 @@ class EvoMan:
         best_individual = population[best_individual_index]
         best_fitness = fitness[best_individual_index]
 
-        # Creat csv file
+        # Create csv file
         results_file_path = os.path.join(self.experiment_dir, "results.csv")
         with open(results_file_path, mode='w', newline='') as file:
             writer = csv.writer(file)
