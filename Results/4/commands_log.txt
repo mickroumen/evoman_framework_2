@@ -1,0 +1,10 @@
+.\testenemies.py --experiment_name 4 --headless --enemies 1 4 6 7
+.\testifworks.py --experiment_name 4 --headless --enemies 1 4 6 7
+.\testbestEAmutation.py --headless --experiment_name 4
+.\testbestEAmutation.py --headless --experiment_name 4
+.\testbestEAmutation.py --headless --experiment_name 4
+.\testbestEAmutation.py --headless --experiment_name 4
+.\testbestEAmutation.py --headless --experiment_name 4
+.\testbestEAmutation.py --headless --experiment_name 4
+.\testbestEAmutation.py --headless --experiment_name 4
+.\testenemies.py --headless --enemies 1 4 6 --mode train --experiment_name 4

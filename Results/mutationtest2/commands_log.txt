@@ -1,0 +1,2 @@
+.\testenemies.py --enemies 1 4 6 --headless --experiment_name mutationtest2
+.\testenemies.py --enemies 1 4 6 --headless --experiment_name mutationtest2
