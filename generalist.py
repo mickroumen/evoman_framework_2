@@ -13,11 +13,10 @@ import time
 script_dir = os.path.dirname(os.path.abspath(__file__))
 
 class EvoMan:
-    def __init__(self, experiment_name, enemies, population_size, generations, mutation_rate, crossover_rate, 
-                 mode, n_hidden_neurons, headless, dom_l, dom_u, speed, number_of_crossovers, n_elitism, k_tournament, type_of_selection_pressure, k_tournament_final_linear_increase_factor,
-                 alpha):
+    def __init__(self, experiment_name, enemy, population_size, generations, mutation_rate, crossover_rate, 
+                 mode, n_hidden_neurons, headless, dom_l, dom_u, speed, number_of_crossovers, n_elitism, k_tournament, sel_pres_incr, k_tournament_final_linear_increase_factor):
         self.experiment_name = experiment_name
-        self.enemies = enemies
+        self.enemy = enemy
         self.n_pop = population_size
         self.gens = generations
         self.mutation_rate = mutation_rate
@@ -30,9 +29,8 @@ class EvoMan:
         self.number_of_crossovers = number_of_crossovers
         self.n_elitism = n_elitism
         self.k_tournament = k_tournament
-        self.type_of_selection_pressure = type_of_selection_pressure
+        self.sel_pres_incr = sel_pres_incr
         self.k_tournament_final_linear_increase_factor = k_tournament_final_linear_increase_factor
-        self.alpha = alpha
         self.current_generation = 0
         self.speed = speed
         self.counter = 0
@@ -66,32 +64,34 @@ class EvoMan:
             os.environ["SDL_VIDEODRIVER"] = "dummy"
 
         experiment_path = os.path.join("Results", self.experiment_name)
-        
+
         def fitness_single(self):
-            return 0.5*(100 - self.get_enemylife()) + 0.5*self.get_playerlife() + np.log(self.get_time())
+            return 0.5*(100 - self.get_enemylife()) + 0.5*self.get_playerlife()
         
         def cons_multi2(self,values):
             values = np.array([np.sqrt(value) if value > 0 else value for value in values])
             return values.mean()
         
         env = Environment(experiment_name=experiment_path,
-                          enemies=self.enemies,
-                          multiplemode="yes",
+                          enemies=self.enemy,
                           playermode="ai",
                           player_controller=player_controller(self.n_hidden_neurons),
                           enemymode="static",
                           level=2,
                           speed=self.speed,
-                          visuals=not self.headless)
+                          visuals=not self.headless,
+                          multiplemode= 'yes')
         
         env.cons_multi = cons_multi2.__get__(env)
         env.fitness_single = fitness_single.__get__(env)
+
         return env
     
     def initialize_individual(self):
         # Initialize an individual with random weights and biases within the range [dom_l, dom_u]
         individual = np.random.uniform(self.dom_l, self.dom_u, self.total_network_weights)
         individual[203] = 100000 ## bias for the shoot neuron is set to a high value to make sure it is always activated
+
         return individual
     
     def simulation(self, x):
@@ -179,12 +179,8 @@ class EvoMan:
             candidate_indices = np.arange(fitness.shape[0])
         #if selection pressure is set to True we want the pressure to increase and thus the number of neural networks to compete to increase
         #eventually the number of individuals in tournament is doubled from start to finish.
-        if self.type_of_selection_pressure=="linear":
+        if self.sel_pres_incr:
             k = max(math.ceil(self.current_generation*self.k_tournament_final_linear_increase_factor/self.gens)*self.k_tournament, self.k_tournament)
-        elif self.type_of_selection_pressure=="exponential":
-            k_end = self.k_tournament_final_linear_increase_factor*self.k_tournament
-            exp_rate = 1/self.gens
-            k = self.k_tournament + math.ceil((k_end - self.k_tournament) * (1 - math.exp(-exp_rate * self.current_generation)))
         else:
             k = self.k_tournament
         for p in range(self.n_pop-self.n_elitism):
@@ -244,8 +240,7 @@ class EvoMan:
                     child2 = self.mutate(child2)
 
                     children.extend([child1, child2])    
-                fitness_children, health_gain_children, time_game_children, player_life_children, enemy_life_children  = self.evaluate(children)
-                
+                fitness_children, health_gain_children, time_game_children, player_life_children, enemy_life_children = self.evaluate(children)
                 pop_before_selection = np.concatenate((population, children))
                 fitness_before_selection = np.concatenate((fitness, fitness_children))
                 #Perform selection on the combined population of parents and children
@@ -270,7 +265,7 @@ class EvoMan:
                                     np.min(time_game), np.mean(time_game), np.std(time_game)])
                 
                 print(f"Generation {gen}, Best Fitness: {np.max(fitness)} and index {np.argmax(fitness)}")
-                print(f"Generation {gen}, Best Health: {np.max(health_gain)} and index {np.argmax(health_gain)}")               
+                print(f"Generation {gen}, Best Health: {np.max(health_gain)} and index {np.argmax(health_gain)}")
                 
                 # Save the best individual's neural network weights
                 np.savetxt(os.path.join(self.experiment_dir, 'best.txt'), best_individual)
@@ -310,11 +305,10 @@ class EvoMan:
         else:
             print("No best individual found!")
 
-
-def run_evoman(experiment_name, enemies, population_size, generations, mutation_rate, crossover_rate, mode, 
-               n_hidden_neurons, headless, dom_l, dom_u, speed, number_of_crossovers, n_elitism, k_tournament, type_of_selection_pressure, k_tournament_final_linear_increase_factor, alpha):
-        evoman = EvoMan(experiment_name, enemies, population_size, generations, mutation_rate, crossover_rate, 
-                        mode, n_hidden_neurons, headless, dom_l, dom_u, speed, number_of_crossovers, n_elitism, k_tournament, type_of_selection_pressure, k_tournament_final_linear_increase_factor, alpha)
+def run_evoman(experiment_name, enemy, population_size, generations, mutation_rate, crossover_rate, mode, 
+               n_hidden_neurons, headless, dom_l, dom_u, speed, number_of_crossovers, n_elitism, k_tournament, sel_pres_incr, k_tournament_final_linear_increase_factor):
+        evoman = EvoMan(experiment_name, enemy, population_size, generations, mutation_rate, crossover_rate, 
+                        mode, n_hidden_neurons, headless, dom_l, dom_u, speed, number_of_crossovers, n_elitism, k_tournament, sel_pres_incr, k_tournament_final_linear_increase_factor)
         
         # Log the command
         if mode == "train":
@@ -331,27 +325,25 @@ if __name__ == "__main__":
         parser = argparse.ArgumentParser(description="Evolutionary Algorithm for EvoMan")
         
         parser.add_argument("--experiment_name", type=str, default="experiment_enemy=6_k_increase=3", help="Name of the experiment")
-        parser.add_argument("--enemies", type=int, nargs='+',default=[1, 2, 3, 4, 5, 6, 7, 8], help="Enemies numbers")
+        parser.add_argument("--enemy", type=int, nargs='+',default=[1,2,3,4,5,6,7,8], help="Enemy number")
         parser.add_argument("--npop", type=int, default=100, help="Size of the population")
         parser.add_argument("--gens", type=int, default=30, help="Number of generations")
-        parser.add_argument("--mutation_rate", type=float, default=0.1, help="Mutation rate")
-        parser.add_argument("--crossover_rate", type=float, default=0.5, help="Crossover rate")
+        parser.add_argument("--mutation_rate", type=float, default=0.058, help="Mutation rate")
+        parser.add_argument("--crossover_rate", type=float, default=0.257, help="Crossover rate")
         parser.add_argument("--mode", type=str, default="train", help="Mode: train or test")
         parser.add_argument("--n_hidden_neurons", type=int, default=10, help="Number of hidden neurons")
         parser.add_argument("--headless", action="store_true", help="Run in headless mode")
         parser.add_argument("--dom_l", type=float, default=-1, help="Lower bound for initialization and mutation")
         parser.add_argument("--dom_u", type=float, default=1, help="Upper bound for initialization and mutation")
         parser.add_argument("--speed", type=str, default="fastest", help="Speed: fastest or normal")
-        parser.add_argument("--number_of_crossovers", type=int, default=3, help="Number of crossovers")
-        parser.add_argument("--n_elitism", type=int, default=2, help="Number of best individuals from population that are always selected for the next generation.")
-        parser.add_argument("--k_tournament", type=int, default= 2, help="The amount of individuals to do a tournament with for selection, the more the higher the selection pressure")
-        parser.add_argument("--type_of_selection_pressure", type=str, default="linear", help="if set to linear the selection pressure will linearly increase over time from k_tournament till k_tournament_final_linear_increase_factor*k_tournament, if set to exponential the selection pressure will increase exponentially from k_tournament till 2*k_tournament, if set to anything else the selection pressure will stay the same")
-        parser.add_argument("--k_tournament_final_linear_increase_factor", type=int, default= 4, help="The factor with which k_tournament should linearly increase (if type_of_selection_pressure = True), if the value is 4 the last quarter of generations have tournaments of size k_tournament*4")
-        parser.add_argument("--alpha", type=float, default=0.5, help="Weight for enemy damage")
+        parser.add_argument("--number_of_crossovers", type=int, default=7, help="Number of crossovers")
+        parser.add_argument("--n_elitism", type=int, default=7, help="Number of best individuals from population that are always selected for the next generation.")
+        parser.add_argument("--k_tournament", type=int, default= 13, help="The amount of individuals to do a tournament with for selection, the more the higher the selection pressure")
+        parser.add_argument("--selection_pressure_increase", type=bool, default=True, help="if set to true the selection pressure will linearly increase over time from k_tournament till 2*k_tournament")
+        parser.add_argument("--k_tournament_final_linear_increase_factor", type=int, default= 3, help="The factor with which k_tournament should linearly increase (if selection_pressure_increase = True), if the value is 4 the last quarter of generations have tournaments of size k_tournament*4")
 
         args = parser.parse_args()
 
-        run_evoman(args.experiment_name, args.enemies, args.npop, args.gens, args.mutation_rate, args.crossover_rate,
+        run_evoman(args.experiment_name, args.enemy, args.npop, args.gens, args.mutation_rate, args.crossover_rate,
                args.mode, args.n_hidden_neurons, args.headless, args.dom_l, args.dom_u, args.speed, args.number_of_crossovers,
-               args.n_elitism, args.k_tournament, args.type_of_selection_pressure, args.k_tournament_final_linear_increase_factor,
-               args.alpha)
+               args.n_elitism, args.k_tournament, args.selection_pressure_increase, args.k_tournament_final_linear_increase_factor)

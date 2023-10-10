@@ -13,3 +13,13 @@ individual_mutation_rate.py --enemies 6 7 --headless
 individual_mutation_rate.py --enemies 6 7 --headless --gens 2 --npop 10
 individual_mutation_rate.py --enemies 6 7 --headless --gens 2 --npop 10
 individual_mutation_rate.py --enemies 6 7 --headless --gens 2 --npop 10
+relu_EA.py --enemies 6 7 --headless
+relu_EA.py --enemies 6 7 --headless
+relu_EA.py --enemies 3 4 6 7 --headless
+sigmoid_EA.py --enemies 3 4 6 7 --headless
+specialist.py --headless
+specialist.py --headless
+specialist.py --headless
+generalist.py --headless
+generalist.py --headless
+generalist.py --headless

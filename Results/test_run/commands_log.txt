@@ -1,0 +1,1 @@
+sigmoid_EA.py --experiment_name test_run --headless --enemies 1 4 6 7
