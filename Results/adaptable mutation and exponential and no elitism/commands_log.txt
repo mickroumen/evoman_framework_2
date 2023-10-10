@@ -1,0 +1,4 @@
+individual_mutation_rate.py --headless --experiment_name adaptable mutation and exponential and no elitism
+individual_mutation_rate.py --headless --experiment_name adaptable mutation and exponential and no elitism
+individual_mutation_rate.py --headless --experiment_name adaptable mutation and exponential and no elitism
+individual_mutation_rate.py --headless --experiment_name adaptable mutation and exponential and no elitism

@@ -65,6 +65,9 @@ class EvoMan:
 
         experiment_path = os.path.join("Results", self.experiment_name)
 
+        def fitness_single(self):
+            return 0.5*(100 - self.get_enemylife()) + 0.5*self.get_playerlife() + np.log(self.get_time())
+
         env = Environment(experiment_name=experiment_path,
                           enemies=self.enemy,
                           playermode="ai",
@@ -73,6 +76,9 @@ class EvoMan:
                           level=2,
                           speed=self.speed,
                           visuals=not self.headless)
+        
+        env.fitness_single = fitness_single.__get__(env)
+        
         return env
     
     def initialize_individual(self):
@@ -248,7 +254,8 @@ class EvoMan:
                                     np.max(health_gain), np.mean(health_gain), np.std(health_gain),
                                     np.min(time_game), np.mean(time_game), np.std(time_game)])
                 
-                print(f"Generation {gen}, Best Fitness: {np.max(fitness)}")
+                print(f"Generation {gen}, Best Fitness: {np.max(fitness)} and index {np.argmax(fitness)}")
+                print(f"Generation {gen}, Best Health: {np.max(health_gain)} and index {np.argmax(health_gain)}")        
                 
                 # Save the best individual's neural network weights
                 np.save(os.path.join(self.experiment_dir, "best_individual.npy"), best_individual)

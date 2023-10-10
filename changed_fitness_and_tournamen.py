@@ -91,8 +91,6 @@ class EvoMan:
     def initialize_individual(self):
         # Initialize an individual with random weights and biases within the range [dom_l, dom_u]
         individual = np.random.uniform(self.dom_l, self.dom_u, self.total_network_weights)
-        # Add the mutation rate as the last element of the individual
-        individual = np.append(individual, 0.1)
         return individual
     
     def simulation(self, x):
@@ -110,13 +108,12 @@ class EvoMan:
         player_life = np.zeros(self.n_pop)
         enemy_life = np.zeros(self.n_pop)
         for i, individual in enumerate(population):
-            fitness[i], health_gain[i], time_game[i], player_life[i], enemy_life[i] = self.simulation(individual[:-1])
+            fitness[i], health_gain[i], time_game[i], player_life[i], enemy_life[i] = self.simulation(individual)
         return fitness, health_gain, time_game, player_life, enemy_life
-
 
     def mutate(self, individual):
         # Applies bit mutation to the individual based on the mutation rate
-        for i in range(len(individual[:-1])):
+        for i in range(len(individual)):
             if random.uniform(0, 1) < self.mutation_rate:
                 # Convert the weight to binary representation
                 binary_representation = list(format(int((individual[i] - self.dom_l) * (2**15) / (self.dom_u - self.dom_l)), '016b'))
@@ -127,29 +124,6 @@ class EvoMan:
                 
                 individual[i] = int("".join(binary_representation), 2) * (self.dom_u - self.dom_l) / (2**15) + self.dom_l
         return individual
-    
-    # def mutate(self, individual):
-    #         # Applies mutation to the individual based on the mutation rate
-    #         for i in range(len(individual[:-1])):
-    #             if random.uniform(0, 1) < self.mutation_rate:
-    #                 rand_num_1 = np.random.normal(0, 1)
-    #                 rand_num_2 = np.random.normal(0, 1)
-    #                 tau_prime = 1 / np.sqrt(2 * np.sqrt(len(individual[:-1])))
-    #                 tau = 1 / np.sqrt(2 * len(individual[:-1]))
-    #                 individual[-1] = individual[-1] * np.exp(tau *rand_num_1 + tau_prime * rand_num_2)
-
-
-    #                 individual[-1] = np.clip(individual[-1], 0.05, 0.4)
-    #                 mutation = np.random.normal(individual[i], individual[-1])
-    #                 individual[i] = np.clip(mutation, self.dom_l, self.dom_u)
-    #         return individual
-    # def mutate(self, individual):
-    #     # Applies mutation to the individual based on the mutation rate
-    #     for i in range(len(individual)):
-    #         if random.uniform(0, 1) < self.mutation_rate:
-    #             mutation = np.random.normal(individual[i], 0.1)
-    #             individual[i] = np.clip(mutation, self.dom_l, self.dom_u)
-    #     return individual
     
     def crossover(self, parent1, parent2, number_of_crossovers):
         # Applies N point crossover 
@@ -324,8 +298,8 @@ class EvoMan:
 
             self.env.cons_multi = cons_multi2.__get__(self.env)
 
-            # Run the simulation with the best individual[
-            fitness, health_gain, time, player_life, enemy_life = self.simulation(best_individual[:-1])
+            # Run the simulation with the best individual
+            fitness, health_gain, time, player_life, enemy_life = self.simulation(best_individual)
             print(f'fitness is: {fitness}')
             print(f'health gain is: {health_gain}')
             print(f'player life is: {player_life}')
@@ -356,7 +330,7 @@ if __name__ == "__main__":
         parser = argparse.ArgumentParser(description="Evolutionary Algorithm for EvoMan")
         
         parser.add_argument("--experiment_name", type=str, default="experiment_enemy=6_k_increase=3", help="Name of the experiment")
-        parser.add_argument("--enemies", type=int, nargs='+',default=[1, 2, 3, 4, 6, 7, 8], help="Enemies numbers")
+        parser.add_argument("--enemies", type=int, nargs='+',default=[1, 2, 3, 4, 5, 6, 7, 8], help="Enemies numbers")
         parser.add_argument("--npop", type=int, default=100, help="Size of the population")
         parser.add_argument("--gens", type=int, default=30, help="Number of generations")
         parser.add_argument("--mutation_rate", type=float, default=0.1, help="Mutation rate")
@@ -368,9 +342,9 @@ if __name__ == "__main__":
         parser.add_argument("--dom_u", type=float, default=1, help="Upper bound for initialization and mutation")
         parser.add_argument("--speed", type=str, default="fastest", help="Speed: fastest or normal")
         parser.add_argument("--number_of_crossovers", type=int, default=3, help="Number of crossovers")
-        parser.add_argument("--n_elitism", type=int, default=0, help="Number of best individuals from population that are always selected for the next generation.")
+        parser.add_argument("--n_elitism", type=int, default=2, help="Number of best individuals from population that are always selected for the next generation.")
         parser.add_argument("--k_tournament", type=int, default= 2, help="The amount of individuals to do a tournament with for selection, the more the higher the selection pressure")
-        parser.add_argument("--type_of_selection_pressure", type=str, default="exponential", help="if set to linear the selection pressure will linearly increase over time from k_tournament till k_tournament_final_linear_increase_factor*k_tournament, if set to exponential the selection pressure will increase exponentially from k_tournament till 2*k_tournament, if set to anything else the selection pressure will stay the same")
+        parser.add_argument("--type_of_selection_pressure", type=str, default="linear", help="if set to linear the selection pressure will linearly increase over time from k_tournament till k_tournament_final_linear_increase_factor*k_tournament, if set to exponential the selection pressure will increase exponentially from k_tournament till 2*k_tournament, if set to anything else the selection pressure will stay the same")
         parser.add_argument("--k_tournament_final_linear_increase_factor", type=int, default= 4, help="The factor with which k_tournament should linearly increase (if type_of_selection_pressure = True), if the value is 4 the last quarter of generations have tournaments of size k_tournament*4")
         parser.add_argument("--alpha", type=float, default=0.5, help="Weight for enemy damage")
 
