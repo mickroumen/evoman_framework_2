@@ -8,3 +8,77 @@
 .\testbestEAmutation.py --headless --experiment_name 4
 .\testbestEAmutation.py --headless --experiment_name 4
 .\testenemies.py --headless --enemies 1 4 6 --mode train --experiment_name 4
+.\testenemies.py --headless --mode train --experiment_name 4 --enemies 4 6 7
+.\testenemies.py --headless --mode train --experiment_name 4 --enemies 4 6 7
+.\testenemies.py --headless --mode train --experiment_name 4 --enemies 4 6 7
+.\testenemies.py --headless --mode train --experiment_name 4 --enemies 4 6 7
+.\testenemies.py --headless --mode train --experiment_name 4 --enemies 4 6 7
+.\testenemies.py --headless --mode train --experiment_name 4 --enemies 4 6 7
+.\testenemies.py --headless --mode train --experiment_name 4 --enemies 4 6 7
+.\testenemies.py --headless --mode train --experiment_name 4 --enemies 4 6 7
+.\testenemies.py --headless --mode train --experiment_name 4 --enemies 4 6 7
+.\testenemies.py --headless --mode train --experiment_name 4 --enemies 4 6 7
+.\testenemies.py --headless --mode train --experiment_name 4 --enemies 4 6 7
+.\testenemies.py --headless --mode train --experiment_name 4 --enemies 4 6 7
+.\testenemies.py --headless --mode train --experiment_name 4 --enemies 4 6 7
+.\testenemies.py --headless --mode train --experiment_name 4 --enemies 4 6 7
+.\testenemies.py --headless --mode train --experiment_name 4 --enemies 4 6 7
+.\testenemies.py --headless --mode train --experiment_name 4 --enemies 4 6 7
+.\testenemies.py --headless --mode train --experiment_name 4 --enemies 4 6 7
+.\testenemies.py --headless --mode train --experiment_name 4 --enemies 4 6 7
+.\testenemies.py --headless --mode train --experiment_name 4 --enemies 4 6 7
+.\testenemies.py --headless --mode train --experiment_name 4 --enemies 4 6 7
+.\testenemies.py --headless --mode train --experiment_name 4 --enemies 4 6 7
+.\testenemies.py --headless --mode train --experiment_name 4 --enemies 4 6 7
+.\testenemies.py --headless --mode train --experiment_name 4 --enemies 4 6 7
+.\testenemies.py --headless --mode train --experiment_name 4 --enemies 4 6 7
+.\testenemies.py --headless --mode train --experiment_name 4 --enemies 4 6 7
+.\testenemies.py --headless --mode train --experiment_name 4 --enemies 4 6 7
+.\testenemies.py --headless --mode train --experiment_name 4 --enemies 4 6 7
+.\testenemies.py --headless --mode train --experiment_name 4 --enemies 4 6 7
+.\testenemies.py --headless --mode train --experiment_name 4 --enemies 4 6 7
+.\testenemies.py --headless --mode train --experiment_name 4 --enemies 4 6 7
+.\testenemies.py --headless --mode train --experiment_name 4 --enemies 4 6 7
+.\testenemies.py --headless --mode train --experiment_name 4 --enemies 4 6 7
+.\testenemies.py --headless --mode train --experiment_name 4 --enemies 4 6 7
+.\testenemies.py --headless --mode train --experiment_name 4 --enemies 4 6 7
+.\testenemies.py --headless --mode train --experiment_name 4 --enemies 4 6 7
+.\testenemies.py --headless --mode train --experiment_name 4 --enemies 4 6 7
+.\testenemies.py --headless --mode train --experiment_name 4 --enemies 4 6 7
+.\testenemies.py --headless --mode train --experiment_name 4 --enemies 1 4 7 8
+.\testenemies.py --headless --mode train --experiment_name 4 --enemies 1 4 7 8
+.\testenemies.py --headless --mode train --experiment_name 4 --enemies 4 6 7 8
+.\testenemies.py --headless --mode train --experiment_name 4 --enemies 4 6 7 8 --npop 10
+.\testenemies.py --headless --mode train --experiment_name 4 --enemies 4 6 7 8 --npop 10
+.\testenemies.py --headless --mode train --experiment_name 4 --enemies 4 6 7 8 --npop 10
+.\testenemies.py --headless --mode train --experiment_name 4 --enemies 4 6 7 8 --npop 10
+.\testenemies.py --headless --mode train --experiment_name 4 --enemies 4 6 7 8 --npop 10 --gens 5
+.\testenemies.py --headless --mode train --experiment_name 4 --enemies 4 6 7 8 --npop 10 --gens 5
+.\testenemies.py --headless --mode train --experiment_name 4 --enemies 4 6 7 8 --npop 10 --gens 5
+.\testenemies.py --headless --mode train --experiment_name 4 --enemies 4 6 7 8 --npop 10 --gens 1
+.\testenemies.py --headless --mode train --experiment_name 4 --enemies 4 6 7 8 --npop 10 --gens 1
+.\testenemies.py --headless --mode train --experiment_name 4 --enemies 4 6 7 8 --npop 10 --gens 1
+.\testenemies.py --headless --mode train --experiment_name 4 --enemies 4 6 7 8 --npop 10 --gens 1
+.\testenemies.py --headless --mode train --experiment_name 4 --enemies 4 6 7 8 --npop 10 --gens 1
+.\testenemies.py --headless --mode train --experiment_name 4 --enemies 4 6 7 8 --npop 10 --gens 1
+.\testenemies.py --headless --mode train --experiment_name 4 --enemies 4 6 7 8 --npop 10 --gens 1
+.\testenemies.py --headless --mode train --experiment_name 4 --enemies 4 6 7 8 --npop 10 --gens 1
+.\testenemies.py --headless --mode train --experiment_name 4 --enemies 4 6 7 8 --npop 10 --gens 1
+.\testenemies.py --headless --mode train --experiment_name 4 --enemies 4 6 7 8 --npop 10 --gens 1
+.\testenemies.py --headless --mode train --experiment_name 4 --enemies 4 6 7 8 --npop 10 --gens 1
+.\testenemies.py --headless --mode train --experiment_name 4 --enemies 4 6 7 8 --npop 10 --gens 1
+.\testenemies.py --headless --mode train --experiment_name 4 --enemies 4 6 7 8 --npop 1 --gens 1 --mutation_rate 1
+.\testenemies.py --headless --mode train --experiment_name 4 --enemies 4 6 7 8 --npop 21 --gens 1 --mutation_rate 1
+.\testenemies.py --headless --mode train --experiment_name 4 --enemies 4 6 7 8 --npop 5 --gens 1 --mutation_rate 1
+.\testenemies.py --headless --mode train --experiment_name 4 --enemies 4 6 7 8 --npop 5 --gens 1 --mutation_rate 1
+.\testenemies.py --headless --mode train --experiment_name 4 --enemies 4 6 7 8 --npop 10 --gens 1 --mutation_rate 1
+.\testenemies.py --headless --mode train --experiment_name 4 --enemies 4 6 7 8 --npop 10 --gens 1 --mutation_rate 1
+.\testenemies.py --headless --mode train --experiment_name 4 --enemies 4 6 7 8 --npop 10 --gens 1 --mutation_rate 0.5
+.\testenemies.py --headless --mode train --experiment_name 4 --enemies 4 6 7 8 --npop 10 --gens 1 --mutation_rate 0.5 --sigma_start 0.5
+.\testenemies.py --headless --mode train --experiment_name 4 --enemies 4 6 7 8 --npop 10 --gens 1 --mutation_rate 0.5 --sigma_start 0.5
+.\testenemies.py --headless --mode train --experiment_name 4 --enemies 4 6 7 8 --sigma_start 0.9
+.\testenemies.py --headless --mode train --experiment_name 4 --enemies 4 6 7 8 --sigma_start 0.9
+.\testenemies.py --headless --mode train --experiment_name 4 --enemies 4 6 7 8 --sigma_start 1.5 --npop 10
+.\testenemies.py --headless --mode train --experiment_name 4 --enemies 4 6 7 8 --sigma_start 4.2 --npop 10
+.\testenemies.py --headless --mode train --experiment_name 4 --enemies 4 6 7 8 --sigma_start 4.2 --npop 10
+.\testenemies.py --headless --mode train --experiment_name 4 --enemies 4 6 7 8 --sigma_start 1.5 --npop 10
