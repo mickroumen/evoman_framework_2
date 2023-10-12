@@ -69,11 +69,13 @@ class EvoMan:
         experiment_path = os.path.join("Results", self.experiment_name)
         
         def fitness_single(self):
-            return 0.5*(100 - self.get_enemylife()) + 0.5*self.get_playerlife() + np.log(self.get_time())
-        
-        def cons_multi2(self,values):
-            values = np.array([np.sqrt(value) if value > 0 else value for value in values])
-            return values.mean()
+            return 1
+        # def cons_multi2(self,values):
+        #     values = np.array([np.sqrt(value) if value > 0 else value for value in values])
+        #     return values.mean()
+
+        def cons_multi2(self, values):
+            return values
         
         env = Environment(experiment_name=experiment_path,
                           enemies=self.enemies,
@@ -104,11 +106,11 @@ class EvoMan:
     
     def evaluate(self, population):
         # Evaluates the entire population and returns the fitness values
-        fitness = np.zeros(self.n_pop)
-        health_gain = np.zeros(self.n_pop)
-        time_game = np.zeros(self.n_pop)
-        player_life = np.zeros(self.n_pop)
-        enemy_life = np.zeros(self.n_pop)
+        fitness = np.empty(self.n_pop, dtype=object)
+        health_gain = np.empty(self.n_pop, dtype=object)
+        time_game = np.empty(self.n_pop, dtype=object)
+        player_life = np.empty(self.n_pop, dtype=object)
+        enemy_life = np.empty(self.n_pop, dtype=object)
         for i, individual in enumerate(population):
             fitness[i], health_gain[i], time_game[i], player_life[i], enemy_life[i] = self.simulation(individual)
         return fitness, health_gain, time_game, player_life, enemy_life
@@ -235,9 +237,14 @@ class EvoMan:
         enemies_to_remove = {enemy for enemy, health_gain in zip(self.enemies, health_gains) if health_gain > 0}
         remaining_enemies = [enemy for enemy in self.enemies if enemy not in enemies_to_remove]
 
-        print(remaining_enemies)
         return remaining_enemies
 
+    def fitness_function(self, player_life, enemy_life, time_game):
+        win_count = sum([1 for playerlife, enemylife in zip(player_life, enemy_life) if playerlife - enemylife > 0])
+        gains = [playerlife - enemylife for playerlife, enemylife in zip(player_life, enemy_life)]
+        average_gain = sum(gains) / len(gains)
+
+        return win_count + 0.02 * average_gain
     
     def run(self):
         if self.mode == "train":
@@ -256,6 +263,16 @@ class EvoMan:
 
         # Evaluate the initial population
         fitness, health_gain, time_game, player_life, enemy_life = self.evaluate(population)
+
+        fitness = np.array([self.fitness_function(player_life[i], enemy_life[i], time_game[i]) for i in range(len(player_life))])
+        health_gain = np.array([np.mean(i) for i in health_gain])
+        time_game = np.array([np.mean(i) for i in time_game])
+        player_life = np.array([np.mean(i) for i in player_life])
+        enemy_life = np.array([np.mean(i) for i in enemy_life])
+        # print(health_gain)
+        # print(health_gain)
+        # print(len(fitness))
+        # raise
 
         # Initialize best individual and its fitness
         best_individual_index = np.argmax(fitness)
@@ -288,7 +305,14 @@ class EvoMan:
                     child2 = self.mutate(child2)
 
                     children.extend([child1, child2])    
+
                 fitness_children, health_gain_children, time_game_children, player_life_children, enemy_life_children  = self.evaluate(children)
+                
+                fitness_children = np.array([self.fitness_function(player_life_children[i], enemy_life_children[i], time_game_children[i]) for i in range(len(player_life_children))])
+                health_gain_children = np.array([np.mean(i) for i in health_gain_children])
+                time_game_children = np.array([np.mean(i) for i in time_game_children])
+                player_life_children = np.array([np.mean(i) for i in player_life_children])
+                enemy_life_children = np.array([np.mean(i) for i in enemy_life_children])
                 
                 pop_before_selection = np.concatenate((population, children))
                 fitness_before_selection = np.concatenate((fitness, fitness_children))
@@ -319,11 +343,11 @@ class EvoMan:
                 self.env.enemies = self.enemies
                 print(self.enemies)
 
-                def cons_multi2(self,values):
-                    values = np.array([np.sqrt(value) if value > 0 else value for value in values])
-                    return values.mean()
+                # def cons_multi2(self,values):
+                #     values = np.array([np.sqrt(value) if value > 0 else value for value in values])
+                #     return values.mean()
                 
-                self.env.cons_multi = cons_multi2.__get__(self.env)
+                # self.env.cons_multi = cons_multi2.__get__(self.env)
                 
                 print(f"Generation {gen}, Best Fitness: {np.max(fitness)} and index {np.argmax(fitness)}")
                 print(f"Generation {gen}, Best Health: {np.max(health_gain)} and index {np.argmax(health_gain)}")               

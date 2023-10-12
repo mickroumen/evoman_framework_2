@@ -70,12 +70,25 @@ class EvoMan:
 
         experiment_path = os.path.join("Results", self.experiment_name)
         
+        # def fitness_single(self):
+        #     return 0.5*(100 - self.get_enemylife()) + 0.5*self.get_playerlife() + np.log(self.get_time())
+        # def fitness_single(self):
+        #     win_count = sum([1 for playerlife, enemylife in zip(self.get_playerlife(), self.get_enemylife()) if playerlife - enemylife > 0])
+        #     gains = [playerlife - enemylife for playerlife, enemylife in zip(self.get_playerlife(), self.get_enemylife())]
+        #     average_gain = sum(gains) / len(gains)
+
+        #     fitness = win_count + (0.02 * average_gain)
+
+        #     return fitness
+
         def fitness_single(self):
-            return 0.5*(100 - self.get_enemylife()) + 0.5*self.get_playerlife() + np.log(self.get_time())
-        
-        def cons_multi2(self,values):
-            values = np.array([np.sqrt(value) if value > 0 else value for value in values])
-            return values.mean()
+            return 1
+        # def cons_multi2(self,values):
+        #     values = np.array([np.sqrt(value) if value > 0 else value for value in values])
+        #     return values.mean()
+
+        def cons_multi2(self, values):
+            return values
         
         env = Environment(experiment_name=experiment_path,
                           enemies=self.enemies,
@@ -256,6 +269,8 @@ class EvoMan:
 
         # Evaluate the initial population
         fitness, health_gain, time_game, player_life, enemy_life = self.evaluate(population)
+        print(health_gain)
+        raise
 
         # Initialize best individual and its fitness
         best_individual_index = np.argmax(fitness)
