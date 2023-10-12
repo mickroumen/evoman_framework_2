@@ -147,7 +147,6 @@ class EvoMan:
                 individual['weights'][i] = int("".join(binary_representation), 2) * (self.dom_u - self.dom_l) / (2**15) + self.dom_l
         return individual
     
-    
     def mutate(self, individual):
         # Applies mutation to the individual based on the mutation rate
         #Mutate weights
@@ -164,7 +163,6 @@ class EvoMan:
             individual['sigmas'][i] *= updating_factor
             
         return individual 
-    
 
     def crossover(self, parent1, parent2, number_of_crossovers):
         # Applies N point crossover

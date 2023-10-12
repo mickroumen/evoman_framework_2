@@ -240,11 +240,27 @@ class EvoMan:
         return remaining_enemies
 
     def fitness_function(self, player_life, enemy_life, time_game):
-        win_count = sum([1 for playerlife, enemylife in zip(player_life, enemy_life) if playerlife - enemylife > 0])
+        # win_count = sum([1 for playerlife, enemylife in zip(player_life, enemy_life) if playerlife - enemylife > 0])
         gains = [playerlife - enemylife for playerlife, enemylife in zip(player_life, enemy_life)]
-        average_gain = sum(gains) / len(gains)
+        # average_gain = sum(gains) / len(gains)
+        # min_gain = min(gains)
+        # min_player_life = min(player_life)
 
-        return win_count + 0.02 * average_gain
+        # MAX_GAIN = 100  
+        # MAX_PLAYER_LIFE = 100
+
+        # normalized_avg_gain = average_gain / MAX_GAIN
+        # normalized_min_gain = min_gain / MAX_GAIN
+        # normalized_min_player_life = min_player_life / MAX_PLAYER_LIFE
+
+        # secondary_score = (normalized_avg_gain + normalized_min_gain + normalized_min_player_life) / 3
+
+        # fitness = win_count + secondary_score
+        avg_time = sum(time_game) / len(time_game)
+
+        fitness = sum(gains) + 0.1 * avg_time
+
+        return fitness
     
     def run(self):
         if self.mode == "train":
@@ -386,6 +402,7 @@ class EvoMan:
 
             # Run the simulation with the best individual
             fitness, health_gain, time, player_life, enemy_life = self.simulation(best_individual)
+            fitness = self.fitness_function(player_life, enemy_life, time)
             print(f'fitness is: {fitness}')
             print(f'health gain is: {health_gain}')
             print(f'player life is: {player_life}')
