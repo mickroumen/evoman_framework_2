@@ -42,7 +42,7 @@ parameters = {
     'number_of_crossovers': 3,
     'n_elitism': 2,
     'k_tournament': 4,
-    'sel_pres_incr': True,
+    'sel_pres_incr': 'exponential',
     'k_tournament_final_linear_increase_factor': 4,   
     'alpha': 0.5,
 }
@@ -50,12 +50,10 @@ parameters = {
 param_change = {
     'mutation_rate': {'range': (0.01, 0.2), 'type': 'float'},
     'crossover_rate': {'range': (0.2, 1), 'type': 'float'},
-    'n_hidden_neurons': {'range': (4, 20), 'type': 'int'},
     'number_of_crossovers': {'range': (2, 10), 'type': 'int'},
-    'n_elitism': {'range': (1, 20), 'type': 'int'},
+    'n_elitism': {'range': (0, 5), 'type': 'int'},
     'k_tournament': {'range': (2, 20), 'type': 'int'},
-    'k_tournament_final_linear_increase_factor': {'range': (2, 5), 'type': 'int'},
-    'alpha': {'range': (0.01, 0.99), 'type': 'float'},
+    'k_tournament_final_linear_increase_factor': {'range': (1, 7), 'type': 'int'},
 }
 
 
