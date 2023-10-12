@@ -358,7 +358,7 @@ if __name__ == "__main__":
         parser = argparse.ArgumentParser(description="Evolutionary Algorithm for EvoMan")
         
         parser.add_argument("--experiment_name", type=str, default="experiment_enemy=6_k_increase=3", help="Name of the experiment")
-        parser.add_argument("--enemies", type=int, nargs='+',default=[1, 2, 3, 4, 5, 6, 7, 8], help="Enemies numbers")
+        parser.add_argument("--enemies", type=int, nargs='+',default=[4, 6, 7], help="Enemies numbers")
         parser.add_argument("--npop", type=int, default=100, help="Size of the population")
         parser.add_argument("--gens", type=int, default=50, help="Number of generations")
         parser.add_argument("--mutation_rate", type=float, default=0.1, help="Mutation rate")

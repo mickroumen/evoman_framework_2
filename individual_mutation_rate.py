@@ -67,13 +67,19 @@ class EvoMan:
 
         experiment_path = os.path.join("Results", self.experiment_name)
         
+        # def fitness_single(self):
+        #     return 0.5*(100 - self.get_enemylife()) + 0.5*self.get_playerlife()
+        
+        # def cons_multi2(self,values):
+        #     values = np.array([np.sqrt(value) if value > 0 else value for value in values])
+        #     return values.mean()
+        
         def fitness_single(self):
             return 0.5*(100 - self.get_enemylife()) + 0.5*self.get_playerlife()
         
         def cons_multi2(self,values):
-            values = np.array([np.sqrt(value) if value > 0 else value for value in values])
-            return values.mean()
-        
+            return values
+
         env = Environment(experiment_name=experiment_path,
                           enemies=self.enemies,
                           multiplemode="yes",
@@ -104,13 +110,38 @@ class EvoMan:
     
     def evaluate(self, population):
         # Evaluates the entire population and returns the fitness values
-        fitness = np.zeros(population.shape[0])
-        health_gain = np.zeros(population.shape[0])
-        time_game = np.zeros(population.shape[0])
-        player_life = np.zeros(population.shape[0])
-        enemy_life = np.zeros(population.shape[0])
-        for i, individual in enumerate(population):
-            fitness[i], health_gain[i], time_game[i], player_life[i], enemy_life[i] = self.simulation(individual[:-1])
+        # Initialize lists to store results
+        fitness = []
+        health_gain = []
+        time_game = []
+        player_life = []
+        enemy_life = []
+
+        for individual in population:
+            result = self.simulation(individual[:-1])
+            
+            # Append results to respective lists
+            fitness.append(result[0])
+            health_gain.append(result[1])
+            time_game.append(result[2])
+            player_life.append(result[3])
+            enemy_life.append(result[4])
+
+        # Convert lists to NumPy arrays
+        fitness = np.array(fitness)
+        health_gain = np.array(health_gain)
+        time_game = np.array(time_game)
+        player_life = np.array(player_life)
+        enemy_life = np.array(enemy_life)
+
+
+        # fitness = np.zeros(population.shape[0])
+        # health_gain = np.zeros(population.shape[0])
+        # time_game = np.zeros(population.shape[0])
+        # player_life = np.zeros(population.shape[0])
+        # enemy_life = np.zeros(population.shape[0])
+        # for i, individual in enumerate(population):
+        #     fitness[i], health_gain[i], time_game[i], player_life[i], enemy_life[i] = self.simulation(individual[:-1])
         return fitness, health_gain, time_game, player_life, enemy_life
 
 
@@ -246,7 +277,7 @@ class EvoMan:
         best_individual_index = np.argmax(fitness)
         best_individual = population[best_individual_index]
         best_fitness = fitness[best_individual_index]
-
+        print(fitness)
         # Creat csv file
         results_file_path = os.path.join(self.experiment_dir, "results.csv")
         with open(results_file_path, mode='w', newline='') as file:
