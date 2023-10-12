@@ -181,7 +181,9 @@ class EvoMan:
 
             return fitness
         elif self.mode == "test":
-            self.test()
+            fitness, health_gain, time = self.test()
+
+            return fitness, health_gain, time
     
     def train(self):
         # take time of entire run
@@ -273,6 +275,8 @@ class EvoMan:
 
             # Run the simulation with the best individual
             fitness, health_gain, time = self.simulation(best_individual)
+
+            return fitness, health_gain, time
 
         else:
             print("No best individual found!")
