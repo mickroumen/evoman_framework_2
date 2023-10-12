@@ -123,36 +123,37 @@ class EvoMan:
     """
 
     def mutate(self, individual):
-        # Applies bit mutation to the individual based on the mutation rate
-        for i in range(len(individual['weights'])):
-            if random.uniform(0, 1) < self.mutation_rate:
-                # Convert the weight to binary representation
-                binary_representation = list(format(int((individual['weights'][i] - self.dom_l) * (2**15) / (self.dom_u - self.dom_l)), '016b'))
-                
-                for j in range(len(binary_representation)):
-                    if random.uniform(0, 1) < self.mutation_rate:
-                        binary_representation[j] = '1' if binary_representation[j] == '0' else '0'
-                
-                individual['weights'][i] = int("".join(binary_representation), 2) * (self.dom_u - self.dom_l) / (2**15) + self.dom_l
-        return individual
+        # Applies mutation to the individual based on the mutation rate
+        if random.uniform(0, 1) < self.mutation_rate:
+            update_factor_global = self.tau_glob * np.random.normal()
+            for i in range(len(individual['weights'])):
+                #Update sigmas
+                update_factor_ind = self.tau_ind * np.random.normal()
+                update_factor = np.exp((update_factor_global + update_factor_ind))
+                individual['sigmas'][i] *= update_factor
+                if individual['sigmas'][i] < 0.01:
+                    individual['sigmas'][i] = 0.01
+                #Mutate weights
+                individual['weights'][i] += individual['sigmas'][i] * np.random.normal()
+            
+        return individual 
     
+
     def crossover(self, parent1, parent2, number_of_crossovers):
-        # Applies N point crossover 
+        # Applies N point crossover
+        child1 = parent1.copy()
+        child2 = parent2.copy()  
+        print(child1)   
         if random.uniform(0,1) < self.crossover_rate:
             crossover_points = sorted(random.sample(range(1, len(parent1['weights'])), number_of_crossovers))
-            child1 = parent1.copy()
-            child2 = parent2.copy()
             for i in range(number_of_crossovers - 1):
                 # Switch between parents for each section
-                if i%2 == 0:
-                    child1['weights'][crossover_points[i]:crossover_points[i+1]] = parent1['weights'][crossover_points[i]:crossover_points[i+1]]
+                if i%2 != 0:
                     child1['weights'][crossover_points[i]:crossover_points[i+1]] = parent2['weights'][crossover_points[i]:crossover_points[i+1]]
-                else:
-                    child1['weights'][crossover_points[i]:crossover_points[i+1]] = parent2['weights'][crossover_points[i]:crossover_points[i+1]]
-                    child1['weights'][crossover_points[i]:crossover_points[i+1]] = parent1['weights'][crossover_points[i]:crossover_points[i+1]]
-            return child1, child2
-        else:
-            return parent1.copy(), parent2.copy()
+                    child2['weights'][crossover_points[i]:crossover_points[i+1]] = parent1['weights'][crossover_points[i]:crossover_points[i+1]]
+        print(child1)       
+        return child1, child2
+    
     
     # tournament (returns winnning individual and its fitness)
     def tournament_selection(self, candidate_indices, fitness, population, k=2):
@@ -245,7 +246,7 @@ class EvoMan:
                     parent2, winner_index = self.tournament_selection(population.shape[0], fitness, population)
 
                     child1, child2 = self.crossover(parent1, parent2, self.number_of_crossovers)
-
+                    
                     child1 = self.mutate(child1)
                     child2 = self.mutate(child2)
 
@@ -338,9 +339,9 @@ if __name__ == "__main__":
         parser.add_argument("--speed", type=str, default="fastest", help="Speed: fastest or normal")
         parser.add_argument("--number_of_crossovers", type=int, default=3, help="Number of crossovers")
         parser.add_argument("--n_elitism", type=int, default=2, help="Number of best individuals from population that are always selected for the next generation.")
-        parser.add_argument("--k_tournament", type=int, default= 4, help="The amount of individuals to do a tournament with for selection, the more the higher the selection pressure")
+        parser.add_argument("--k_tournament", type=int, default= 2, help="The amount of individuals to do a tournament with for selection, the more the higher the selection pressure")
         parser.add_argument("--selection_pressure_increase", type=bool, default=True, help="if set to true the selection pressure will linearly increase over time from k_tournament till 2*k_tournament")
-        parser.add_argument("--k_tournament_final_linear_increase_factor", type=int, default= 4, help="The factor with which k_tournament should linearly increase (if selection_pressure_increase = True), if the value is 4 the last quarter of generations have tournaments of size k_tournament*4")
+        parser.add_argument("--k_tournament_final_linear_increase_factor", type=int, default= 1, help="The factor with which k_tournament should linearly increase (if selection_pressure_increase = True), if the value is 4 the last quarter of generations have tournaments of size k_tournament*4")
         parser.add_argument("--sigma_range", type=list, default=[0.01,0.2], help="Range for sigma")
         
         args = parser.parse_args()
