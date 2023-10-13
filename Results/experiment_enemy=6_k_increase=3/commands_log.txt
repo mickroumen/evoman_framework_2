@@ -20,3 +20,7 @@ c:\Users\roume\evoman_framework_2\evoman_with_alpha.py
 Bitflip_3_point_elitism.py --headless
 Bitflip_3_point_elitism.py --headless
 Bitflip_3_point_elitism.py --headless
+c:/Users/roume/evoman_framework_2/trying_things.py
+c:/Users/roume/evoman_framework_2/trying_things.py
+c:/Users/roume/evoman_framework_2/trying_things.py
+c:/Users/roume/evoman_framework_2/trying_things.py

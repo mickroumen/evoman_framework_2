@@ -1,0 +1,1 @@
+trying_things.py --headless --experiment_name experiment with bitflip  mutation and k=2 at first and no enemy swap and n_elitism=2

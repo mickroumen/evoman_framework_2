@@ -1,0 +1,2 @@
+trying_things.py --headless --experiment_name experiment with adjusted mutation and k=1 at first and threshold enemy swap=60
+trying_things.py --headless --experiment_name experiment with adjusted mutation and k=1 at first and threshold enemy swap=60

@@ -28,7 +28,7 @@ if not os.path.exists(individual_dir):
 # Define fixed parameters and parameters to change
 parameters = {
     'experiment_name': "",
-    'enemy': [6],
+    'enemies': [4, 6, 7],
     'population_size': 100,
     'generations': 30,
     'mutation_rate': 0.1,
@@ -42,18 +42,18 @@ parameters = {
     'number_of_crossovers': 3,
     'n_elitism': 2,
     'k_tournament': 4,
-    'sel_pres_incr': 'exponential',
+    'type_of_selection_pressure': "exponential",
     'k_tournament_final_linear_increase_factor': 4,   
     'alpha': 0.5,
+    'enemy_threshold' : 20
 }
 
 param_change = {
     'mutation_rate': {'range': (0.01, 0.2), 'type': 'float'},
-    'crossover_rate': {'range': (0.2, 1), 'type': 'float'},
-    'number_of_crossovers': {'range': (2, 10), 'type': 'int'},
-    'n_elitism': {'range': (0, 5), 'type': 'int'},
-    'k_tournament': {'range': (2, 20), 'type': 'int'},
-    'k_tournament_final_linear_increase_factor': {'range': (1, 7), 'type': 'int'},
+    'number_of_crossovers': {'range': (1, 10), 'type': 'int'},
+    'enemy_threshold': {'range': (10, 50), 'type': 'int'},
+    'k_tournament': {'range': (1, 10), 'type': 'int'},
+    'k_tournament_final_linear_increase_factor': {'range': (1, 6), 'type': 'int'},
 }
 
 
