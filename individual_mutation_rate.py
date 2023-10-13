@@ -37,6 +37,7 @@ class EvoMan:
         self.speed = speed
         self.counter = 0
         self.enemy_threshold = enemy_threshold
+        self.updated_enemies = False
 
         # Setup directories
         self.setup_directories()
@@ -211,6 +212,11 @@ class EvoMan:
         enemies_to_remove = {enemy for enemy, health_gain in zip(enemies, health_gains) if health_gain > self.enemy_threshold}
         remaining_enemies = [enemy for enemy in enemies if enemy not in enemies_to_remove]
 
+        if len(enemies_to_remove) > 0:
+            self.updated_enemies = True
+        else:
+            self.updated_enemies = False
+
         for _ in enemies_to_remove:
             while True:
                 new_enemy = random.randint(1, 8)
@@ -309,6 +315,20 @@ class EvoMan:
 
             # Main loop for generations
             for gen in range(self.gens):
+                if self.updated_enemies:
+                    # Evaluate the initial population
+                    fitness, health_gain, time_game, player_life, enemy_life = self.evaluate(population)
+
+                    fitness = np.array([self.fitness_function(player_life[i], enemy_life[i], time_game[i]) for i in range(len(player_life))])
+                    health_gain = np.array([np.mean(i) for i in health_gain])
+                    time_game = np.array([np.mean(i) for i in time_game])
+                    player_life = np.array([np.mean(i) for i in player_life])
+                    enemy_life = np.array([np.mean(i) for i in enemy_life])
+
+                    best_individual_index = np.argmax(fitness)
+                    best_individual = population[best_individual_index]
+                    best_fitness = fitness[best_individual_index]
+
                 children = []
                 self.current_generation += 1
                 for _ in range(self.n_pop // 2):  # Two children per iteration
@@ -353,11 +373,12 @@ class EvoMan:
                                     np.max(health_gain), np.mean(health_gain), np.std(health_gain),
                                     np.min(time_game), np.mean(time_game), np.std(time_game)])
                 
-                print(self.enemies)
-                # change enemies if met threshold
-                self.enemies = self.update_enemies(self.enemies, best_individual)
-                self.env.enemies = self.enemies
-                print(self.enemies)
+                if gen > 10:
+                    print(self.enemies)
+                    # change enemies if met threshold
+                    self.enemies = self.update_enemies(self.enemies, best_individual)
+                    self.env.enemies = self.enemies
+                    print(self.enemies)
 
                 # def cons_multi2(self,values):
                 #     values = np.array([np.sqrt(value) if value > 0 else value for value in values])
