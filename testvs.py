@@ -98,7 +98,7 @@ class EvoMan:
         # Initialize an individual with random weights and biases within the range [dom_l, dom_u]
         individual = np.random.uniform(self.dom_l, self.dom_u, self.total_network_weights)
         # Add the mutation rate as the last element of the individual
-        individual = np.append(individual, 0.1)
+        individual = np.append(individual, 0.5)
         # Make sure the player is always shooting
         individual[213] = 10000
         
@@ -122,6 +122,7 @@ class EvoMan:
             fitness[i], health_gain[i], time_game[i], player_life[i], enemy_life[i] = self.simulation(individual[:-1])
         return fitness, health_gain, time_game, player_life, enemy_life
 
+    """
     def mutate(self, individual):
         # Applies bit mutation to the individual based on the mutation rate
         if random.uniform(0, 1) < self.mutation_rate:
@@ -135,8 +136,8 @@ class EvoMan:
                 
                 individual[i] = int("".join(binary_representation), 2) * (self.dom_u - self.dom_l) / (2**15) + self.dom_l
         return individual
-    
     """
+
     def mutate(self, individual):
         # Applies mutation to the individual based on the mutation rate
         if random.uniform(0, 1) < self.mutation_rate:
@@ -147,7 +148,6 @@ class EvoMan:
             for i in range(len(individual[:-1])):
                 individual[i] += individual[-1] * np.random.normal()
         return individual       
-    """
     
     def crossover(self, parent1, parent2, number_of_crossovers):
         # Applies N point crossover
@@ -220,19 +220,25 @@ class EvoMan:
         # Run the simulation with the best individual
         self.env.enemies = [1, 2, 3, 4, 5, 6, 7, 8]
         fitnesses, health_gains, times, player_lifes, enemy_lifes = self.simulation(best_individual[:-1])
-        print(health_gains)
         enemies_index = [x-1 for x in self.enemies]
         enemies_above_treshold = [enemy for enemy, health_gain in zip(self.enemies, health_gains[enemies_index]) if health_gain > self.enemy_threshold]
         enemies_defeat = [enemy for enemy, health_gain in zip(self.env.enemies, health_gains) if health_gain < 0]
         remaining_enemies = [enemy for enemy, health_gain in zip(enemies, health_gains[enemies_index]) if health_gain < self.enemy_threshold]
         
+        if len(enemies_above_treshold) > 0:
+            self.updated_enemies = True
+        else:
+            self.updated_enemies = False
+
         for _ in enemies_above_treshold:
             new_enemy = random.choice(enemies_defeat)
             while new_enemy in remaining_enemies:
                 new_enemy = random.choice(enemies_defeat)
             remaining_enemies.append(new_enemy)   
-            remaining_enemies.sort()             
-        
+            remaining_enemies.sort()              
+
+
+
         return remaining_enemies
 
     def fitness_function(self, player_life, enemy_life, time_game):
@@ -245,13 +251,13 @@ class EvoMan:
         win_count = 0
         for i in range(len(gains_array)):
             if gains_array[i] > 0:
-                weights[i] = 0.1
+                weights[i] = 0.2
                 win_count += 1 
             else:
                 weights[i] = 1        
 
         avg_time = sum(time_game) / len(time_game)
-        fitness = np.dot(gains_array, weights)/max_health + 0.5 * win_count/len(player_life)        
+        fitness = np.dot(gains_array, weights)/max_health + 0.05 * win_count/len(player_life)        
         
         return fitness
     
@@ -301,6 +307,19 @@ class EvoMan:
 
             # Main loop for generations
             for gen in range(self.gens):
+                if self.updated_enemies:
+                    fitness, health_gain, time_game, player_life, enemy_life = self.evaluate(population)
+
+                    fitness = np.array([self.fitness_function(player_life[i], enemy_life[i], time_game[i]) for i in range(len(player_life))])
+                    health_gain = np.array([np.mean(i) for i in health_gain])
+                    time_game = np.array([np.mean(i) for i in time_game])
+                    player_life = np.array([np.mean(i) for i in player_life])
+                    enemy_life = np.array([np.mean(i) for i in enemy_life])
+
+                    best_individual_index = np.argmax(fitness)
+                    best_individual = population[best_individual_index]
+                    best_fitness = fitness[best_individual_index]
+                
                 self.current_generation += 1
                 
                 children = []
@@ -345,7 +364,6 @@ class EvoMan:
                     same_result_count += 1
                 
                 if same_result_count > 5:
-                    print('reset')
                     old_mutation_rate = self.mutation_rate
                     self.mutation_rate = 1                    
                     reset = True
@@ -360,14 +378,13 @@ class EvoMan:
                                     np.max(health_gain), np.mean(health_gain), np.std(health_gain),
                                     np.min(time_game), np.mean(time_game), np.std(time_game)])
                 
-                if self.current_generation > 5 and self.current_generation%2!=0: 
+                if self.current_generation > 5:
                     print('Old enemies:', self.enemies)
                     # change enemies if met threshold
                     self.enemies = self.update_enemies(self.enemies, best_individual)
                     self.env.enemies = self.enemies
                     print('New enemies:', self.enemies)
                     # print('next')
-                
 
                 print(f"Generation {gen}, Best Fitness: {np.max(fitness)} and index {np.argmax(fitness)}")
                 print(f"Generation {gen}, Best Health: {np.max(health_gain)} and index {np.argmax(health_gain)}")               
@@ -438,14 +455,14 @@ if __name__ == "__main__":
         parser.add_argument("--npop", type=int, default=100, help="Size of the population")
         parser.add_argument("--gens", type=int, default=30, help="Number of generations")
         parser.add_argument("--mutation_rate", type=float, default=0.3, help="Mutation rate")
-        parser.add_argument("--crossover_rate", type=float, default=0.7, help="Crossover rate")
+        parser.add_argument("--crossover_rate", type=float, default=0.5, help="Crossover rate")
         parser.add_argument("--mode", type=str, default="train", help="Mode: train or test")
         parser.add_argument("--n_hidden_neurons", type=int, default=10, help="Number of hidden neurons")
         parser.add_argument("--headless", action="store_true", help="Run in headless mode")
         parser.add_argument("--dom_l", type=float, default=-1, help="Lower bound for initialization and mutation")
         parser.add_argument("--dom_u", type=float, default=1, help="Upper bound for initialization and mutation")
         parser.add_argument("--speed", type=str, default="fastest", help="Speed: fastest or normal")
-        parser.add_argument("--number_of_crossovers", type=int, default=7, help="Number of crossovers")
+        parser.add_argument("--number_of_crossovers", type=int, default=5, help="Number of crossovers")
         parser.add_argument("--n_elitism", type=int, default=2, help="Number of best individuals from population that are always selected for the next generation.")
         parser.add_argument("--k_tournament", type=int, default= 2, help="The amount of individuals to do a tournament with for selection, the more the higher the selection pressure")
         parser.add_argument("--type_of_selection_pressure", type=str, default="exponential", help="if set to linear the selection pressure will linearly increase over time from k_tournament till k_tournament_final_linear_increase_factor*k_tournament, if set to exponential the selection pressure will increase exponentially from k_tournament till 2*k_tournament, if set to anything else the selection pressure will stay the same")

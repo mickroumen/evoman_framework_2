@@ -232,3 +232,10 @@
 .\testvs.py --headless --npop 10 --gens 30 --enemies 1 3 4 --n_elitism 1
 .\testvs.py --headless --npop 10 --gens 30 --enemies 1 3 4 --n_elitism 1
 .\testvs.py --headless --npop 10 --gens 30 --enemies 1 3 4 --n_elitism 1
+.\trying_things2.py --headless
+.\testchanges.py --headless
+.\testchanges.py --headless --npop 10
+.\testvs.py --headless --npop 10
+.\testvs.py --headless --npop 10
+.\testvs.py --headless --npop 10
+.\testvs.py --headless --npop 10
