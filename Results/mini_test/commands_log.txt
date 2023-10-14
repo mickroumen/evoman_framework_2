@@ -53,3 +53,7 @@ individual_mutation_rate.py --experiment_name mini_test --headless --enemies 1 4
 individual_mutation_rate.py --experiment_name mini_test --headless --enemies 1 4 6 7
 individual_mutation_rate.py --experiment_name mini_test --headless --enemies 1 4 6 7
 individual_mutation_rate.py --experiment_name mini_test --headless --enemies 1 4 6 7
+testchanges.py --experiment_name mini_test --headless --enemies 1 4 6 7
+testchanges.py --experiment_name mini_test --headless --enemies 1 4 6 7
+testchanges.py --experiment_name mini_test --headless --enemies 1 4 6 7 --gens 3 --npop 30
+testchanges.py --experiment_name mini_test --headless --enemies 1 4 6 7 --gens 3 --npop 30

@@ -57,9 +57,9 @@ param_change = {
 }
 
 
-n_samples = 10
-n_iterations = 10
-n_runs = 10
+n_samples = 1
+n_iterations = 1
+n_runs = 1
 
 # Initialize lists for storing evaluated parameters and performances
 evaluated_parameters = []
