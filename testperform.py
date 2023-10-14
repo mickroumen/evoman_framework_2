@@ -103,29 +103,29 @@ class EvoMan:
 
     def mutate(self, individual):
         # Applies bit mutation to the individual based on the mutation rate
-        for i in range(len(individual['weights'])):
+        for i in range(len(individual)):
             if random.uniform(0, 1) < self.mutation_rate:
                 # Convert the weight to binary representation
-                binary_representation = list(format(int((individual['weights'][i] - self.dom_l) * (2**15) / (self.dom_u - self.dom_l)), '016b'))
+                binary_representation = list(format(int((individual[i] - self.dom_l) * (2**15) / (self.dom_u - self.dom_l)), '016b'))
                 
                 for j in range(len(binary_representation)):
                     if random.uniform(0, 1) < self.mutation_rate:
                         binary_representation[j] = '1' if binary_representation[j] == '0' else '0'
                 
-                individual['weights'][i] = int("".join(binary_representation), 2) * (self.dom_u - self.dom_l) / (2**15) + self.dom_l
+                individual[i] = int("".join(binary_representation), 2) * (self.dom_u - self.dom_l) / (2**15) + self.dom_l
         return individual
     
     def crossover(self, parent1, parent2, number_of_crossovers):
         # Applies N point crossover 
         if random.uniform(0,1) < self.crossover_rate:
-            crossover_points = sorted(random.sample(range(1, len(parent1)), number_of_crossovers))
+            crossover_points = sorted(random.sample(range(1, len(parent1['weights'])), number_of_crossovers))
             child1 = parent1.copy()
             child2 = parent2.copy()
             for i in range(number_of_crossovers - 1):
                 # Switch between parents for each section
                 if i%2 == 0:
-                    child1[crossover_points[i]:crossover_points[i+1]] = parent2[crossover_points[i]:crossover_points[i+1]]
-                    child2[crossover_points[i]:crossover_points[i+1]] = parent1[crossover_points[i]:crossover_points[i+1]]
+                    child1['weights'][crossover_points[i]:crossover_points[i+1]] = parent2['weights'][crossover_points[i]:crossover_points[i+1]]
+                    child2['weights'][crossover_points[i]:crossover_points[i+1]] = parent1['weights'][crossover_points[i]:crossover_points[i+1]]
             return child1, child2
         else:
             return parent1.copy(), parent2.copy()
@@ -218,15 +218,12 @@ class EvoMan:
                 self.current_generation += 1
                 for _ in range(self.n_pop // 2):  # Two children per iteration
                     parent1, winner_index = self.tournament_selection(population.shape[0], fitness, population)
-                    parent2, winner_index = self.tournament_selection(population.shape[0], fitness, population)                 
+                    parent2, winner_index = self.tournament_selection(population.shape[0], fitness, population)
+    
+                    child1, child2 = self.crossover(parent1, parent2, self.number_of_crossovers)
 
-                    child1 = parent1.copy()
-                    child2 = parent2.copy()
-            
-                    child1['weights'], child2['weights'] = self.crossover(parent1['weights'], parent2['weights'], self.number_of_crossovers)
-
-                    child1 = self.mutate(child1)
-                    child2 = self.mutate(child2)
+                    child1['weights'] = self.mutate(child1['weights'])
+                    child2['weights'] = self.mutate(child2['weights'])
 
                     children.extend([child1, child2])    
                 fitness_children, health_gain_children, time_game_children = self.evaluate(children)

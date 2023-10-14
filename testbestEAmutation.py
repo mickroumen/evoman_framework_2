@@ -143,7 +143,6 @@ class EvoMan:
         # Applies N point crossover
         child1 = parent1.copy()
         child2 = parent2.copy()  
-        print(child1)   
         if random.uniform(0,1) < self.crossover_rate:
             crossover_points = sorted(random.sample(range(1, len(parent1['weights'])), number_of_crossovers))
             for i in range(number_of_crossovers - 1):
@@ -151,7 +150,7 @@ class EvoMan:
                 if i%2 != 0:
                     child1['weights'][crossover_points[i]:crossover_points[i+1]] = parent2['weights'][crossover_points[i]:crossover_points[i+1]]
                     child2['weights'][crossover_points[i]:crossover_points[i+1]] = parent1['weights'][crossover_points[i]:crossover_points[i+1]]
-        print(child1)       
+        
         return child1, child2
     
     

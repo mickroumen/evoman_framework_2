@@ -151,3 +151,5 @@
 .\bestalgotest.py --headless --mode train --experiment_name 4 --enemies 1 2
 .\bestalgotest.py --headless --mode train --experiment_name 4 --enemies 1 4 6 7
 .\bestalgotest.py --headless --mode train --experiment_name 4 --enemies 1 4 6 7
+.\IncludingadaptiveMut.py --headless --mode train --experiment_name 4 --enemies 1 4 6 7
+.\trying_things.py --headless --npop 100 --experiment_name 4

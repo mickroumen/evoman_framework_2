@@ -231,10 +231,12 @@ class EvoMan:
         gains = [playerlife - enemylife for playerlife, enemylife in zip(player_life, enemy_life)]
         average_gain = sum(gains) / len(gains)
         avg_time = sum(time_game) / len(time_game)
+        for i, gain in enumerate(gains):
+            if gain > 0:
+                gains[i] = np.sqrt(gain)
 
-        fitness = sum(gains) + 0.1 * avg_time
-
-        return fitness
+        
+        return sum(gains)
     
     def run(self):
         if self.mode == "train":

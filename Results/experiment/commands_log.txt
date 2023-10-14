@@ -1,0 +1,234 @@
+.\trying_things.py --headless
+.\trying_things.py --headless
+.\trying_things.py --headless
+.\trying_things.py --headless
+.\trying_things.py --headless --npop 10
+.\testvs.py --headless --npop 10
+.\trying_things.py --headless --npop 10
+.\trying_things.py --headless --npop 10
+.\testvs.py --headless
+.\testvs.py --headless
+.\testvs.py --headless
+.\testvs.py --headless --npop 10
+.\testvs.py --headless --npop 10 --gens 1
+.\testvs.py --headless --npop 10 --gens 1
+.\testvs.py --headless --npop 10 --gens 1
+.\testvs.py --headless --npop 10 --gens 1
+.\testvs.py --headless --npop 10
+.\testvs.py --headless --npop 10
+.\testvs.py --headless --npop 10
+.\testvs.py --headless --npop 10
+.\testvs.py --headless --npop 10
+.\testvs.py --headless --npop 10
+.\testvs.py --headless --npop 10
+.\testvs.py --headless --npop 5
+.\testvs.py --headless --npop 5 --gens 3
+.\testvs.py --headless --npop 5 --gens 3
+.\testvs.py --headless --npop 5 --gens 3
+.\testvs.py --headless --npop 5 --gens 3
+.\testvs.py --headless --npop 5 --gens 3
+.\testvs.py --headless --npop 5 --gens 3
+.\testvs.py --headless --npop 5 --gens 3
+.\testvs.py --headless --npop 5 --gens 3
+.\testvs.py --headless --npop 5 --gens 3
+.\testvs.py --headless --npop 5 --gens 3
+.\testvs.py --headless --npop 5 --gens 3
+.\testvs.py --headless --npop 5 --gens 3
+.\testvs.py --headless --npop 5 --gens 3
+.\testvs.py --headless --npop 5 --gens 3
+.\testvs.py --headless --npop 5 --gens 3
+.\testvs.py --headless --npop 5 --gens 3
+.\testvs.py --headless --npop 5 --gens 3
+.\testvs.py --headless --npop 5 --gens 3
+.\testvs.py --headless --npop 5 --gens 3
+.\testvs.py --headless --npop 5 --gens 3
+.\testvs.py --headless --npop 5 --gens 3
+.\testvs.py --headless --npop 5 --gens 3
+.\testvs.py --headless --npop 5 --gens 3
+.\testvs.py --headless --npop 5 --gens 3
+.\testvs.py --headless --npop 5 --gens 3
+.\testvs.py --headless --npop 5 --gens 3
+.\testvs.py --headless --npop 5 --gens 3
+.\testvs.py --headless --npop 5 --gens 3
+.\testvs.py --headless --npop 5 --gens 1
+.\testvs.py --headless --npop 5 --gens 3
+.\testvs.py --headless --npop 5 --gens 1
+.\testvs.py --headless --npop 5 --gens 1
+.\testvs.py --headless --npop 5 --gens 1
+.\testvs.py --headless --npop 5 --gens 1
+.\testvs.py --headless --npop 5 --gens 1
+.\testvs.py --headless --npop 5 --gens 1
+.\testvs.py --headless --npop 5 --gens 1
+.\testvs.py --headless --npop 5 --gens 1
+.\testvs.py --headless --npop 5 --gens 3
+.\testvs.py --headless --npop 5 --gens 2
+.\testvs.py --headless --npop 5 --gens 2
+.\testvs.py --headless --npop 5 --gens 2
+.\testvs.py --headless --npop 5 --gens 1
+.\testvs.py --headless --npop 5 --gens 1
+.\testvs.py --headless --npop 5 --gens 1
+.\testvs.py --headless --npop 5 --gens 1
+.\testvs.py --headless --npop 5 --gens 1
+.\testvs.py --headless --npop 5 --gens 1
+.\testvs.py --headless --npop 5 --gens 1
+.\testvs.py --headless --npop 5 --gens 1
+.\testvs.py --headless --npop 5 --gens 1
+.\testvs.py --headless --npop 5 --gens 2
+.\testvs.py --headless --npop 5 --gens 3
+.\testvs.py --headless --npop 100
+.\testvs.py --headless --npop 100
+.\testvs.py --headless --npop 10 --gens 3
+.\testvs.py --headless --npop 10 --gens 3
+.\testvs.py --headless --npop 10 --gens 3
+.\testvs.py --headless --npop 10 --gens 3
+.\testvs.py --headless --npop 10 --gens 3
+.\testvs.py --headless --npop 10 --gens 3
+.\testvs.py --headless --npop 10 --gens 3
+.\testvs.py --headless --npop 10 --gens 3
+.\testvs.py --headless --npop 10 --gens 3
+.\testvs.py --headless --npop 10 --gens 3
+.\testvs.py --headless --npop 10 --gens 3
+.\testvs.py --headless --npop 10 --gens 3
+.\testvs.py --headless --npop 10 --gens 3
+.\testvs.py --headless --npop 10 --gens 3
+.\testvs.py --headless --npop 10 --gens 30
+.\testvs.py --headless --npop 10 --gens 10
+.\testvs.py --headless --npop 10 --gens 10
+.\testvs.py --headless --npop 10 --gens 10
+.\testvs.py --headless --npop 10 --gens 10
+.\testvs.py --headless --npop 10 --gens 10
+.\testvs.py --headless --npop 10 --gens 10
+.\testvs.py --headless --npop 10 --gens 10
+.\testvs.py --headless --npop 10 --gens 10
+.\testvs.py --headless --npop 10 --gens 10
+.\testvs.py --headless --npop 10 --gens 10
+.\testvs.py --headless --npop 10 --gens 10
+.\testvs.py --headless --npop 10 --gens 10
+.\testvs.py --headless --npop 10 --gens 10
+.\testvs.py --headless --npop 10 --gens 10
+.\testvs.py --headless --npop 10 --gens 10
+.\testvs.py --headless --npop 10 --gens 10
+.\testvs.py --headless --npop 10 --gens 10
+.\testvs.py --headless --npop 10 --gens 10
+.\testvs.py --headless --npop 10 --gens 10
+.\testvs.py --headless --npop 10 --gens 10
+.\testvs.py --headless --npop 10 --gens 10
+.\testvs.py --headless --npop 10 --gens 10
+.\testvs.py --headless --npop 100 --gens 10
+.\testvs.py --headless --npop 100 --gens 10
+.\testvs.py --headless --npop 100 --gens 10
+.\testvs.py --headless --npop 10 --gens 10
+.\testvs.py --headless --npop 10 --gens 10
+.\testvs.py --headless --npop 10 --gens 10
+.\testvs.py --headless --npop 10 --gens 10
+.\testvs.py --headless --npop 10 --gens 10
+.\testvs.py --headless --npop 10 --gens 10
+.\testvs.py --headless --npop 10 --gens 10
+.\testvs.py --headless --npop 100 --gens 10
+.\testvs.py --headless --npop 100 --gens 10
+.\testvs.py --headless --npop 10 --gens 10
+.\testvs.py --headless --npop 10 --gens 10
+.\testvs.py --headless --npop 100 --gens 10
+.\testvs.py --headless --npop 100 --gens 10
+.\testvs.py --headless --npop 100 --gens 10
+.\testvs.py --headless --npop 100 --gens 10
+.\testvs.py --headless --npop 10 --gens 10
+.\testvs.py --headless --npop 10 --gens 10
+.\testvs.py --headless --npop 10 --gens 10
+.\testvs.py --headless --npop 10 --gens 10
+.\testvs.py --headless --npop 10 --gens 10
+.\testvs.py --headless --npop 10 --gens 10
+.\testvs.py --headless --npop 10 --gens 10
+.\testvs.py --headless --npop 10 --gens 10
+.\testvs.py --headless --npop 10 --gens 10
+.\testvs.py --headless --npop 10 --gens 10
+.\testvs.py --headless --npop 10 --gens 3
+.\testvs.py --headless --npop 10 --gens 3
+.\testvs.py --headless --npop 10 --gens 3
+.\testvs.py --headless --npop 10 --gens 3
+.\testvs.py --headless --npop 10 --gens 3
+.\testvs.py --headless --npop 10 --gens 3
+.\testvs.py --headless --npop 10 --gens 3
+.\testvs.py --headless --npop 10 --gens 2
+.\testvs.py --headless --npop 10 --gens 2
+.\testvs.py --headless --npop 10 --gens 2
+.\testvs.py --headless --npop 50 --gens 1
+.\testvs.py --headless --npop 50 --gens 1
+.\testvs.py --headless --npop 50 --gens 1
+.\testvs.py --headless --npop 50 --gens 1
+.\testvs.py --headless --npop 50 --gens 1
+.\testvs.py --headless --npop 50 --gens 1
+.\testvs.py --headless --npop 20 --gens 10
+.\testvs.py --headless --npop 20 --gens 10
+.\testvs.py --headless --npop 100 --gens 10
+.\testvs.py --headless --npop 10 --gens 1
+.\testvs.py --headless --npop 10 --gens 10
+.\testvs.py --headless --npop 10 --gens 10
+.\testvs.py --headless --npop 10 --gens 10
+.\testvs.py --headless --npop 10 --gens 10
+.\testvs.py --headless --npop 10 --gens 10
+.\testvs.py --headless --npop 50 --gens 10
+.\testvs.py --headless --npop 50 --gens 10
+.\testvs.py --headless --npop 50 --gens 10
+.\testvs.py --headless --npop 50 --gens 10
+.\testvs.py --headless --npop 100 --gens 30
+.\testvs.py --headless --npop 100 --gens 30
+.\testvs.py --headless --npop 10 --gens 30
+.\testvs.py --headless --npop 20 --gens 30
+.\testvs.py --headless --npop 20 --gens 30
+.\testvs.py --headless --npop 10 --gens 30
+.\testvs.py --headless --npop 100 --gens 30
+.\testvs.py --headless --npop 100 --gens 30
+.\testvs.py --headless --npop 100 --gens 30
+.\testvs.py --headless --npop 100 --gens 30
+.\testvs.py --headless --npop 100 --gens 30
+.\testvs.py --headless --npop 10 --gens 5
+.\testvs.py --headless --npop 10 --gens 5
+.\testvs.py --headless --npop 10 --gens 5
+.\testvs.py --headless --npop 10 --gens 5
+.\testvs.py --headless --npop 10 --gens 2
+.\testvs.py --headless --npop 10 --gens 2
+.\testvs.py --headless --npop 10 --gens 2
+.\testvs.py --headless --npop 100 --gens 30
+.\testvs.py --headless --npop 100 --gens 30
+.\testvs.py --headless --npop 10 --gens 2
+.\testvs.py --headless --npop 10 --gens 2
+.\testvs.py --headless --npop 10 --gens 2
+.\testvs.py --headless --npop 10 --gens 2
+.\testvs.py --headless --npop 10 --gens 2
+.\testvs.py --headless --npop 10 --gens 2
+.\testvs.py --headless --npop 10 --gens 2
+.\testvs.py --headless --npop 10 --gens 2
+.\testvs.py --headless --npop 10 --gens 2
+.\testvs.py --headless --npop 10 --gens 2
+.\testvs.py --headless --npop 10 --gens 2
+.\testvs.py --headless --npop 10 --gens 2
+.\testvs.py --headless --npop 10 --gens 2
+.\testvs.py --headless --npop 10 --gens 2
+.\testvs.py --headless --npop 10 --gens 2
+.\testvs.py --headless --npop 100 --gens 30
+.\testvs.py --headless --npop 100 --gens 30
+.\testvs.py --headless --npop 100 --gens 30
+.\testvs.py --headless --npop 10 --gens 30
+.\testvs.py --headless --npop 10 --gens 30
+.\testvs.py --headless --npop 10 --gens 30
+.\testvs.py --headless --npop 10 --gens 30
+.\testvs.py --headless --npop 10 --gens 30
+.\testvs.py --headless --npop 10 --gens 30
+.\testvs.py --headless --npop 100 --gens 30
+.\testvs.py --headless --npop 100 --gens 30
+.\testvs.py --headless --npop 100 --gens 30
+.\testvs.py --headless --npop 100 --gens 30
+.\testvs.py --headless --npop 100 --gens 30 --enemies 1 3 4
+.\testvs.py --headless --npop 10 --gens 30 --enemies 1 3 4
+.\testvs.py --headless --npop 10 --gens 30 --enemies 1 3 4
+.\testvs.py --headless --npop 10 --gens 30 --enemies 1 3 4
+.\testvs.py --headless --npop 10 --gens 30 --enemies 1 3 4
+.\testvs.py --headless --npop 10 --gens 30 --enemies 1 3 4 --n_elitism 0
+.\testvs.py --headless --npop 10 --gens 30 --enemies 1 3 4 --n_elitism 0
+.\testvs.py --headless --npop 10 --gens 30 --enemies 1 3 4 --n_elitism 0
+.\testvs.py --headless --npop 10 --gens 30 --enemies 1 3 4 --n_elitism 0
+.\testvs.py --headless --npop 10 --gens 30 --enemies 1 3 4 --n_elitism 0
+.\testvs.py --headless --npop 10 --gens 30 --enemies 1 3 4 --n_elitism 1
+.\testvs.py --headless --npop 10 --gens 30 --enemies 1 3 4 --n_elitism 1
+.\testvs.py --headless --npop 10 --gens 30 --enemies 1 3 4 --n_elitism 1
