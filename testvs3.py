@@ -183,16 +183,17 @@ class EvoMan:
         fitness, health_gain, time_game, player_life, enemy_life = self.evaluate(population[random_indices])
         fitness = np.array([self.fitness_function(player_life[i], enemy_life[i], time_game[i]) for i in range(len(player_life))])
         
+        
         # Select the individuals with the highest fitness values among the randomly chosenpytrel ones
         best_individual_index = random_indices[np.argmax(fitness)]
         
         health_gain = np.array(health_gain[np.argmax(fitness)])
         time_game = np.array(time_game[np.argmax(fitness)])
-              
-        return best_individual_index, np.argmax(fitness), health_gain, time_game
+        
+        return best_individual_index, np.max(fitness), health_gain, time_game
     
     def elitism(self, fitness):
-        best_indices = np.argsort(-fitness)[:self.n_elitism]
+        best_indices = np.argsort(fitness)[-self.n_elitism:]
 
         return best_indices
         
@@ -268,8 +269,7 @@ class EvoMan:
 
         avg_time = sum(time_game) / len(time_game)
         
-        fitness = -1/(np.dot(gains_array, weights)/max_health) + 0.05 * win_count/len(player_life)        
-        
+        fitness = np.dot(gains_array, weights)/max_health + 0.05 * win_count/len(player_life)        
         return fitness
     
     def run(self):
@@ -328,7 +328,7 @@ class EvoMan:
                 
                 self.current_generation += 1
                 children = []
-                for _ in range(self.n_pop*7//2):  # Two children per iteration so double the population size out of which we will select the best
+                for _ in range(self.n_pop//2):  # Two children per iteration so double the population size out of which we will select the best
                     winner_index1 = self.tournament_selection_parents(population.shape[0], fitness)
                     winner_index2 = self.tournament_selection_parents(population.shape[0], fitness)
 
@@ -340,11 +340,8 @@ class EvoMan:
                     children.extend([child1, child2])                
                 
                 parents_survivors_indices = self.elitism(fitness)              
-                
                 children = np.array(children)
-
                 selected_children, fitness_children, health_gain_children, time_game_children = self.selection(children)     
-
                 fitness = np.append(fitness[parents_survivors_indices], fitness_children)
                 health_gain = np.append(health_gain[parents_survivors_indices], health_gain_children)
                 time_game = np.append(time_game[parents_survivors_indices], time_game_children)
@@ -380,7 +377,7 @@ class EvoMan:
                     self.env.enemies = self.enemies
                     print('New enemies:', self.enemies)
                     # print('next')
-
+                
                 print(f"Generation {gen}, Best Fitness: {np.max(fitness)} and index {np.argmax(fitness)}")
                 print(f"Generation {gen}, Best Health: {np.max(health_gain)} and index {np.argmax(health_gain)}")               
                 
