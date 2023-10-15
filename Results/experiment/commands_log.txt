@@ -270,3 +270,13 @@
 .\testvs.py --headless --npop 10 --gens 10
 .\testvs.py --headless --npop 10 --gens 10
 .\testvs.py --headless --npop 10 --gens 10
+.\testvs3.py --headless --npop 100 --gens 30
+.\testvs3.py --headless --npop 100 --gens 30 --enemies 1 4 6 7
+.\testvs3.py --headless --npop 10 --gens 30 --enemies 1 4 6 7
+.\testvs3.py --headless --npop 10 --gens 30 --enemies 1 4 6 7
+.\testvs3.py --headless --npop 10 --gens 30 --enemies 1 4 6 7
+.\testvs3.py --headless --npop 10 --gens 30 --enemies 1 4 6 7
+.\testvs3.py --headless --npop 10 --gens 30 --enemies 1 4 6 7
+.\testvs3.py --headless --npop 10 --gens 30 --enemies 1 4 6 7
+.\testvs3.py --headless --npop 10 --gens 30 --enemies 1 4 6 7
+.\testvs3.py --headless --npop 100 --gens 30 --enemies 1 4 6 7

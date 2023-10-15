@@ -167,7 +167,6 @@ class EvoMan:
             return child1, child2
     
     # tournament (returns winnning individual and its fitness)
-
     def tournament_selection_parents(self, candidate_indices, fitness):
         # Generate k unique random indices
         random_indices = np.random.choice(candidate_indices, self.k_tournament, replace=False)
@@ -268,7 +267,8 @@ class EvoMan:
                 weights[i] = 1        
 
         avg_time = sum(time_game) / len(time_game)
-        fitness = np.dot(gains_array, weights)/max_health + 0.05 * win_count/len(player_life)        
+        
+        fitness = -1/(np.dot(gains_array, weights)/max_health) + 0.05 * win_count/len(player_life)        
         
         return fitness
     
@@ -327,9 +327,8 @@ class EvoMan:
                     best_fitness = fitness[best_individual_index]
                 
                 self.current_generation += 1
-                
                 children = []
-                for _ in range(self.n_pop*7):  # Two children per iteration so double the population size out of which we will select the best
+                for _ in range(self.n_pop*7//2):  # Two children per iteration so double the population size out of which we will select the best
                     winner_index1 = self.tournament_selection_parents(population.shape[0], fitness)
                     winner_index2 = self.tournament_selection_parents(population.shape[0], fitness)
 
@@ -410,7 +409,6 @@ class EvoMan:
         if os.path.exists(best_individual_path):
             # Load the best individual's neural network weights
             best_individual = np.load(best_individual_path)
-            print(best_individual)
             
             #change the fitness and gain function so that it returns np.array of the fitness and gain for each enemy
             def cons_multi2(self,values):
