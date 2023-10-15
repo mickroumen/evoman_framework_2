@@ -239,3 +239,34 @@
 .\testvs.py --headless --npop 10
 .\testvs.py --headless --npop 10
 .\testvs.py --headless --npop 10
+.\testvs2.py --headless --npop 10
+.\testvs2.py --headless --npop 10
+.\testvs2.py --headless --npop 10
+.\testvs2.py --headless --npop 10
+.\testvs2.py --headless --npop 10
+.\testvs2.py --headless --npop 10
+.\testvs2.py --headless --npop 10
+.\testvs2.py --headless --npop 10
+.\testvs2.py --headless --npop 10
+.\testvs2.py --headless --npop 10
+.\testvs2.py --headless --npop 10
+.\testvs2.py --headless --npop 10 --gens 1
+.\testvs2.py --headless --npop 10 --gens 1
+.\testvs2.py --headless --npop 10 --gens 1
+.\testvs2.py --headless --npop 10 --gens 1
+.\testvs2.py --headless --npop 10 --gens 1
+.\testvs2.py --headless --npop 10 --gens 1
+.\testvs2.py --headless --npop 10 --gens 1
+.\testvs2.py --headless --npop 10 --gens 1
+.\testvs2.py --headless --npop 10 --gens 1
+.\testvs2.py --headless --npop 10 --gens 1
+.\testvs2.py --headless --npop 10 --gens 1
+.\testvs2.py --headless --npop 10 --gens 1
+.\testvs2.py --headless --npop 10 --gens 1
+.\testvs2.py --headless --npop 10 --gens 1
+.\testvs2.py --headless --npop 10 --gens 1
+.\testvs2.py --headless --npop 10 --gens 10
+.\testvs.py --headless --npop 10 --gens 10
+.\testvs.py --headless --npop 10 --gens 10
+.\testvs.py --headless --npop 10 --gens 10
+.\testvs.py --headless --npop 10 --gens 10
