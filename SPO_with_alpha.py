@@ -2,7 +2,7 @@ import numpy as np
 from pyDOE2 import lhs
 from scipy.optimize import minimize
 from sklearn.gaussian_process import GaussianProcessRegressor
-from evoman_with_alpha import run_evoman
+from testvs import run_evoman
 import csv
 import os
 
@@ -28,7 +28,7 @@ if not os.path.exists(individual_dir):
 # Define fixed parameters and parameters to change
 parameters = {
     'experiment_name': "",
-    'enemies': [4, 6, 7],
+    'enemies': [1, 4, 6, 7],
     'population_size': 100,
     'generations': 30,
     'mutation_rate': 0.1,
@@ -42,24 +42,23 @@ parameters = {
     'number_of_crossovers': 3,
     'n_elitism': 2,
     'k_tournament': 4,
-    'sel_pres_incr': True,
     'k_tournament_final_linear_increase_factor': 4,   
     'alpha': 0.5,
+    'type_of_selection_pressure': 'exponential',
+    'enemy_threshold': 40
 }
 
 param_change = {
-    'mutation_rate': {'range': (0.01, 0.2), 'type': 'float'},
-    'crossover_rate': {'range': (0.2, 1), 'type': 'float'},
-    'number_of_crossovers': {'range': (2, 10), 'type': 'int'},
-    'n_elitism': {'range': (1, 20), 'type': 'int'},
+    'mutation_rate': {'range': (0.01, 0.5), 'type': 'float'},
+    'number_of_crossovers': {'range': (1, 10), 'type': 'int'},
     'k_tournament': {'range': (2, 20), 'type': 'int'},
-    'k_tournament_final_linear_increase_factor': {'range': (2, 5), 'type': 'int'},
+    'k_tournament_final_linear_increase_factor': {'range': (1, 5), 'type': 'int'},
 }
 
 
-n_samples = 1
-n_iterations = 1
-n_runs = 1
+n_samples = 10
+n_iterations = 10
+n_runs = 10
 
 # Initialize lists for storing evaluated parameters and performances
 evaluated_parameters = []

@@ -193,7 +193,7 @@ class EvoMan:
             k_end = self.k_tournament_final_linear_increase_factor*self.k_tournament_start
             exp_rate = 1/self.gens
             self.k_tournament = self.k_tournament_start + math.floor((k_end - self.k_tournament_start) * ((self.current_generation**2)/(self.gens**2)))
-        print(f'k is: {self.k_tournament}')
+        # print(f'k is: {self.k_tournament}')
 
         candidate_indices = range(population.shape[0])
         selected_indices = np.zeros(self.n_pop-self.n_elitism)
@@ -319,6 +319,8 @@ class EvoMan:
                     best_individual_index = np.argmax(fitness)
                     best_individual = population[best_individual_index]
                     best_fitness = fitness[best_individual_index]
+
+                    self.updated_enemies = False
                 
                 self.current_generation += 1
                 
@@ -379,15 +381,15 @@ class EvoMan:
                                     np.min(time_game), np.mean(time_game), np.std(time_game)])
                 
                 if self.current_generation > 5:
-                    print('Old enemies:', self.enemies)
+                    # print('Old enemies:', self.enemies)
                     # change enemies if met threshold
                     self.enemies = self.update_enemies(self.enemies, best_individual)
                     self.env.enemies = self.enemies
-                    print('New enemies:', self.enemies)
+                    # print('New enemies:', self.enemies)
                     # print('next')
 
-                print(f"Generation {gen}, Best Fitness: {np.max(fitness)} and index {np.argmax(fitness)}")
-                print(f"Generation {gen}, Best Health: {np.max(health_gain)} and index {np.argmax(health_gain)}")               
+                # print(f"Generation {gen}, Best Fitness: {np.max(fitness)} and index {np.argmax(fitness)}")
+                # print(f"Generation {gen}, Best Health: {np.max(health_gain)} and index {np.argmax(health_gain)}")               
                 
                 # Save the best individual's neural network weights
                 np.save(os.path.join(self.experiment_dir, "best_individual.npy"), best_individual)
@@ -405,6 +407,8 @@ class EvoMan:
         self.env.enemies = [1, 2, 3, 4, 5, 6, 7, 8]
         fitnesses, health_gains, times, player_lifes, enemy_lifes = self.simulation(best_individual[:-1])
         best_fitness = self.fitness_function(player_lifes, enemy_lifes, times)
+
+        print('One Experiment Done')
         
         return best_fitness
 

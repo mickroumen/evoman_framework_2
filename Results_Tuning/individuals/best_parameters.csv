@@ -1,2 +1,2 @@
-mutation_rate,crossover_rate,number_of_crossovers,n_elitism,k_tournament,k_tournament_final_linear_increase_factor
-0.058178978426563575,0.2574110793458289,7,7,13,3
+mutation_rate,number_of_crossovers,k_tournament,k_tournament_final_linear_increase_factor
+0.5,10,20,5
