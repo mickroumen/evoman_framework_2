@@ -149,6 +149,23 @@ class EvoMan:
                 individual[i] += individual[-1] * np.random.normal()
         return individual       
     
+    def crossover(self, parent1, parent2, n):
+            # Applies the uniform crossover operator
+            if random.uniform(0,1) < self.crossover_rate:
+                child1 = np.zeros(len(parent1))
+                child2 = np.zeros(len(parent1))
+                for i in range(len(parent1)):
+                    if random.uniform(0,1) < 0.5:
+                        child1[i] = parent1[i]
+                        child2[i] = parent2[i] 
+                    else:
+                        child1[i] = parent2[i]
+                        child2[i] = parent1[i]
+                return child1, child2
+            else:
+                return parent1.copy(), parent2.copy()
+
+    """
     def crossover(self, parent1, parent2, number_of_crossovers):
         # Applies N point crossover
         # if random.uniform(0,1) < self.crossover_rate: 
@@ -165,6 +182,7 @@ class EvoMan:
                         child1[crossover_points[i-1]:crossover_points[i]] = parent2[crossover_points[i-1]:crossover_points[i]]
                         child2[crossover_points[i-1]:crossover_points[i]] = parent1[crossover_points[i-1]:crossover_points[i]]
             return child1, child2
+    """
     
     # tournament (returns winnning individual and its fitness)
     def tournament_selection_parents(self, candidate_indices, fitness):
@@ -258,18 +276,25 @@ class EvoMan:
         gains = [playerlife - enemylife for playerlife, enemylife in zip(player_life, enemy_life)]
         
         gains_array = np.array(gains)
-        weights = np.zeros(len(gains_array))
+        weights_gains = np.zeros(len(gains_array))
+        weights_times = np.zeros(len(time_game))
         win_count = 0
         for i in range(len(gains_array)):
             if gains_array[i] > 0:
-                weights[i] = 0.2
+                weights_gains[i] = 0.2
                 win_count += 1 
             else:
-                weights[i] = 1        
+                weights_gains[i] = 1    
 
-        avg_time = sum(time_game) / len(time_game)
-        
-        fitness = np.dot(gains_array, weights)/max_health #+ 0.05 * win_count/len(player_life)        
+        for i in range(len(time_game)):
+            #If winning, dont care about time
+            if gains_array[i] > 0:
+                weights_times[i] = 0
+            else:
+                weights_times[i] = 1        
+
+        #If youre losing the longer time the better, therefore + time
+        fitness = np.dot(gains_array, weights_gains)/max_health + 0.01*np.dot(time_game, weights_times) #+ 0.05 * win_count/len(player_life)        
         return fitness
     
     def run(self):
@@ -350,7 +375,7 @@ class EvoMan:
                     population = np.append(population[parents_survivors_indices], selected_children, axis = 0)   
                 else:  
                     population, fitness, health_gain, time_game = self.selection(children) 
-                
+                print(fitness)
                 # Check if any individual has a higher fitness, save that one
                 max_fitness_index = np.argmax(fitness)
                 if fitness[max_fitness_index] > best_fitness:
@@ -374,7 +399,7 @@ class EvoMan:
                                     np.max(health_gain), np.mean(health_gain), np.std(health_gain),
                                     np.min(time_game), np.mean(time_game), np.std(time_game)])
                 
-                if self.current_generation > 5:
+                if self.current_generation > 2:
                     print('Old enemies:', self.enemies)
                     # change enemies if met threshold
                     self.enemies = self.update_enemies(self.enemies, best_individual)
@@ -467,7 +492,7 @@ if __name__ == "__main__":
         parser.add_argument("--n_elitism", type=int, default=2, help="Number of best individuals from population that are always selected for the next generation.")
         parser.add_argument("--k_tournament", type=int, default= 2, help="The amount of individuals to do a tournament with for selection, the more the higher the selection pressure")
         parser.add_argument("--type_of_selection_pressure", type=str, default="exponential", help="if set to linear the selection pressure will linearly increase over time from k_tournament till k_tournament_final_linear_increase_factor*k_tournament, if set to exponential the selection pressure will increase exponentially from k_tournament till 2*k_tournament, if set to anything else the selection pressure will stay the same")
-        parser.add_argument("--k_tournament_final_linear_increase_factor", type=int, default= 1, help="The factor with which k_tournament should linearly increase (if type_of_selection_pressure = True), if the value is 4 the last quarter of generations have tournaments of size k_tournament*4")
+        parser.add_argument("--k_tournament_final_linear_increase_factor", type=int, default= 4, help="The factor with which k_tournament should linearly increase (if type_of_selection_pressure = True), if the value is 4 the last quarter of generations have tournaments of size k_tournament*4")
         parser.add_argument("--alpha", type=float, default=0.5, help="Weight for enemy damage")
         parser.add_argument("--enemy_threshold", type=int, default=20, help="The threshold health gain from which an enemy will be swapped with another enemy to train.")
 

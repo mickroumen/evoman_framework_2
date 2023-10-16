@@ -316,3 +316,12 @@
 .\testvs3.py --headless --npop 10 --gens 30 --enemies 2 5 6 8 --n_elitism 0
 .\testvs3.py --headless --npop 10 --gens 30 --enemies 2 5 6 8 --n_elitism 0
 .\testvs3.py --headless --npop 10 --gens 30 --enemies 2 5 6 8 --n_elitism 0
+.\testvs3.py --headless --npop 10 --gens 30 --enemies 1 2
+.\testvs3.py --headless --npop 100 --gens 30 --enemies 1 2
+.\testvs3.py --headless --npop 100 --gens 30 --enemies 1 2
+.\testvs3.py --headless --npop 100 --gens 30 --enemies 1 2
+.\testvs3.py --headless --npop 100 --gens 30 --enemies 1 2
+.\testvs3.py --headless --npop 1000 --gens 30 --enemies 1 4 6 7
+.\testvs3.py --headless --npop 100 --gens 30 --enemies 1 4 6 7
+.\testvs3.py --headless --npop 100 --gens 30 --enemies 1 4 6 7
+.\testvs3.py --headless --npop 100 --gens 30 --enemies 1 4 6 7
