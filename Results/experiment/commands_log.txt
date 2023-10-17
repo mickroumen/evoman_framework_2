@@ -398,3 +398,39 @@
 .\testvs3.py --npop 20 --n_elitism 1 --headless --enemies 1 2
 .\testvs3.py --npop 20 --n_elitism 1 --headless --enemies 1 2
 .\testvs3.py --npop 20 --n_elitism 1 --headless --enemies 1 2
+.\testvs3.py --npop 20 --n_elitism 1 --headless --enemies 1 2
+.\testvs3.py --npop 20 --n_elitism 1 --headless --enemies 1 2
+.\testvs3.py --npop 20 --n_elitism 1 --headless --enemies 1 2
+.\testvs3.py --npop 20 --n_elitism 1 --headless --enemies 1 2
+.\testvs3.py --npop 20 --n_elitism 1 --headless --enemies 1 2
+.\testvs3.py --npop 20 --n_elitism 1 --headless --enemies 1 2
+.\testvs3.py --npop 20 --n_elitism 1 --headless --enemies 1 2
+.\testvs3.py --npop 20 --n_elitism 1 --headless --enemies 1 2
+.\testvs3.py --npop 20 --n_elitism 1 --headless --enemies 1 2
+.\testvs3.py --npop 20 --n_elitism 1 --headless --enemies 1 2 3
+.\testvs3.py --npop 20 --n_elitism 1 --headless --enemies 1 2 3
+.\testvs3.py --npop 20 --n_elitism 1 --headless --enemies 1 2 3
+.\testvs3.py --npop 20 --n_elitism 1 --headless --enemies 1 2 3
+.\testvs3.py --npop 20 --n_elitism 1 --headless --enemies 1 2 3
+.\testvs3.py --npop 20 --n_elitism 1 --headless --enemies 1 2 3
+.\testvs3.py --npop 20 --n_elitism 1 --headless --enemies 1 2 3 --gens 1
+.\testvs3.py --npop 20 --n_elitism 1 --headless --enemies 1 2 3 --gens 1
+.\testvs3.py --npop 20 --n_elitism 1 --headless --enemies 1 2 3 --gens 1
+.\testvs3.py --npop 20 --n_elitism 1 --headless --enemies 1 2 3 --gens 1
+.\testvs3.py --npop 20 --n_elitism 1 --headless --enemies 1 2 3 --gens 1
+.\testvs3.py --npop 20 --n_elitism 1 --headless --enemies 1 2 3 --gens 1
+.\testvs3.py --npop 20 --n_elitism 1 --headless --enemies 1 2 3 --gens 1
+.\testvs3.py --npop 20 --n_elitism 1 --headless --enemies 1 2 3 --gens 1
+.\testvs3.py --npop 20 --n_elitism 1 --headless --enemies 1 2 3 --gens 1
+.\testvs3.py --npop 20 --n_elitism 1 --headless --enemies 1 2 3 --gens 1
+.\testvs3.py --npop 20 --n_elitism 1 --headless --enemies 1 2 3 --gens 1
+.\testvs3.py --npop 20 --n_elitism 1 --headless --enemies 1 2 3 --gens 1
+.\testvs3.py --npop 20 --n_elitism 1 --headless --enemies 1 2 3 --gens 1
+.\testvs3.py --npop 20 --n_elitism 1 --headless --enemies 1 2 3 --gens 1
+.\testvs3.py --npop 20 --n_elitism 1 --headless --enemies 1 2 3 --gens 1
+.\testvs3.py --npop 20 --n_elitism 1 --headless --enemies 1 2 3 --gens 1
+.\testvs3.py --npop 20 --n_elitism 1 --headless --enemies 1 2 3 --gens 10
+.\testvs3.py --npop 20 --n_elitism 1 --headless --enemies 1 2 3 --gens 10
+.\testvs3.py --npop 20 --n_elitism 1 --headless --enemies 1 2 3 --gens 10
+.\testvs3.py --npop 100 --n_elitism 2 --headless --enemies 1 4 6 7
+.\testvs3.py --npop 100 --n_elitism 2 --headless --enemies 1 4 6 7
