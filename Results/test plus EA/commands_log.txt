@@ -1,0 +1,8 @@
+EA-adaptiveEnemies-plus.py --headless --experiment_name test plus EA --enemies 1 4 6 7
+EA-adaptiveEnemies-plus.py --headless --experiment_name test plus EA --enemies 1 4 6 7
+EA-adaptiveEnemies-plus.py --headless --experiment_name test plus EA --enemies 1 4 6 7
+EA-adaptiveEnemies-plus.py --headless --experiment_name test plus EA --enemies 1 4 6 7
+EA-adaptiveEnemies-plus.py --headless --experiment_name test plus EA --enemies 1 4 6 7
+EA-adaptiveEnemies-plus.py --headless --experiment_name test plus EA --enemies 1 4 6 7
+EA-adaptiveEnemies-plus.py --headless --experiment_name test plus EA --enemies 1 4 6 7
+EA-adaptiveEnemies-plus.py --headless --experiment_name test plus EA --enemies 1 4 6 7

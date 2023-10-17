@@ -1,3 +1,0 @@
-individual_mutation_rate.py --headless --experiment_name changed parameters and no crossover rate
-individual_mutation_rate.py --headless --experiment_name changed parameters and no crossover rate
-individual_mutation_rate.py --headless --experiment_name changed parameters and no crossover rate

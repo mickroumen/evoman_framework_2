@@ -1,2 +1,0 @@
-Training Time: 227.48112440109253 seconds
-Tuning effort: 3100 

@@ -1,1 +1,0 @@
-evoman_with_alpha.py --headless --experiment_name square root fitness

@@ -1,0 +1,6 @@
+individual_mutation_rate.py --headless --experiment_name individual_mutation_file
+individual_mutation_rate.py --headless --experiment_name individual_mutation_file --mode train --enemies 1 2 3 4 5 6 7 8
+individual_mutation_rate.py --headless --experiment_name individual_mutation_file --mode train --enemies 1 2 3 4 5 6 7 8
+individual_mutation_rate.py --headless --experiment_name individual_mutation_file --mode train
+individual_mutation_rate.py --headless --experiment_name individual_mutation_file --mode train
+individual_mutation_rate.py --headless --experiment_name individual_mutation_file --mode train

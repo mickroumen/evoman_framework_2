@@ -24,3 +24,4 @@ c:/Users/roume/evoman_framework_2/trying_things.py
 c:/Users/roume/evoman_framework_2/trying_things.py
 c:/Users/roume/evoman_framework_2/trying_things.py
 c:/Users/roume/evoman_framework_2/trying_things.py
+individual_mutation_rate.py --headless

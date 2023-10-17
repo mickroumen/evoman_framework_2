@@ -1,2 +1,1 @@
-C:\Users\roume\evoman_framework_2\trying_things.py
-C:\Users\roume\evoman_framework_2\trying_things.py
+c:/Users/roume/evoman_framework_2/EA-adaptiveEnemies-comma.py

@@ -1,0 +1,2 @@
+individual_mutation_rate.py --headless --experiment_name individual_mutation_file_mut_rate 0.1 instead of 0.3 --mode train
+individual_mutation_rate.py --headless --experiment_name individual_mutation_file_mut_rate 0.1 instead of 0.3 --mode train

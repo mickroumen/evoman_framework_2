@@ -1,0 +1,12 @@
+trying_things.py --headless --experiment_name experiment with bitflip  mutation and k=2 to 8 at first and no enemy swap and n_elitism=2 and most importantly keep 50 previuos pop untouched and only 50 children
+trying_things.py --headless --experiment_name experiment with bitflip  mutation and k=2 to 8 at first and no enemy swap and n_elitism=2 and most importantly keep 50 previuos pop untouched and only 50 children
+trying_things.py --headless --experiment_name experiment with bitflip  mutation and k=2 to 8 at first and no enemy swap and n_elitism=2 and most importantly keep 50 previuos pop untouched and only 50 children
+trying_things.py --headless --experiment_name experiment with bitflip  mutation and k=2 to 8 at first and no enemy swap and n_elitism=2 and most importantly keep 50 previuos pop untouched and only 50 children
+trying_things.py --headless --experiment_name experiment with bitflip  mutation and k=2 to 8 at first and no enemy swap and n_elitism=2 and most importantly keep 50 previuos pop untouched and only 50 children
+trying_things.py --headless --experiment_name experiment with bitflip  mutation and k=2 to 8 at first and no enemy swap and n_elitism=2 and most importantly keep 50 previuos pop untouched and only 50 children
+trying_things.py --headless --experiment_name experiment with bitflip  mutation and k=2 to 8 at first and no enemy swap and n_elitism=2 and most importantly keep 50 previuos pop untouched and only 50 children
+trying_things.py --headless --experiment_name experiment with bitflip  mutation and k=2 to 8 at first and no enemy swap and n_elitism=2 and most importantly keep 50 previuos pop untouched and only 50 children
+trying_things.py --headless --experiment_name experiment with bitflip  mutation and k=2 to 8 at first and no enemy swap and n_elitism=2 and most importantly keep 50 previuos pop untouched and only 50 children
+trying_things.py --headless --experiment_name experiment with bitflip  mutation and k=2 to 8 at first and no enemy swap and n_elitism=2 and most importantly keep 50 previuos pop untouched and only 50 children
+trying_things.py --headless --experiment_name experiment with bitflip  mutation and k=2 to 8 at first and no enemy swap and n_elitism=2 and most importantly keep 50 previuos pop untouched and only 50 children
+trying_things.py --headless --experiment_name experiment with bitflip  mutation and k=2 to 8 at first and no enemy swap and n_elitism=2 and most importantly keep 50 previuos pop untouched and only 50 children

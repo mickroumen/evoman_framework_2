@@ -1,0 +1,2 @@
+trying_things.py --headless --experiment_name k=2 to 10 at first and no enemy swap and n_elitism=1 and most importantly keep 50 previuos pop untouched and only 66 children and 0.05 mutation and changed fitness
+trying_things.py --headless --experiment_name k=2 to 10 at first and no enemy swap and n_elitism=1 and most importantly keep 50 previuos pop untouched and only 66 children and 0.05 mutation and changed fitness

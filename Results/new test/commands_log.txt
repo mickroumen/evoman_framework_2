@@ -1,6 +1,0 @@
-individual_mutation_rate.py --headless --experiment_name new test
-individual_mutation_rate.py --headless --experiment_name new test
-individual_mutation_rate.py --headless --experiment_name new test
-individual_mutation_rate.py --headless --experiment_name new test
-individual_mutation_rate.py --headless --experiment_name new test
-individual_mutation_rate.py --headless --experiment_name new test
