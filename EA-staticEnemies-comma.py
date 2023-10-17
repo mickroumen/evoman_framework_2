@@ -201,11 +201,11 @@ class EvoMan:
         
         fitness, health_gain, time_game, player_life, enemy_life = self.evaluate(population[random_indices])
         fitness = np.array([self.fitness_function(player_life[i], enemy_life[i], time_game[i]) for i in range(len(player_life))])        
+        
         # Select the individuals with the highest fitness values among the randomly chosenpytrel ones
         best_individual_index = random_indices[np.argmax(fitness)]
         
         health_gain = np.array(health_gain[np.argmax(fitness)])
-        
         time_game = np.array(time_game[np.argmax(fitness)])
         
         return best_individual_index, np.max(fitness), health_gain, time_game
@@ -218,6 +218,7 @@ class EvoMan:
     # returns selected individuals and their fitness
     def selection(self, population):        
         #if selection pressure is set to True we want the pressure to increase and thus the number of neural networks to compete to increase
+        #eventually the number of individuals in tournament is doubled from start to finish.
         if self.type_of_selection_pressure=="linear":
             self.k_tournament = max(math.ceil(self.current_generation*self.k_tournament_final_linear_increase_factor/self.gens)*self.k_tournament_start, self.k_tournament_start)
         elif self.type_of_selection_pressure=="exponential":
@@ -240,35 +241,6 @@ class EvoMan:
         
         return population[selected_indices.astype(int)], fitness, health_gain, time_game
     
-    def update_enemies(self, enemies, best_individual):
-        #change the fitness and gain function so that it returns np.array of the fitness and gain for each enemy
-        def cons_multi2(self,values):
-            return values
-        
-        self.env.cons_multi = cons_multi2.__get__(self.env)
-        
-        # Run the simulation with the best individual
-        self.env.enemies = [1, 2, 3, 4, 5, 6, 7, 8]
-        fitnesses, health_gains, times, player_lifes, enemy_lifes = self.simulation(best_individual[:-1])
-        enemies_index = [x-1 for x in self.enemies]
-        enemies_above_treshold = [enemy for enemy, health_gain in zip(self.enemies, health_gains[enemies_index]) if health_gain > self.enemy_threshold]
-        enemies_defeat = [enemy for enemy, health_gain in zip(self.env.enemies, health_gains) if health_gain < 0]
-        remaining_enemies = [enemy for enemy, health_gain in zip(enemies, health_gains[enemies_index]) if health_gain < self.enemy_threshold]
-        
-        if len(enemies_above_treshold) > 0:
-            self.updated_enemies = True
-        else:
-            self.updated_enemies = False
-
-        for _ in enemies_above_treshold:
-            new_enemy = random.choice(enemies_defeat)
-            while new_enemy in remaining_enemies:
-                new_enemy = random.choice(enemies_defeat)
-            remaining_enemies.append(new_enemy)   
-            remaining_enemies.sort()              
-
-        return remaining_enemies
-
     def fitness_function(self, player_life, enemy_life, time_game):
         max_health = len(player_life)*100
         
@@ -280,17 +252,20 @@ class EvoMan:
         #Count less weight to gain if enemy is beaten and dont try to improve time when enemy is beaten
         for i in range(len(gains_array)):
             if gains_array[i] > 0:
-                weights_gains[i] = 0.1
+                weights_gains[i] = 0.2
                 win_count += 1
                 time_game[i] = np.max(time_game[time_game != time_game[i]])
             elif gains_array[i] < -100:
                 weights_gains[i] = 2
             else:
-                weights_gains[i] = 1/len(gains_array)  
+                weights_gains[i] = 1    
         
         time_score = sum(time_game)/max(time_game)
+        #print(time_score)
+
         #If youre losing the longer time the better, therefore + time
-        fitness = np.dot(gains_array, weights_gains) + time_score*2  #+ 0.05 * win_count/len(player_life)        
+        #print(np.dot(gains_array, weights_gains)/max_health )
+        fitness = np.dot(gains_array, weights_gains)/max_health + 0.1*time_score  #+ 0.05 * win_count/len(player_life)        
         return fitness
     
     def run(self):
@@ -377,12 +352,14 @@ class EvoMan:
                 if fitness[max_fitness_index] > best_fitness:
                     best_fitness = fitness[max_fitness_index]
                     best_individual = population[max_fitness_index]
-                    same_result_count = 0
                 elif fitness[max_fitness_index] == best_fitness:
                     same_result_count += 1
-                
+                elif fitness[max_fitness_index] != best_fitness:
+                    same_result_count = 0
+
                 if reset:
                     reset = False
+                    same_result_count = 0
                     self.mutation_rate = old_mutation_rate
                     self.crossover_rate = old_crossover_rate
                 
@@ -399,19 +376,10 @@ class EvoMan:
                                     np.max(health_gain), np.mean(health_gain), np.std(health_gain),
                                     np.min(time_game), np.mean(time_game), np.std(time_game)])
                 
-                
                 print(f"Generation {gen}, Best Fitness: {np.max(fitness)} and index {np.argmax(fitness)}")
-                for i in range(len(self.enemies)):
-                    print(health_gain[i:i+4])         
+                                
                 # Save the best individual's neural network weights
                 np.save(os.path.join(self.experiment_dir, "best_individual.npy"), best_individual)
-
-                if self.current_generation > 5:
-                    print('Old enemies:', self.enemies)
-                    # change enemies if met threshold
-                    self.enemies = self.update_enemies(self.enemies, best_individual)
-                    self.env.enemies = self.enemies
-                    print('New enemies:', self.enemies)
 
         end_time = time.time()
         elapsed_time = end_time - start_time

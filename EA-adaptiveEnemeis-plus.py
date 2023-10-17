@@ -201,11 +201,11 @@ class EvoMan:
         
         fitness, health_gain, time_game, player_life, enemy_life = self.evaluate(population[random_indices])
         fitness = np.array([self.fitness_function(player_life[i], enemy_life[i], time_game[i]) for i in range(len(player_life))])        
+        
         # Select the individuals with the highest fitness values among the randomly chosenpytrel ones
         best_individual_index = random_indices[np.argmax(fitness)]
         
         health_gain = np.array(health_gain[np.argmax(fitness)])
-        
         time_game = np.array(time_game[np.argmax(fitness)])
         
         return best_individual_index, np.max(fitness), health_gain, time_game
@@ -218,6 +218,7 @@ class EvoMan:
     # returns selected individuals and their fitness
     def selection(self, population):        
         #if selection pressure is set to True we want the pressure to increase and thus the number of neural networks to compete to increase
+        #eventually the number of individuals in tournament is doubled from start to finish.
         if self.type_of_selection_pressure=="linear":
             self.k_tournament = max(math.ceil(self.current_generation*self.k_tournament_final_linear_increase_factor/self.gens)*self.k_tournament_start, self.k_tournament_start)
         elif self.type_of_selection_pressure=="exponential":
@@ -280,17 +281,20 @@ class EvoMan:
         #Count less weight to gain if enemy is beaten and dont try to improve time when enemy is beaten
         for i in range(len(gains_array)):
             if gains_array[i] > 0:
-                weights_gains[i] = 0.1
+                weights_gains[i] = 0.2
                 win_count += 1
                 time_game[i] = np.max(time_game[time_game != time_game[i]])
             elif gains_array[i] < -100:
                 weights_gains[i] = 2
             else:
-                weights_gains[i] = 1/len(gains_array)  
+                weights_gains[i] = 1    
         
         time_score = sum(time_game)/max(time_game)
+        #print(time_score)
+
         #If youre losing the longer time the better, therefore + time
-        fitness = np.dot(gains_array, weights_gains) + time_score*2  #+ 0.05 * win_count/len(player_life)        
+        #print(np.dot(gains_array, weights_gains)/max_health )
+        fitness = np.dot(gains_array, weights_gains)/max_health + 0.1*time_score  #+ 0.05 * win_count/len(player_life)        
         return fitness
     
     def run(self):
@@ -362,9 +366,11 @@ class EvoMan:
                 
                 parents_survivors_indices = self.elitism(fitness)         
                 children = np.array(children)
+                pop_before_selection = np.concatenate((population, children))
+                
                 
                 if self.n_elitism > 0:
-                    selected_children, fitness_children, health_gain_children, time_game_children = self.selection(children)                        
+                    selected_children, fitness_children, health_gain_children, time_game_children = self.selection(pop_before_selection)                        
                     fitness = np.append(fitness[parents_survivors_indices], fitness_children)
                     health_gain = np.append(health_gain[parents_survivors_indices], health_gain_children)
                     time_game = np.append(time_game[parents_survivors_indices], time_game_children)
@@ -377,12 +383,14 @@ class EvoMan:
                 if fitness[max_fitness_index] > best_fitness:
                     best_fitness = fitness[max_fitness_index]
                     best_individual = population[max_fitness_index]
-                    same_result_count = 0
                 elif fitness[max_fitness_index] == best_fitness:
                     same_result_count += 1
-                
+                elif fitness[max_fitness_index] != best_fitness:
+                    same_result_count = 0
+
                 if reset:
                     reset = False
+                    same_result_count = 0
                     self.mutation_rate = old_mutation_rate
                     self.crossover_rate = old_crossover_rate
                 
@@ -399,19 +407,17 @@ class EvoMan:
                                     np.max(health_gain), np.mean(health_gain), np.std(health_gain),
                                     np.min(time_game), np.mean(time_game), np.std(time_game)])
                 
-                
-                print(f"Generation {gen}, Best Fitness: {np.max(fitness)} and index {np.argmax(fitness)}")
-                for i in range(len(self.enemies)):
-                    print(health_gain[i:i+4])         
-                # Save the best individual's neural network weights
-                np.save(os.path.join(self.experiment_dir, "best_individual.npy"), best_individual)
-
                 if self.current_generation > 5:
                     print('Old enemies:', self.enemies)
                     # change enemies if met threshold
                     self.enemies = self.update_enemies(self.enemies, best_individual)
                     self.env.enemies = self.enemies
                     print('New enemies:', self.enemies)
+    
+                print(f"Generation {gen}, Best Fitness: {np.max(fitness)} and index {np.argmax(fitness)}")
+                                
+                # Save the best individual's neural network weights
+                np.save(os.path.join(self.experiment_dir, "best_individual.npy"), best_individual)
 
         end_time = time.time()
         elapsed_time = end_time - start_time
