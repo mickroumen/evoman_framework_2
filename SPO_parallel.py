@@ -28,7 +28,7 @@ if not os.path.exists(individual_dir):
 
 # Define fixed parameters and parameters to change
 parameters = {
-    'experiment_name': "",
+    'experiment_name': "variable_enemies_commma",
     'enemies': [1, 4, 6, 7],
     'population_size': 100,
     'generations': 30,
@@ -53,8 +53,8 @@ parameters = {
 param_change = {
     'mutation_rate': {'range': (0.01, 0.5), 'type': 'float'},
     'number_of_crossovers': {'range': (1, 10), 'type': 'int'},
-    'k_tournament': {'range': (1, 3), 'type': 'int'},
-    'k_tournament_final_linear_increase_factor': {'range': (1, 3), 'type': 'int'},
+    'k_tournament': {'range': (1, 4), 'type': 'int'},
+    'k_tournament_final_linear_increase_factor': {'range': (1, 10), 'type': 'int'},
 }
 
 def evaluate_parameters(parameters):
