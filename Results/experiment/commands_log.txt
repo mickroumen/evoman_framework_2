@@ -480,3 +480,7 @@
 .\EA_adaptiveEnemeis_comma.py --enemies 1 4 6 7 --npop 10 --gens 1000
 .\EA_adaptiveEnemeis_comma.py --npop 10 --gens 1000
 .\EA-adaptiveEnemeis-plus.py --npop 10 --gens 1000 --enemies 1 4 5
+.\EA_adaptiveEnemeis_comma.py --npop 10 --gens 10
+.\EA_adaptiveEnemeis_comma.py --npop 100 --gens 15
+.\EA_adaptiveEnemeis_comma.py --npop 100 --gens 15
+.\EA_adaptiveEnemeis_comma.py --npop 100 --gens 15 --enemies 1 4 6 7
