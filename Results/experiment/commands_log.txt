@@ -464,3 +464,5 @@
 .\EA-adaptiveEnemeis-plus.py --headless --enemies 1 4 6 --npop 10
 .\EA_adaptiveEnemeis_comma.py --headless --enemies 1 4 5 --npop 10 --k_tournament 5
 .\EA_adaptiveEnemeis_comma.py --headless --enemies 1 4 5 --npop 10 --k_tournament 5
+.\EA_adaptiveEnemeis_comma.py --headless --enemies 1 4 5 --npop 20 --k_tournament 5
+.\EA_adaptiveEnemeis_comma.py --headless --enemies 1 4 5 --npop 20 --k_tournament 5
