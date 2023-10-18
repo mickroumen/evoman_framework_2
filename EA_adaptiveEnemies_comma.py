@@ -221,7 +221,7 @@ class EvoMan:
                 candidate_indices = np.delete(candidate_indices, np.where(candidate_indices == winner_index))
         
         return population[selected_indices.astype(int)], fitness, health_gain, time_game
-    
+
     def update_enemies(self, enemies, best_individual, healt_gain):
         #change the fitness and gain function so that it returns np.array of the fitness and gain for each enemy
         def cons_multi2(self,values):
@@ -245,7 +245,12 @@ class EvoMan:
                 if len(enemies_available_to_add) > 0:                
                     new_enemy = random.choice(enemies_available_to_add)                    
                     remaining_enemies.append(new_enemy)
-                    enemies_available_to_add.remove(new_enemy)   
+                    enemies_available_to_add.remove(new_enemy)
+                elif len(remaining_enemies) < 4:
+                    enemies_to_choose_from = [enemy for enemy in self.env.enemies if enemy not in self.enemies]
+                    new_enemy = random.choice(enemies_to_choose_from)                    
+                    remaining_enemies.append(new_enemy)
+                    enemies_to_choose_from.remove(new_enemy)
             remaining_enemies.sort()       
         else:
             self.updated_enemies = False               
