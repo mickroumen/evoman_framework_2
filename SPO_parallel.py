@@ -46,7 +46,7 @@ parameters = {
     'k_tournament_final_linear_increase_factor': 4,   
     'alpha': 0.5,
     'type_of_selection_pressure': 'exponential',
-    'enemy_threshold': 40,
+    'enemy_threshold': 10,
     'lamba_mu_ratio': 3
 }
 
