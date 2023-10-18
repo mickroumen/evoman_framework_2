@@ -124,7 +124,6 @@ class EvoMan:
             fitness[i], health_gain[i], time_game[i], player_life[i], enemy_life[i] = self.simulation(individual[:-1])
         return fitness, health_gain, time_game, player_life, enemy_life
 
-  
     def mutate(self, individual):
         # Applies mutation to the individual based on the mutation rate
         if random.uniform(0, 1) < self.mutation_rate:
@@ -134,8 +133,8 @@ class EvoMan:
             individual[-1] = np.clip(individual[-1], 0.01, 0.9)
             for i in range(len(individual[:-1])):
                 individual[i] += individual[-1] * np.random.normal()
-        return individual       
-  
+        return individual         
+    
     def crossover(self, parent1, parent2, number_of_crossovers):
         # Applies N point crossover
         # if random.uniform(0,1) < self.crossover_rate: 
@@ -152,6 +151,8 @@ class EvoMan:
                         child1[crossover_points[i-1]:crossover_points[i]] = parent2[crossover_points[i-1]:crossover_points[i]]
                         child2[crossover_points[i-1]:crossover_points[i]] = parent1[crossover_points[i-1]:crossover_points[i]]
             return child1, child2
+        # else:
+        #     return parent1.copy(), parent2.copy()
     
     # tournament (returns winnning individual and its fitness)
     def tournament_selection_with_fitness(self, candidate_indices, fitness):
@@ -163,20 +164,51 @@ class EvoMan:
 
         return winner_index
 
-    def tournament_selection_withouth_fitness(self, candidate_indices, population):
+    def tournament_selection_children(self, candidate_indices, population, remember_fitness, remember_health_gain, remember_time_game):
         # Generate k unique random indices
         random_indices = np.random.choice(candidate_indices, self.k_tournament, replace=False)
         
-        fitness, health_gain, time_game, player_life, enemy_life = self.evaluate(population[random_indices])
-        fitness = np.array([self.fitness_function(player_life[i], enemy_life[i], time_game[i]) for i in range(len(player_life))])        
+        removed_indices = []
+        fitness_remembered = []
+        health_gain_remembered = []
+        time_game_remembered = []
+        if len(remember_fitness) > 0:
+            for value in random_indices:
+                if value in remember_fitness.keys():
+                    random_indices = random_indices[random_indices != value]
+                    removed_indices.append(value)
+                    fitness_remembered.append(remember_fitness[value])
+                    health_gain_remembered.append(remember_health_gain[value])
+                    time_game_remembered.append(remember_time_game[value])
+        fitness_remembered = np.array(fitness_remembered)
+        removed_indices = np.array(removed_indices)
+
+        if random_indices.shape[0] > 0:
+            fitness, health_gain, time_game, player_life, enemy_life = self.evaluate(population[random_indices])
+            fitness = np.array([self.fitness_function(player_life[i], enemy_life[i], time_game[i]) for i in range(len(player_life))])
+            for i in range(random_indices.shape[0]):
+                remember_fitness[random_indices[i]] = fitness[i]
+                remember_health_gain[random_indices[i]] = health_gain[i]
+                remember_time_game[random_indices[i]] = time_game[i]
+            if fitness_remembered.size > 0:
+                fitness = np.append(fitness, fitness_remembered)
+                random_indices = np.append(random_indices, removed_indices)
+                health_gain = np.append(health_gain, health_gain_remembered)
+                time_game = np.append(time_game, time_game_remembered)
+        else:
+            fitness = fitness_remembered
+            random_indices = removed_indices
+            health_gain = health_gain_remembered
+            time_game = time_game_remembered
+    
         # Select the individuals with the highest fitness values among the randomly chosenpytrel ones
         best_individual_index = random_indices[np.argmax(fitness)]
-        #print(health_gain)
         health_gain = np.array(health_gain[np.argmax(fitness)])
         #print(health_gain)
         time_game = np.array(time_game[np.argmax(fitness)])
         
-        return best_individual_index, np.max(fitness), health_gain, time_game    
+        return best_individual_index, np.max(fitness), health_gain, time_game, remember_fitness, remember_health_gain, remember_time_game  
+        
     
     def elitism(self, fitness):
         best_indices = np.argsort(fitness)[-self.n_elitism:]
@@ -202,24 +234,14 @@ class EvoMan:
         health_gain = np.zeros((self.n_pop-self.n_elitism, len(self.env.enemies)))
         time_game = np.zeros((self.n_pop-self.n_elitism, len(self.env.enemies)))        
 
-        if self.k_tournament*(self.n_pop-self.n_elitism) > population.shape[0]:
-            fitness_pop, health_gain_pop, time_game_pop, player_life_pop, enemy_life_pop = self.evaluate(population)        
-            fitness_pop = np.array([self.fitness_function(player_life_pop[i], enemy_life_pop[i], time_game_pop[i]) for i in range(len(player_life_pop))])    
-            for i in range(self.n_pop-self.n_elitism):
-                winner_index = self.tournament_selection_with_fitness(candidate_indices, fitness_pop)
-                fitness[i] = fitness_pop[winner_index]
-                health_gain[i] = health_gain_pop[winner_index]
-                time_game[i] = time_game_pop[winner_index]
-                selected_indices[i] = winner_index
-                # Remove the selected individuals
-                candidate_indices = np.delete(candidate_indices, np.where(candidate_indices == winner_index))     
-        else:            
-            for i in range(self.n_pop-self.n_elitism):
-                winner_index, fitness[i], health_gain[i], time_game[i] = self.tournament_selection_withouth_fitness(candidate_indices, population)
-                selected_indices[i] = winner_index   
-                # Remove the selected individuals         
-                candidate_indices = np.delete(candidate_indices, np.where(candidate_indices == winner_index))
-        
+        remember_fitness = {}
+        remember_health_gain = {}
+        remember_time_game = {}
+        for i in range(self.n_pop-self.n_elitism):
+            winner_index, fitness[i], health_gain[i], time_game[i], remember_fitness, remember_health_gain, remember_time_game = self.tournament_selection_children(candidate_indices, population, remember_fitness, remember_health_gain, remember_time_game)
+            #Remove the selected elite individuals and their fitness values from population and fitness
+            selected_indices[i] = winner_index            
+            candidate_indices = np.delete(candidate_indices, np.where(candidate_indices == winner_index))
         return population[selected_indices.astype(int)], fitness, health_gain, time_game
     
     def update_enemies(self, enemies, best_individual, healt_gain):
@@ -245,7 +267,12 @@ class EvoMan:
                 if len(enemies_available_to_add) > 0:                
                     new_enemy = random.choice(enemies_available_to_add)                    
                     remaining_enemies.append(new_enemy)
-                    enemies_available_to_add.remove(new_enemy)   
+                    enemies_available_to_add.remove(new_enemy)
+                elif len(remaining_enemies) < 4:
+                    enemies_to_choose_from = [enemy for enemy in self.env.enemies if enemy not in self.enemies]
+                    new_enemy = random.choice(enemies_to_choose_from)                    
+                    remaining_enemies.append(new_enemy)
+                    enemies_to_choose_from.remove(new_enemy)
             remaining_enemies.sort()       
         else:
             self.updated_enemies = False               
@@ -265,7 +292,7 @@ class EvoMan:
             if gains_array[i] > 0:
                 weights_gains[i] = 0.1
                 win_count += 1
-                time_game[i] = max(time_game)
+                time_game[i] = np.max(time_game[time_game != time_game[i]])
             elif gains_array[i] < -100:
                 weights_gains[i] = 2
             else:
@@ -331,7 +358,7 @@ class EvoMan:
                 
                 self.current_generation += 1
                 children = []
-                for _ in range(self.n_pop*self.lamba_mu_ratio//2):  # Two children per iteration so double the population size out of which we will select the best
+                for _ in range(self.n_pop*self.lamba_mu_ratio):  # Two children per iteration so double the population size out of which we will select the best
                     winner_index1 = self.tournament_selection_with_fitness(population.shape[0], fitness)
                     winner_index2 = self.tournament_selection_with_fitness(population.shape[0], fitness)
 
@@ -380,16 +407,16 @@ class EvoMan:
                                     np.min(time_game), np.mean(time_game), np.std(time_game)])
                 
                 
-                #print(f"Generation {gen}, Best Fitness: {np.max(fitness)} and index {np.argmax(fitness)}")
+                
+                # print(f"Generation {gen}, Best Fitness: {np.max(fitness)} and index {np.argmax(fitness)}")
                 #print(health_gain)
-                np.save(os.path.join(self.experiment_dir, "best_individual.npy"), best_individual)
 
-                if self.current_generation > 1:
-                    #print('Old enemies:', self.enemies)
+                if self.current_generation > 5:
+                    # print('Old enemies:', self.enemies)
                     # change enemies if met threshold
                     self.enemies = self.update_enemies(self.enemies, best_individual, health_gain)
                     self.env.enemies = self.enemies
-                    #print('New enemies:', self.enemies)
+                    # print('New enemies:', self.enemies)
 
         end_time = time.time()
         elapsed_time = end_time - start_time
@@ -402,8 +429,16 @@ class EvoMan:
 
         # this line is only added for the SPO
         self.env.enemies = [1, 2, 3, 4, 5, 6, 7, 8]
-        fitnesses, health_gains, times, player_lifes, enemy_lifes = self.simulation(best_individual[:-1])
-        best_fitness = self.fitness_function(player_lifes, enemy_lifes, times)
+        fitness, health_gain, time_game, player_life, enemy_life = self.evaluate(population)
+        fitness = np.array([self.fitness_function(player_life[i], enemy_life[i], time_game[i]) for i in range(len(player_life))])
+                
+        best_individual_index = np.argmax(fitness)
+        best_individual = population[best_individual_index]
+        best_fitness = fitness[best_individual_index]
+
+        np.save(os.path.join(self.experiment_dir, "best_individual.npy"), best_individual)
+        # print(f'final fitness {best_fitness}')
+        # print(np.argmax(fitness))
         
         return best_fitness
 
@@ -461,7 +496,7 @@ if __name__ == "__main__":
         parser.add_argument("--npop", type=int, default=100, help="Size of the population")
         parser.add_argument("--gens", type=int, default=30, help="Number of generations")
         parser.add_argument("--mutation_rate", type=float, default=0.2, help="Mutation rate")
-        parser.add_argument("--crossover_rate", type=float, default=1, help="Crossover rate")
+        parser.add_argument("--crossover_rate", type=float, default=0.7, help="Crossover rate")
         parser.add_argument("--mode", type=str, default="train", help="Mode: train or test")
         parser.add_argument("--n_hidden_neurons", type=int, default=10, help="Number of hidden neurons")
         parser.add_argument("--headless", action="store_true", help="Run in headless mode")
@@ -472,7 +507,7 @@ if __name__ == "__main__":
         parser.add_argument("--n_elitism", type=int, default=2, help="Number of best individuals from population that are always selected for the next generation.")
         parser.add_argument("--k_tournament", type=int, default= 2, help="The amount of individuals to do a tournament with for selection, the more the higher the selection pressure")
         parser.add_argument("--type_of_selection_pressure", type=str, default="exponential", help="if set to linear the selection pressure will linearly increase over time from k_tournament till k_tournament_final_linear_increase_factor*k_tournament, if set to exponential the selection pressure will increase exponentially from k_tournament till 2*k_tournament, if set to anything else the selection pressure will stay the same")
-        parser.add_argument("--k_tournament_final_linear_increase_factor", type=int, default= 2, help="The factor with which k_tournament should linearly increase (if type_of_selection_pressure = True), if the value is 4 the last quarter of generations have tournaments of size k_tournament*4")
+        parser.add_argument("--k_tournament_final_linear_increase_factor", type=int, default= 1, help="The factor with which k_tournament should linearly increase (if type_of_selection_pressure = True), if the value is 4 the last quarter of generations have tournaments of size k_tournament*4")
         parser.add_argument("--alpha", type=float, default=0.5, help="Weight for enemy damage")
         parser.add_argument("--enemy_threshold", type=int, default=15, help="The threshold health gain from which an enemy will be swapped with another enemy to train.")
         parser.add_argument("--lamba_mu_ratio", type=int, default=3, help="Ratio between lamda and mu")
