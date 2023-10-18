@@ -216,8 +216,7 @@ class EvoMan:
         
         return best_indices
         
-    # returns selected individuals and their fitness
-    def selection(self, population):        
+    def update_k_value(self):
         #if selection pressure is set to True we want the pressure to increase and thus the number of neural networks to compete to increase
         if self.type_of_selection_pressure=="linear":
             self.k_tournament = max(math.ceil(self.current_generation*self.k_tournament_final_linear_increase_factor/self.gens)*self.k_tournament_start, self.k_tournament_start)
@@ -225,19 +224,35 @@ class EvoMan:
             k_end = self.k_tournament_final_linear_increase_factor*self.k_tournament_start
             exp_rate = 1/self.gens
             self.k_tournament = self.k_tournament_start + math.floor((k_end - self.k_tournament_start) * ((self.current_generation**2)/(self.gens**2)))
-        print(f'k is: {self.k_tournament}')
-                
+        #print(f'k is: {self.k_tournament}')
+
+    # returns selected individuals and their fitness
+    def selection(self, population):
+        self.update_k_value()
         candidate_indices = range(population.shape[0])
         selected_indices = np.zeros(self.n_pop-self.n_elitism)
         fitness = np.zeros(self.n_pop-self.n_elitism)
         health_gain = np.zeros((self.n_pop-self.n_elitism, len(self.env.enemies)))
-        time_game = np.zeros((self.n_pop-self.n_elitism, len(self.env.enemies)))
+        time_game = np.zeros((self.n_pop-self.n_elitism, len(self.env.enemies)))        
+
+        if self.k_tournament*(self.n_pop-self.n_elitism) > population.shape[0]:
+            fitness_pop, health_gain_pop, time_game_pop, player_life_pop, enemy_life_pop = self.evaluate(population)        
+            fitness_pop = np.array([self.fitness_function(player_life_pop[i], enemy_life_pop[i], time_game_pop[i]) for i in range(len(player_life_pop))])    
+            for i in range(self.n_pop-self.n_elitism):
+                winner_index = self.tournament_selection_with_fitness(candidate_indices, fitness_pop)
+                fitness[i] = fitness_pop[winner_index]
+                health_gain[i] = health_gain_pop[winner_index]
+                time_game[i] = time_game_pop[winner_index]
+                selected_indices[i] = winner_index
+                # Remove the selected individuals
+                candidate_indices = np.delete(candidate_indices, np.where(candidate_indices == winner_index))     
+        else:            
+            for i in range(self.n_pop-self.n_elitism):
+                winner_index, fitness[i], health_gain[i], time_game[i] = self.tournament_selection_withouth_fitness(candidate_indices, population)
+                selected_indices[i] = winner_index   
+                # Remove the selected individuals         
+                candidate_indices = np.delete(candidate_indices, np.where(candidate_indices == winner_index))
         
-        for i in range(self.n_pop-self.n_elitism):
-            winner_index, fitness[i], health_gain[i], time_game[i] = self.tournament_selection_children(candidate_indices, population)
-            #Remove the selected elite individuals and their fitness values from population and fitness
-            selected_indices[i] = winner_index            
-            candidate_indices = np.delete(candidate_indices, np.where(candidate_indices == winner_index))
         return population[selected_indices.astype(int)], fitness, health_gain, time_game
         
     def fitness_function(self, player_life, enemy_life, time_game):
