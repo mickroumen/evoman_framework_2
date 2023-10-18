@@ -255,19 +255,16 @@ class EvoMan:
         enemies_above_treshold = [enemy for enemy, health_gain in zip(self.enemies, health_gains[enemies_index]) if health_gain > self.enemy_threshold]
         enemies_defeat = [enemy for enemy, health_gain in zip(self.env.enemies, health_gains) if health_gain < 0]
         remaining_enemies = [enemy for enemy, health_gain in zip(enemies, health_gains[enemies_index]) if health_gain < self.enemy_threshold]
-        
         if len(enemies_above_treshold) > 0:
-            self.updated_enemies = True
+                self.updated_enemies = True
+                for _ in enemies_above_treshold:
+                    if len(enemies_available_to_add) > 0:                
+                        new_enemy = random.choice(enemies_available_to_add)                    
+                        remaining_enemies.append(new_enemy)
+                        enemies_available_to_add = enemies_available_to_add.remove(new_enemy)   
+                remaining_enemies.sort()       
         else:
             self.updated_enemies = False
-
-        for _ in enemies_above_treshold:
-            new_enemy = random.choice(enemies_defeat)
-            while new_enemy in remaining_enemies:
-                new_enemy = random.choice(enemies_defeat)
-            remaining_enemies.append(new_enemy)   
-            remaining_enemies.sort()              
-
         return remaining_enemies
 
     def fitness_function(self, player_life, enemy_life, time_game):
