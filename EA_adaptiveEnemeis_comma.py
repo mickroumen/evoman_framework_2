@@ -124,22 +124,7 @@ class EvoMan:
             fitness[i], health_gain[i], time_game[i], player_life[i], enemy_life[i] = self.simulation(individual[:-1])
         return fitness, health_gain, time_game, player_life, enemy_life
 
-    """
-    def mutate(self, individual):
-        # Applies bit mutation to the individual based on the mutation rate
-        if random.uniform(0, 1) < self.mutation_rate:
-            for i in range(len(individual[:-1])):            
-                # Convert the weight to binary representation
-                binary_representation = list(format(int((individual[i] - self.dom_l) * (2**15) / (self.dom_u - self.dom_l)), '016b'))
-                
-                for j in range(len(binary_representation)):
-                    
-                        binary_representation[j] = '1' if binary_representation[j] == '0' else '0'
-                
-                individual[i] = int("".join(binary_representation), 2) * (self.dom_u - self.dom_l) / (2**15) + self.dom_l
-        return individual
-    """
-
+  
     def mutate(self, individual):
         # Applies mutation to the individual based on the mutation rate
         if random.uniform(0, 1) < self.mutation_rate:
@@ -150,25 +135,7 @@ class EvoMan:
             for i in range(len(individual[:-1])):
                 individual[i] += individual[-1] * np.random.normal()
         return individual       
-    
-    """
-    def crossover(self, parent1, parent2, n):
-            # Applies the uniform crossover operator
-            if random.uniform(0,1) < self.crossover_rate:
-                child1 = np.zeros(len(parent1))
-                child2 = np.zeros(len(parent1))
-                for i in range(len(parent1)):
-                    if random.uniform(0,1) < 0.5:
-                        child1[i] = parent1[i]
-                        child2[i] = parent2[i] 
-                    else:
-                        child1[i] = parent2[i]
-                        child2[i] = parent1[i]
-                return child1, child2
-            else:
-                return parent1.copy(), parent2.copy()
-    """        
-    
+  
     def crossover(self, parent1, parent2, number_of_crossovers):
         # Applies N point crossover
         # if random.uniform(0,1) < self.crossover_rate: 
@@ -494,7 +461,7 @@ if __name__ == "__main__":
         parser.add_argument("--npop", type=int, default=100, help="Size of the population")
         parser.add_argument("--gens", type=int, default=30, help="Number of generations")
         parser.add_argument("--mutation_rate", type=float, default=0.2, help="Mutation rate")
-        parser.add_argument("--crossover_rate", type=float, default=0.7, help="Crossover rate")
+        parser.add_argument("--crossover_rate", type=float, default=1, help="Crossover rate")
         parser.add_argument("--mode", type=str, default="train", help="Mode: train or test")
         parser.add_argument("--n_hidden_neurons", type=int, default=10, help="Number of hidden neurons")
         parser.add_argument("--headless", action="store_true", help="Run in headless mode")

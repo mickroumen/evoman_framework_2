@@ -124,22 +124,6 @@ class EvoMan:
             fitness[i], health_gain[i], time_game[i], player_life[i], enemy_life[i] = self.simulation(individual[:-1])
         return fitness, health_gain, time_game, player_life, enemy_life
 
-    """
-    def mutate(self, individual):
-        # Applies bit mutation to the individual based on the mutation rate
-        if random.uniform(0, 1) < self.mutation_rate:
-            for i in range(len(individual[:-1])):            
-                # Convert the weight to binary representation
-                binary_representation = list(format(int((individual[i] - self.dom_l) * (2**15) / (self.dom_u - self.dom_l)), '016b'))
-                
-                for j in range(len(binary_representation)):
-                    
-                        binary_representation[j] = '1' if binary_representation[j] == '0' else '0'
-                
-                individual[i] = int("".join(binary_representation), 2) * (self.dom_u - self.dom_l) / (2**15) + self.dom_l
-        return individual
-    """
-
     def mutate(self, individual):
         # Applies mutation to the individual based on the mutation rate
         if random.uniform(0, 1) < self.mutation_rate:
@@ -149,25 +133,7 @@ class EvoMan:
             individual[-1] = np.clip(individual[-1], 0.01, 0.9)
             for i in range(len(individual[:-1])):
                 individual[i] += individual[-1] * np.random.normal()
-        return individual       
-    
-    """
-    def crossover(self, parent1, parent2, n):
-            # Applies the uniform crossover operator
-            if random.uniform(0,1) < self.crossover_rate:
-                child1 = np.zeros(len(parent1))
-                child2 = np.zeros(len(parent1))
-                for i in range(len(parent1)):
-                    if random.uniform(0,1) < 0.5:
-                        child1[i] = parent1[i]
-                        child2[i] = parent2[i] 
-                    else:
-                        child1[i] = parent2[i]
-                        child2[i] = parent1[i]
-                return child1, child2
-            else:
-                return parent1.copy(), parent2.copy()
-    """        
+        return individual         
     
     def crossover(self, parent1, parent2, number_of_crossovers):
         # Applies N point crossover
@@ -187,7 +153,7 @@ class EvoMan:
             return child1, child2
     
     # tournament (returns winnning individual and its fitness)
-    def tournament_selection_parents(self, candidate_indices, fitness):
+    def tournament_selection_with_fitness(self, candidate_indices, fitness):
         # Generate k unique random indices
         random_indices = np.random.choice(candidate_indices, self.k_tournament, replace=False)
         
@@ -196,7 +162,7 @@ class EvoMan:
 
         return winner_index
 
-    def tournament_selection_children(self, candidate_indices, population):
+    def tournament_selection_withouth_fitness(self, candidate_indices, population):
         # Generate k unique random indices
         random_indices = np.random.choice(candidate_indices, self.k_tournament, replace=False)
         
@@ -209,13 +175,13 @@ class EvoMan:
         #print(health_gain)
         time_game = np.array(time_game[np.argmax(fitness)])
         
-        return best_individual_index, np.max(fitness), health_gain, time_game
+        return best_individual_index, np.max(fitness), health_gain, time_game    
     
     def elitism(self, fitness):
         best_indices = np.argsort(fitness)[-self.n_elitism:]
         
         return best_indices
-        
+    
     def update_k_value(self):
         #if selection pressure is set to True we want the pressure to increase and thus the number of neural networks to compete to increase
         if self.type_of_selection_pressure=="linear":
@@ -254,7 +220,7 @@ class EvoMan:
                 candidate_indices = np.delete(candidate_indices, np.where(candidate_indices == winner_index))
         
         return population[selected_indices.astype(int)], fitness, health_gain, time_game
-        
+
     def fitness_function(self, player_life, enemy_life, time_game):
         max_health = len(player_life)*100
         
@@ -335,8 +301,8 @@ class EvoMan:
                 self.current_generation += 1
                 children = []
                 for _ in range(self.n_pop*self.lamba_mu_ratio//2):  # Two children per iteration so double the population size out of which we will select the best
-                    winner_index1 = self.tournament_selection_parents(population.shape[0], fitness)
-                    winner_index2 = self.tournament_selection_parents(population.shape[0], fitness)
+                    winner_index1 = self.tournament_selection_with_fitness(population.shape[0], fitness)
+                    winner_index2 = self.tournament_selection_with_fitness(population.shape[0], fitness)
 
                     child1, child2 = self.crossover(population[winner_index1], population[winner_index2], self.number_of_crossovers)
 
@@ -345,20 +311,18 @@ class EvoMan:
 
                     children.extend([child1, child2])                
                 
-                parents_survivors_indices = self.elitism(fitness)         
+                parents_survivors_indices = self.elitism(fitness)   
                 children = np.array(children)
-                pop_before_selection = np.concatenate((population, children))
-
+                population_before_selection = np.concatenate((population, children))
                 if self.n_elitism > 0:
-                    selected_children, fitness_children, health_gain_children, time_game_children = self.selection(pop_before_selection)    
+                    selected_children, fitness_children, health_gain_children, time_game_children = self.selection(population_before_selection)    
                     fitness = np.append(fitness[parents_survivors_indices], fitness_children, axis=0)
                     health_gain = np.append(health_gain[parents_survivors_indices], health_gain_children,axis=0)
                     time_game = np.append(time_game[parents_survivors_indices], time_game_children, axis=0)
                     population = np.append(population[parents_survivors_indices], selected_children, axis = 0)   
                 else:  
                     population, fitness, health_gain, time_game = self.selection(children) 
-
-                #print(health_gain)
+                
                 # Check if any individual has a higher fitness, save that one
                 max_fitness_index = np.argmax(fitness)
                 if fitness[max_fitness_index] > best_fitness:
@@ -373,8 +337,7 @@ class EvoMan:
                     self.mutation_rate = old_mutation_rate
                     self.crossover_rate = old_crossover_rate
                 
-                if same_result_count > 3:
-                    print('RESET')
+                if same_result_count > 2:
                     old_mutation_rate = self.mutation_rate
                     old_crossover_rate = self.crossover_rate                    
                     self.mutation_rate = 1                    
@@ -387,7 +350,7 @@ class EvoMan:
                                     np.min(time_game), np.mean(time_game), np.std(time_game)])
                 
                 
-                print(f"Generation {gen}, Best Fitness: {np.max(fitness)} and index {np.argmax(fitness)}")
+                #print(f"Generation {gen}, Best Fitness: {np.max(fitness)} and index {np.argmax(fitness)}")
                 #print(health_gain)
                 np.save(os.path.join(self.experiment_dir, "best_individual.npy"), best_individual)
 
@@ -472,7 +435,7 @@ if __name__ == "__main__":
         parser.add_argument("--n_elitism", type=int, default=2, help="Number of best individuals from population that are always selected for the next generation.")
         parser.add_argument("--k_tournament", type=int, default= 2, help="The amount of individuals to do a tournament with for selection, the more the higher the selection pressure")
         parser.add_argument("--type_of_selection_pressure", type=str, default="exponential", help="if set to linear the selection pressure will linearly increase over time from k_tournament till k_tournament_final_linear_increase_factor*k_tournament, if set to exponential the selection pressure will increase exponentially from k_tournament till 2*k_tournament, if set to anything else the selection pressure will stay the same")
-        parser.add_argument("--k_tournament_final_linear_increase_factor", type=int, default= 4, help="The factor with which k_tournament should linearly increase (if type_of_selection_pressure = True), if the value is 4 the last quarter of generations have tournaments of size k_tournament*4")
+        parser.add_argument("--k_tournament_final_linear_increase_factor", type=int, default= 1, help="The factor with which k_tournament should linearly increase (if type_of_selection_pressure = True), if the value is 4 the last quarter of generations have tournaments of size k_tournament*4")
         parser.add_argument("--alpha", type=float, default=0.5, help="Weight for enemy damage")
         parser.add_argument("--enemy_threshold", type=int, default=15, help="The threshold health gain from which an enemy will be swapped with another enemy to train.")
         parser.add_argument("--lamba_mu_ratio", type=int, default=3, help="Ratio between lamda and mu")
