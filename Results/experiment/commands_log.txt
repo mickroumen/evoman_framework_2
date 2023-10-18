@@ -448,3 +448,6 @@
 .\EA-adaptiveEnemeis-comma.py --headless --enemies 1 4 7 --npop 10
 .\EA_adaptiveEnemeis_comma.py --headless --enemies 1 4 7 --npop 10
 .\EA_adaptiveEnemeis_comma.py --headless --enemies 1 3 --npop 10
+.\EA_adaptiveEnemeis_comma.py --headless --enemies 1 4 5 --npop 10
+.\EA-adaptiveEnemeis-plus.py --headless --enemies 1 4 5 --npop 10
+.\EA-adaptiveEnemeis-plus.py --headless --enemies 1 4 5 --npop 10
