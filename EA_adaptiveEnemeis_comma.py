@@ -187,7 +187,7 @@ class EvoMan:
             return child1, child2
     
     # tournament (returns winnning individual and its fitness)
-    def tournament_selection_parents(self, candidate_indices, fitness):
+    def tournament_selection_with_fitness(self, candidate_indices, fitness):
         # Generate k unique random indices
         random_indices = np.random.choice(candidate_indices, self.k_tournament, replace=False)
         
@@ -196,7 +196,7 @@ class EvoMan:
 
         return winner_index
 
-    def tournament_selection_children(self, candidate_indices, population):
+    def tournament_selection_withouth_fitness(self, candidate_indices, population):
         # Generate k unique random indices
         random_indices = np.random.choice(candidate_indices, self.k_tournament, replace=False)
         
@@ -209,15 +209,14 @@ class EvoMan:
         #print(health_gain)
         time_game = np.array(time_game[np.argmax(fitness)])
         
-        return best_individual_index, np.max(fitness), health_gain, time_game
+        return best_individual_index, np.max(fitness), health_gain, time_game    
     
     def elitism(self, fitness):
         best_indices = np.argsort(fitness)[-self.n_elitism:]
         
         return best_indices
-        
-    # returns selected individuals and their fitness
-    def selection(self, population):        
+    
+    def update_k_value(self):
         #if selection pressure is set to True we want the pressure to increase and thus the number of neural networks to compete to increase
         if self.type_of_selection_pressure=="linear":
             self.k_tournament = max(math.ceil(self.current_generation*self.k_tournament_final_linear_increase_factor/self.gens)*self.k_tournament_start, self.k_tournament_start)
@@ -226,18 +225,30 @@ class EvoMan:
             exp_rate = 1/self.gens
             self.k_tournament = self.k_tournament_start + math.floor((k_end - self.k_tournament_start) * ((self.current_generation**2)/(self.gens**2)))
         print(f'k is: {self.k_tournament}')
-                
-        candidate_indices = range(population.shape[0])
-        selected_indices = np.zeros(self.n_pop-self.n_elitism)
-        fitness = np.zeros(self.n_pop-self.n_elitism)
-        health_gain = np.zeros((self.n_pop-self.n_elitism, len(self.env.enemies)))
-        time_game = np.zeros((self.n_pop-self.n_elitism, len(self.env.enemies)))
+
+    # returns selected individuals and their fitness
+    def selection(self, population):
+        self.update_k_value()
+        if self.k_tournament*(self.n_pop-self.n_elitism) > population.shape[0]:
+            fitness, health_gain, time_game, player_life, enemy_life = self.evaluate(population)            
+            for i in range(self.n_pop-self.n_elitism):
+                winner_index = self.tournament_selection_with_fitness(candidate_indices, fitness, population)
+                # Remove the selected elite individuals and their fitness values from population and fitness
+                selected_indices = np.append(selected_indices, winner_index)
+                candidate_indices = np.delete(candidate_indices, np.where(candidate_indices == winner_index))
+        else:
+            candidate_indices = range(population.shape[0])
+            selected_indices = np.zeros(self.n_pop-self.n_elitism)
+            fitness = np.zeros(self.n_pop-self.n_elitism)
+            health_gain = np.zeros((self.n_pop-self.n_elitism, len(self.env.enemies)))
+            time_game = np.zeros((self.n_pop-self.n_elitism, len(self.env.enemies)))
         
-        for i in range(self.n_pop-self.n_elitism):
-            winner_index, fitness[i], health_gain[i], time_game[i] = self.tournament_selection_children(candidate_indices, population)
-            #Remove the selected elite individuals and their fitness values from population and fitness
-            selected_indices[i] = winner_index            
-            candidate_indices = np.delete(candidate_indices, np.where(candidate_indices == winner_index))
+            for i in range(self.n_pop-self.n_elitism):
+                winner_index, fitness[i], health_gain[i], time_game[i] = self.tournament_selection_withouth_fitness(candidate_indices, population)
+                #Remove the selected elite individuals and their fitness values from population and fitness
+                selected_indices[i] = winner_index            
+                candidate_indices = np.delete(candidate_indices, np.where(candidate_indices == winner_index))
+        
         return population[selected_indices.astype(int)], fitness, health_gain, time_game
     
     def update_enemies(self, enemies, best_individual, healt_gain):
@@ -266,9 +277,7 @@ class EvoMan:
                     enemies_available_to_add = enemies_available_to_add.remove(new_enemy)   
             remaining_enemies.sort()       
         else:
-            self.updated_enemies = False
-
-               
+            self.updated_enemies = False               
 
         return remaining_enemies
 
@@ -352,8 +361,8 @@ class EvoMan:
                 self.current_generation += 1
                 children = []
                 for _ in range(self.n_pop*self.lamba_mu_ratio//2):  # Two children per iteration so double the population size out of which we will select the best
-                    winner_index1 = self.tournament_selection_parents(population.shape[0], fitness)
-                    winner_index2 = self.tournament_selection_parents(population.shape[0], fitness)
+                    winner_index1 = self.tournament_selection_with_fitness(population.shape[0], fitness)
+                    winner_index2 = self.tournament_selection_with_fitness(population.shape[0], fitness)
 
                     child1, child2 = self.crossover(population[winner_index1], population[winner_index2], self.number_of_crossovers)
 
@@ -365,7 +374,6 @@ class EvoMan:
                 parents_survivors_indices = self.elitism(fitness)   
                 
                 children = np.array(children)
-
                 if self.n_elitism > 0:
                     selected_children, fitness_children, health_gain_children, time_game_children = self.selection(children)    
                     fitness = np.append(fitness[parents_survivors_indices], fitness_children, axis=0)
