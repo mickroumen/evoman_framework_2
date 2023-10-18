@@ -225,7 +225,7 @@ class EvoMan:
             k_end = self.k_tournament_final_linear_increase_factor*self.k_tournament_start
             exp_rate = 1/self.gens
             self.k_tournament = self.k_tournament_start + math.floor((k_end - self.k_tournament_start) * ((self.current_generation**2)/(self.gens**2)))
-        print(f'k is: {self.k_tournament}')
+        # print(f'k is: {self.k_tournament}')
                 
         candidate_indices = range(population.shape[0])
         selected_indices = np.zeros(self.n_pop-self.n_elitism)
@@ -388,7 +388,7 @@ class EvoMan:
                     self.crossover_rate = old_crossover_rate
                 
                 if same_result_count > 3:
-                    print('RESET')
+                    # print('RESET')
                     old_mutation_rate = self.mutation_rate
                     old_crossover_rate = self.crossover_rate                    
                     self.mutation_rate = 1                    
@@ -401,16 +401,16 @@ class EvoMan:
                                     np.min(time_game), np.mean(time_game), np.std(time_game)])
                 
                 
-                print(f"Generation {gen}, Best Fitness: {np.max(fitness)} and index {np.argmax(fitness)}")
+                # print(f"Generation {gen}, Best Fitness: {np.max(fitness)} and index {np.argmax(fitness)}")
                 #print(health_gain)
                 np.save(os.path.join(self.experiment_dir, "best_individual.npy"), best_individual)
 
                 if self.current_generation > 5:
-                    print('Old enemies:', self.enemies)
+                    # print('Old enemies:', self.enemies)
                     # change enemies if met threshold
                     self.enemies = self.update_enemies(self.enemies, best_individual, health_gain)
                     self.env.enemies = self.enemies
-                    print('New enemies:', self.enemies)
+                    # print('New enemies:', self.enemies)
 
         end_time = time.time()
         elapsed_time = end_time - start_time
@@ -470,7 +470,7 @@ def run_evoman(experiment_name, enemies, population_size, generations, mutation_
                 f.write(' '.join(sys.argv) + '\n')
         
         fitness = evoman.run()
-        
+    
         return fitness
         
 

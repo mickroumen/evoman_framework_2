@@ -435,3 +435,14 @@
 .\testvs3.py --npop 100 --n_elitism 2 --headless --enemies 1 4 6 7
 .\testvs3.py --npop 100 --n_elitism 2 --headless --enemies 1 4 6 7
 .\EA-adaptiveEnemeis-plus.py --headless --enemies 1 4 6 --npop 10
+.\EA-adaptiveEnemeis-plus.py --headless --enemies 1 4 6 --npop 10
+.\EA-adaptiveEnemeis-plus.py --headless --enemies 1 4 6 --npop 200
+.\EA-adaptiveEnemeis-comma.py --headless --enemies 1 4 6 7 --npop 200
+.\testvs3.py --headless --npop 10
+.\EA-adaptiveEnemeis-comma.py --headless --enemies 1 4 6 7 --npop 10
+.\EA-adaptiveEnemeis-comma.py --headless --enemies 1 4 6 7 --npop 200
+.\EA-adaptiveEnemeis-comma.py --headless --enemies 1 4 7 --npop 200
+.\EA-adaptiveEnemeis-comma.py --headless --enemies 1 4 6 7 --npop 200
+.\EA-adaptiveEnemeis-comma.py --headless --enemies 1 4 7 --npop 200
+.\EA-adaptiveEnemeis-comma.py --headless --enemies 1 4 7 --npop 200
+.\EA-adaptiveEnemeis-comma.py --headless --enemies 1 4 7 --npop 10

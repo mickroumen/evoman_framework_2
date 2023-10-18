@@ -1,0 +1,2 @@
+mutation_rate,number_of_crossovers,k_tournament,k_tournament_final_linear_increase_factor
+0.5,10,3,3
