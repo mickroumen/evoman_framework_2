@@ -372,6 +372,7 @@ class EvoMan:
                     population = np.append(population[parents_survivors_indices], selected_children, axis = 0)   
                 else:  
                     population, fitness, health_gain, time_game = self.selection(children) 
+                print(fitness)
 
                 #print(health_gain)
                 # Check if any individual has a higher fitness, save that one
