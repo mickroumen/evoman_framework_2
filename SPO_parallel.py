@@ -5,6 +5,7 @@ from sklearn.gaussian_process import GaussianProcessRegressor
 from EA_adaptiveEnemies_comma import run_evoman
 import csv
 import os
+from joblib import Parallel, delayed
 
 
 # Define the main directory to store the results
@@ -56,10 +57,13 @@ param_change = {
     'k_tournament_final_linear_increase_factor': {'range': (1, 3), 'type': 'int'},
 }
 
+def evaluate_parameters(parameters):
+    return run_evoman(**parameters)
 
-n_samples = 5
-n_iterations = 5
-n_runs = 5
+n_samples = 10
+n_iterations = 10
+n_runs = 8
+n_jobs = -1
 
 # Initialize lists for storing evaluated parameters and performances
 evaluated_parameters = []
@@ -81,7 +85,8 @@ for point in scaled_design:
         if param_properties['type'] == 'int':
             combined_parameters[param_name] = int(round(combined_parameters[param_name]))
 
-    performance_runs = [run_evoman(**combined_parameters) for _ in range(n_runs)]
+    # performance_runs = [run_evoman(**combined_parameters) for _ in range(n_runs)]
+    performance_runs = Parallel(n_jobs=n_jobs)(delayed(evaluate_parameters)(combined_parameters) for _ in range(n_runs))
     average_performance = np.mean(performance_runs)
 
     evaluated_parameters.append(varying_parameters)
@@ -106,7 +111,8 @@ for iteration in range(n_iterations):
             varying_parameters[param_name] = int(round(varying_parameters[param_name]))
 
     combined_parameters = {**parameters, **varying_parameters}
-    performance_runs = [run_evoman(**combined_parameters) for _ in range(n_runs)]
+    # performance_runs = [run_evoman(**combined_parameters) for _ in range(n_runs)]
+    performance_runs = Parallel(n_jobs=n_jobs)(delayed(evaluate_parameters)(combined_parameters) for _ in range(n_runs))
     next_performance = np.mean(performance_runs)
 
     evaluated_parameters.append(varying_parameters)
@@ -132,7 +138,7 @@ with open(os.path.join(individual_dir, 'all_performances.csv'), mode='w', newlin
     writer = csv.writer(file)
     writer.writerow(list(param_change.keys()) + ['Run ' + str(i) for i in range(1, n_runs + 1)])
     for params, performances in zip(evaluated_parameters, all_performances):
-        writer.writerow(list(params.values()) + performances)
+        writer.writerow(list(params.values()) + list(performances))
 
 # Save best parameters to CSV file in the 'individuals' subfolder
 with open(os.path.join(individual_dir, 'best_parameters.csv'), mode='w', newline='') as file:

@@ -57,3 +57,6 @@ testchanges.py --experiment_name mini_test --headless --enemies 1 4 6 7
 testchanges.py --experiment_name mini_test --headless --enemies 1 4 6 7
 testchanges.py --experiment_name mini_test --headless --enemies 1 4 6 7 --gens 3 --npop 30
 testchanges.py --experiment_name mini_test --headless --enemies 1 4 6 7 --gens 3 --npop 30
+EA_adaptiveEnemies_comma.py --experiment_ mini_test --headless --enemies 1 4 6 7
+EA_adaptiveEnemies_comma.py --experiment_ mini_test --headless --enemies 1 4 6 7
+EA_adaptiveEnemies_comma.py --experiment_ mini_test --headless --enemies 1 4 6 7
