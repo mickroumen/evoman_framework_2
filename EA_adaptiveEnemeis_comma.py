@@ -245,7 +245,7 @@ class EvoMan:
                 if len(enemies_available_to_add) > 0:                
                     new_enemy = random.choice(enemies_available_to_add)                    
                     remaining_enemies.append(new_enemy)
-                    enemies_available_to_add = enemies_available_to_add.remove(new_enemy)   
+                    enemies_available_to_add.remove(new_enemy)   
             remaining_enemies.sort()       
         else:
             self.updated_enemies = False               
@@ -384,7 +384,7 @@ class EvoMan:
                 #print(health_gain)
                 np.save(os.path.join(self.experiment_dir, "best_individual.npy"), best_individual)
 
-                if self.current_generation > 5:
+                if self.current_generation > 1:
                     #print('Old enemies:', self.enemies)
                     # change enemies if met threshold
                     self.enemies = self.update_enemies(self.enemies, best_individual, health_gain)

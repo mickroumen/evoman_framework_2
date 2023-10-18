@@ -466,3 +466,17 @@
 .\EA_adaptiveEnemeis_comma.py --headless --enemies 1 4 5 --npop 10 --k_tournament 5
 .\EA_adaptiveEnemeis_comma.py --headless --enemies 1 4 5 --npop 20 --k_tournament 5
 .\EA_adaptiveEnemeis_comma.py --headless --enemies 1 4 5 --npop 20 --k_tournament 5
+.\EA-adaptiveEnemeis-plus.py --enemies 1 4 6 7 --npop 10
+.\EA-adaptiveEnemeis-plus.py --enemies 1 4 6 7 --npop 10 --headless
+.\EA-adaptiveEnemeis-plus.py --enemies 1 4 6 7 --npop 10
+.\EA-adaptiveEnemeis-plus.py --enemies 1 4 6 7 --npop 10 --gens 5
+.\EA-staticEnemies-comma.py --enemies 1 4 6 7 --npop 10 --gens 5
+.\EA-staticEnemies-plus.py --enemies 1 4 6 7 --npop 10 --gens 5
+.\EA-staticEnemies-plus.py --enemies 1 4 6 7 --npop 10 --gens 5
+.\EA-staticEnemies-plus.py --enemies 1 4 6 7 --npop 10 --gens 10
+.\EA_adaptiveEnemeis_comma.py --enemies 1 4 6 7 --npop 10 --gens 10
+.\EA_adaptiveEnemeis_comma.py --enemies 1 4 6 7 --npop 10 --gens 10
+.\EA_adaptiveEnemeis_comma.py --enemies 1 4 6 7 --npop 10 --gens 10
+.\EA_adaptiveEnemeis_comma.py --enemies 1 4 6 7 --npop 10 --gens 1000
+.\EA_adaptiveEnemeis_comma.py --npop 10 --gens 1000
+.\EA-adaptiveEnemeis-plus.py --npop 10 --gens 1000 --enemies 1 4 5

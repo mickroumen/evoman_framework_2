@@ -137,20 +137,19 @@ class EvoMan:
     
     def crossover(self, parent1, parent2, number_of_crossovers):
         # Applies N point crossover
-        # if random.uniform(0,1) < self.crossover_rate: 
-            crossover_points = sorted(random.sample(range(1, len(parent1)), number_of_crossovers))
-            child1 = parent1.copy()
-            child2 = parent2.copy()
-            if random.uniform(0,1) < self.crossover_rate: 
-                crossover_points = sorted(random.sample(range(1, len(parent1 -1)), number_of_crossovers))
-                crossover_points.append(-2)            
+        crossover_points = sorted(random.sample(range(1, len(parent1)), number_of_crossovers))
+        child1 = parent1.copy()
+        child2 = parent2.copy()
+        if random.uniform(0,1) < self.crossover_rate: 
+            crossover_points = sorted(random.sample(range(1, len(parent1 -1)), number_of_crossovers))
+            crossover_points.append(-2)            
                 
-                for i in range(number_of_crossovers):
-                # Switch between parents for each section
-                    if i%2 != 0:
-                        child1[crossover_points[i-1]:crossover_points[i]] = parent2[crossover_points[i-1]:crossover_points[i]]
-                        child2[crossover_points[i-1]:crossover_points[i]] = parent1[crossover_points[i-1]:crossover_points[i]]
-            return child1, child2
+            for i in range(number_of_crossovers):
+            # Switch between parents for each section
+                if i%2 != 0:
+                    child1[crossover_points[i-1]:crossover_points[i]] = parent2[crossover_points[i-1]:crossover_points[i]]
+                    child2[crossover_points[i-1]:crossover_points[i]] = parent1[crossover_points[i-1]:crossover_points[i]]
+        return child1, child2
     
     # tournament (returns winnning individual and its fitness)
     def tournament_selection_with_fitness(self, candidate_indices, fitness):
@@ -244,7 +243,7 @@ class EvoMan:
                 if len(enemies_available_to_add) > 0:                
                     new_enemy = random.choice(enemies_available_to_add)                    
                     remaining_enemies.append(new_enemy)
-                    enemies_available_to_add = enemies_available_to_add.remove(new_enemy)   
+                    enemies_available_to_add.remove(new_enemy)   
             remaining_enemies.sort()       
         else:
             self.updated_enemies = False               
