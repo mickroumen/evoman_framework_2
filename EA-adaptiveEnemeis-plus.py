@@ -242,9 +242,10 @@ class EvoMan:
         for enemy in enemies_above_treshold:
             if len(enemies_available_to_add) > 0:                
                 self.updated_enemies =True
-                self.enemies.remove(enemy)                    
-                new_enemy = random.choice(enemies_available_to_add)                    
-                self.enemies.append(new_enemy)                    
+                self.enemies.remove(enemy)                         
+                new_enemy = random.choice(enemies_available_to_add)      
+                enemies_available_to_add.remove(new_enemy)              
+                self.enemies.append(new_enemy)                               
         
         self.enemies.sort()
         
