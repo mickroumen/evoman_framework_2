@@ -5,7 +5,7 @@ parameters = {
     'experiment_name': "variable_enemies_commma",
     'enemies': [1, 4, 6, 7],
     'population_size': 100,
-    'generations': 30,
+    'generations': 3,
     'mutation_rate': 0.1,
     'crossover_rate': 1,
     'mode': "train",
@@ -28,9 +28,9 @@ parameters = {
 # for running and saving the code 10 times
 def run_single_experiment(i):
     number = i + 1
-    unique_experiment_name = f"experiment_{number}"
+    unique_experiment_name = f"experiment_testing_{number}"
     parameters["experiment_name"] = unique_experiment_name
     run_evoman(**parameters)
 
 if __name__ == "__main__":
-    Parallel(n_jobs=-1)(delayed(run_single_experiment)(i) for i in range(10))
+    Parallel(n_jobs=-1)(delayed(run_single_experiment)(i) for i in range(3))
