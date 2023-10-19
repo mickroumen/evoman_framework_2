@@ -1,1 +1,0 @@
-generalist.py --headless --experiment_name optimal_params --enemy 1 4 6 7

@@ -1,0 +1,6 @@
+EA_static_comma.py --headless --experiment_name run_SPO_params --mutation_rate 0.23622197409030452 --number_of_crossovers 8 --k_tournament 2 --k_tournament_final_linear_increase_factor 10
+EA_static_comma.py --headless --experiment_name run_SPO_params --mutation_rate 0.23622197409030452 --number_of_crossovers 8 --k_tournament 2
+EA_static_comma.py --headless --experiment_name run_SPO_params --mutation_rate 0.23622197409030452 --number_of_crossovers 8 --k_tournament 2
+EA_static_comma.py --headless --experiment_name run_SPO_params --mutation_rate 0.23622197409030452 --number_of_crossovers 8 --k_tournament 2
+EA_static_comma.py --headless --experiment_name run_SPO_params --mutation_rate 0.23622197409030452 --number_of_crossovers 8 --k_tournament 2 --n_elitism 0
+EA_static_comma.py --headless --experiment_name run_SPO_params --mutation_rate 0.23622197409030452 --number_of_crossovers 8 --k_tournament 2 --n_elitism 0

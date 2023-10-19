@@ -141,8 +141,6 @@ class EvoMan:
                     child1[crossover_points[i]:crossover_points[i+1]] = parent2[crossover_points[i]:crossover_points[i+1]]
                     child1[crossover_points[i]:crossover_points[i+1]] = parent1[crossover_points[i]:crossover_points[i+1]]
             return child1, child2
-        else:
-            return parent1.copy(), parent2.copy()
     
     # tournament (returns winnning individual and its fitness)
     def tournament_selection(self, candidate_indices, fitness, population, k=2):
@@ -354,4 +352,4 @@ if __name__ == "__main__":
         run_evoman(args.experiment_name, args.enemies, args.npop, args.gens, args.mutation_rate, args.crossover_rate,
                args.mode, args.n_hidden_neurons, args.headless, args.dom_l, args.dom_u, args.speed, args.number_of_crossovers,
                args.n_elitism, args.k_tournament, args.type_of_selection_pressure, args.k_tournament_final_linear_increase_factor,
-               args.alpha
+               args.alpha)

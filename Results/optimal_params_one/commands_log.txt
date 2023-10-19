@@ -1,2 +1,0 @@
-generalist.py --headless --experiment_name optimal_params_one --enemy 1
-generalist.py --headless --experiment_name optimal_params_one --enemy 1 2

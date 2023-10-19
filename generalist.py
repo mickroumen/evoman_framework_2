@@ -126,23 +126,25 @@ class EvoMan:
                 individual[i] = int("".join(binary_representation), 2) * (self.dom_u - self.dom_l) / (2**15) + self.dom_l
         return individual
     
-    def crossover(self, parent1, parent2, number_of_crossovers):
-        # Applies N point crossover 
-        if random.uniform(0,1) < self.crossover_rate:
-            crossover_points = sorted(random.sample(range(1, len(parent1)), number_of_crossovers))
-            child1 = parent1.copy()
-            child2 = parent2.copy()
-            for i in range(number_of_crossovers - 1):
-                # Switch between parents for each section
-                if i%2 == 0:
-                    child1[crossover_points[i]:crossover_points[i+1]] = parent1[crossover_points[i]:crossover_points[i+1]]
-                    child1[crossover_points[i]:crossover_points[i+1]] = parent2[crossover_points[i]:crossover_points[i+1]]
-                else:
-                    child1[crossover_points[i]:crossover_points[i+1]] = parent2[crossover_points[i]:crossover_points[i+1]]
-                    child1[crossover_points[i]:crossover_points[i+1]] = parent1[crossover_points[i]:crossover_points[i+1]]
-            return child1, child2
-        else:
-            return parent1.copy(), parent2.copy()
+
+    def crossover(self, parent1, parent2, number_of_crossovers, num_children):
+        children = []
+        for _ in range(num_children):
+            if random.uniform(0, 1) < self.crossover_rate:
+                crossover_points = sorted(random.sample(range(1, len(parent1)), number_of_crossovers))
+                parents = [parent1, parent2]
+                child = parent1.copy()
+                parent_index = 0
+                for i in range(number_of_crossovers - 1):
+                    child[parent_index:crossover_points[i]] = parents[parent_index][parent_index:crossover_points[i]]
+                    parent_index = 1 - parent_index
+                child[parent_index:crossover_points[-1]] = parents[parent_index][parent_index:crossover_points[-1]]
+                children.append(child)
+            else:
+                children.append(parent1.copy())
+        return children
+
+
     
     # tournament (returns winnning individual and its fitness)
     def tournament_selection(self, candidate_indices, fitness, population, k=2):
@@ -230,34 +232,28 @@ class EvoMan:
             for gen in range(self.gens):
                 children = []
                 self.current_generation += 1
-                for _ in range(self.n_pop // 2):  # Two children per iteration
-                    parent1, winner_index = self.tournament_selection(population.shape[0], fitness, population)
-                    parent2, winner_index = self.tournament_selection(population.shape[0], fitness, population)
+                
+                for i in range(self.n_pop):  # Two children per iteration
+                    parent1, winner_index = self.tournament_selection(len(population), fitness, population)
+                    parent2, winner_index = self.tournament_selection(len(population), fitness, population)
 
-                    child1, child2 = self.crossover(parent1, parent2, self.number_of_crossovers)
+                    children_new = self.crossover(parent1, parent2, self.number_of_crossovers, num_children=100)[i]
+                    children.extend(self.mutate(children_new))
 
-                    child1 = self.mutate(child1)
-                    child2 = self.mutate(child2)
-
-                    children.extend([child1, child2])    
                 fitness_children, health_gain_children, time_game_children, player_life_children, enemy_life_children = self.evaluate(children)
-                pop_before_selection = np.concatenate((population, children))
-                fitness_before_selection = np.concatenate((fitness, fitness_children))
-                #Perform selection on the combined population of parents and children
-                selected_indices = self.selection(pop_before_selection, fitness_before_selection)
-
-                health_gain_before_selection = np.concatenate((health_gain, health_gain_children))
-                time_game_before_selection = np.concatenate((time_game, time_game_children))
-                fitness = fitness_before_selection[selected_indices]
-                population = pop_before_selection[selected_indices]
-                health_gain = health_gain_before_selection[selected_indices]
-                time_game = time_game_before_selection[selected_indices]
+                    
+                # Only keep the children and discard parents
+                population = children
+                fitness = fitness_children
+                health_gain = health_gain_children
+                time_game = time_game_children
 
                 # Check if any individual has a higher fitness, save that one
                 max_fitness_index = np.argmax(fitness)
                 if fitness[max_fitness_index] > best_fitness:
                     best_fitness = fitness[max_fitness_index]
                     best_individual = population[max_fitness_index]
+
 
                 # save to csv
                 writer.writerow([gen, np.max(fitness), np.mean(fitness), np.std(fitness),

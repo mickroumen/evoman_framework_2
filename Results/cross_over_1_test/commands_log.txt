@@ -1,1 +1,0 @@
-sigmoid_EA.py --experiment_name cross_over_1_test --headless --enemies 1 4 6 7 --number_of_crossovers 1

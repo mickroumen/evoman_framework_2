@@ -1,1 +1,0 @@
-sigmoid_EA.py --experiment_name cross_over_1_gain_all8 --headless

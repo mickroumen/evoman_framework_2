@@ -1,24 +1,27 @@
-from generalist import run_evoman
+from EA_static_comma import run_evoman
 import time
 
 parameters = {
     'experiment_name': "testing_generalistx10",
-    'enemy': [1,3,4,6],
+    'enemies': [1,4,6,7],
     'population_size': 100,
     'generations': 30,
-    'mutation_rate': 0.05,
-    'crossover_rate': 0.3,
+    'mutation_rate': 0.236,
+    'crossover_rate': 1,
     'mode': "train",
-    'number_of_crossovers' : 7, 
-    'n_elitism': 7, 
-    'k_tournament' : 13, 
-    'sel_pres_incr': True, 
-    'k_tournament_final_linear_increase_factor':3,
+    'number_of_crossovers' : 8, 
+    'n_elitism': 4, 
+    'k_tournament' : 2, 
+    'k_tournament_final_linear_increase_factor':4,
     'n_hidden_neurons': 10,
     'headless': True,
     'dom_l': -1,
     'dom_u': 1,
     'speed': "fastest", 
+    'type_of_selection_pressure' : 'exponential',
+    'alpha' : 0.5,
+    'enemy_threshold': 15,
+     'lamba_mu_ratio': 3
 }
 
 

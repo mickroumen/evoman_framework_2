@@ -1,1 +1,0 @@
-sigmoid_EA.py --experiment_name cross_over_1_gain_5ene --number_of_crossovers 1 --headless --enemies 3 4 5 6 7
