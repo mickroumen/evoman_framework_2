@@ -24,3 +24,23 @@
 .\SPO.py
 .\SPO.py
 .\SPO.py
+.\SPO.py
+.\SPO.py
+.\SPO.py
+.\SPO.py
+.\SPO.py
+.\SPO.py
+.\SPO.py
+.\SPO.py
+.\SPO.py
+.\SPO.py
+.\SPO.py
+.\SPO.py
+.\SPO.py
+.\SPO.py
+.\SPO.py
+.\SPO.py --npop 10 --gens 10
+.\SPO.py
+.\SPO.py
+.\SPO.py
+.\SPO.py

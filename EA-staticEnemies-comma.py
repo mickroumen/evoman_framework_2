@@ -221,7 +221,7 @@ class EvoMan:
                 candidate_indices = np.delete(candidate_indices, np.where(candidate_indices == winner_index))
         
         return population[selected_indices.astype(int)], fitness, health_gain, time_game
-
+        
     def fitness_function(self, player_life, enemy_life, time_game):
         max_health = len(player_life)*100
         
@@ -235,7 +235,7 @@ class EvoMan:
             if gains_array[i] > 0:
                 weights_gains[i] = 0.1
                 win_count += 1
-                time_game[i] = np.max(time_game[time_game != time_game[i]])
+                time_game[i] = max(time_game)
             elif gains_array[i] < -100:
                 weights_gains[i] = 2
             else:
@@ -347,12 +347,12 @@ class EvoMan:
                 # save to csv
                 writer.writerow([gen, np.max(fitness), np.mean(fitness), np.std(fitness),
                                     np.max(health_gain), np.mean(health_gain), np.std(health_gain),
-                                    np.min(time_game), np.mean(time_game), np.std(time_game)])
-                
+                                    np.min(time_game), np.mean(time_game), np.std(time_game)])                
                 
                 #print(f"Generation {gen}, Best Fitness: {np.max(fitness)} and index {np.argmax(fitness)}")
                 #print(health_gain)
                 np.save(os.path.join(self.experiment_dir, "best_individual.npy"), best_individual)
+
 
         end_time = time.time()
         elapsed_time = end_time - start_time
@@ -435,7 +435,7 @@ if __name__ == "__main__":
         parser.add_argument("--n_elitism", type=int, default=2, help="Number of best individuals from population that are always selected for the next generation.")
         parser.add_argument("--k_tournament", type=int, default= 2, help="The amount of individuals to do a tournament with for selection, the more the higher the selection pressure")
         parser.add_argument("--type_of_selection_pressure", type=str, default="exponential", help="if set to linear the selection pressure will linearly increase over time from k_tournament till k_tournament_final_linear_increase_factor*k_tournament, if set to exponential the selection pressure will increase exponentially from k_tournament till 2*k_tournament, if set to anything else the selection pressure will stay the same")
-        parser.add_argument("--k_tournament_final_linear_increase_factor", type=int, default= 1, help="The factor with which k_tournament should linearly increase (if type_of_selection_pressure = True), if the value is 4 the last quarter of generations have tournaments of size k_tournament*4")
+        parser.add_argument("--k_tournament_final_linear_increase_factor", type=int, default= 2, help="The factor with which k_tournament should linearly increase (if type_of_selection_pressure = True), if the value is 4 the last quarter of generations have tournaments of size k_tournament*4")
         parser.add_argument("--alpha", type=float, default=0.5, help="Weight for enemy damage")
         parser.add_argument("--enemy_threshold", type=int, default=15, help="The threshold health gain from which an enemy will be swapped with another enemy to train.")
         parser.add_argument("--lamba_mu_ratio", type=int, default=3, help="Ratio between lamda and mu")

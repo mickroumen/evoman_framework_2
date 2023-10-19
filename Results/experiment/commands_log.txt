@@ -484,3 +484,19 @@
 .\EA_adaptiveEnemeis_comma.py --npop 100 --gens 15
 .\EA_adaptiveEnemeis_comma.py --npop 100 --gens 15
 .\EA_adaptiveEnemeis_comma.py --npop 100 --gens 15 --enemies 1 4 6 7
+.\EA_adaptiveEnemeis_comma.py --npop 10 --gens 15 --enemies 1 4 6 7
+.\EA_adaptiveEnemeis_comma.py --npop 10 --gens 15 --enemies 1 4 6 7
+.\EA_adaptiveEnemeis_comma.py --npop 10 --gens 15 --enemies 1 4 6 7
+.\EA_adaptiveEnemeis_comma.py --npop 10 --gens 15 --enemies 1 4 6 7
+.\EA_adaptiveEnemeis_comma.py --npop 10 --gens 15 --enemies 1 4 6 7
+.\EA_adaptiveEnemeis_comma.py --npop 10 --gens 15 --enemies 1 4 6 7
+.\EA_adaptiveEnemeis_comma.py --npop 10 --gens 15 --enemies 1 4 6 7
+.\EA_adaptiveEnemeis_comma.py --npop 10 --gens 15 --enemies 1 4 6 7
+.\EA_adaptiveEnemeis_comma.py --npop 10 --gens 15 --enemies 1 4 6 7
+.\EA-staticEnemies-comma.py --npop 10 --gens 10
+.\EA-staticEnemies-comma.py --npop 10 --gens 10 --headless
+.\EA-adaptiveEnemeis-plus.py --headless --npop 10 --gens 10
+.\EA-adaptiveEnemeis-plus.py --headless --npop 10 --gens 10
+.\EA-staticEnemies-plus.py --npop 5 --gens 10 --headless
+.\EA-adaptiveEnemeis-plus.py --headless --npop 5 --gens 10
+.\EA-staticEnemies-plus.py --npop 5 --gens 10 --headless

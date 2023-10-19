@@ -124,6 +124,7 @@ class EvoMan:
             fitness[i], health_gain[i], time_game[i], player_life[i], enemy_life[i] = self.simulation(individual[:-1])
         return fitness, health_gain, time_game, player_life, enemy_life
 
+  
     def mutate(self, individual):
         # Applies mutation to the individual based on the mutation rate
         if random.uniform(0, 1) < self.mutation_rate:
@@ -133,23 +134,24 @@ class EvoMan:
             individual[-1] = np.clip(individual[-1], 0.01, 0.9)
             for i in range(len(individual[:-1])):
                 individual[i] += individual[-1] * np.random.normal()
-        return individual         
-    
+        return individual       
+  
     def crossover(self, parent1, parent2, number_of_crossovers):
         # Applies N point crossover
-        crossover_points = sorted(random.sample(range(1, len(parent1)), number_of_crossovers))
-        child1 = parent1.copy()
-        child2 = parent2.copy()
-        if random.uniform(0,1) < self.crossover_rate: 
-            crossover_points = sorted(random.sample(range(1, len(parent1 -1)), number_of_crossovers))
-            crossover_points.append(-2)            
+        # if random.uniform(0,1) < self.crossover_rate: 
+            crossover_points = sorted(random.sample(range(1, len(parent1)), number_of_crossovers))
+            child1 = parent1.copy()
+            child2 = parent2.copy()
+            if random.uniform(0,1) < self.crossover_rate: 
+                crossover_points = sorted(random.sample(range(1, len(parent1 -1)), number_of_crossovers))
+                crossover_points.append(-2)            
                 
-            for i in range(number_of_crossovers):
-            # Switch between parents for each section
-                if i%2 != 0:
-                    child1[crossover_points[i-1]:crossover_points[i]] = parent2[crossover_points[i-1]:crossover_points[i]]
-                    child2[crossover_points[i-1]:crossover_points[i]] = parent1[crossover_points[i-1]:crossover_points[i]]
-        return child1, child2
+                for i in range(number_of_crossovers):
+                # Switch between parents for each section
+                    if i%2 != 0:
+                        child1[crossover_points[i-1]:crossover_points[i]] = parent2[crossover_points[i-1]:crossover_points[i]]
+                        child2[crossover_points[i-1]:crossover_points[i]] = parent1[crossover_points[i-1]:crossover_points[i]]
+            return child1, child2
     
     # tournament (returns winnning individual and its fitness)
     def tournament_selection_with_fitness(self, candidate_indices, fitness):
@@ -220,7 +222,7 @@ class EvoMan:
         
         return population[selected_indices.astype(int)], fitness, health_gain, time_game
     
-    def update_enemies(self, enemies, best_individual, healt_gain):
+    def update_enemies(self, best_individual):
         #change the fitness and gain function so that it returns np.array of the fitness and gain for each enemy
         def cons_multi2(self,values):
             return values
@@ -232,24 +234,20 @@ class EvoMan:
         fitnesses, health_gains, times, player_lifes, enemy_lifes = self.simulation(best_individual[:-1])
         enemies_index = [x-1 for x in self.enemies]
         
-        enemies_above_treshold = [enemy for enemy, health_gain in zip(self.enemies, health_gains[enemies_index]) if health_gain > self.enemy_threshold]
+        enemies_above_treshold = [enemy for enemy, health_gain in zip(self.enemies, health_gains[enemies_index]) if health_gain >= self.enemy_threshold]
         enemies_defeat = [enemy for enemy, health_gain in zip(self.env.enemies, health_gains) if health_gain < 0]
-        remaining_enemies = [enemy for enemy, health_gain in zip(enemies, health_gains[enemies_index]) if health_gain < self.enemy_threshold]
-        enemies_available_to_add = [enemy for enemy in enemies_defeat if enemy not in remaining_enemies] 
+        enemies_available_to_add = [enemy for enemy in enemies_defeat if enemy not in self.enemies] 
+        self.updated_enemies = False      
         
-        if len(enemies_above_treshold) > 0:
-            self.updated_enemies = True
-            for _ in enemies_above_treshold:
-                if len(enemies_available_to_add) > 0:                
-                    new_enemy = random.choice(enemies_available_to_add)                    
-                    remaining_enemies.append(new_enemy)
-                    enemies_available_to_add.remove(new_enemy)   
-            remaining_enemies.sort()       
-        else:
-            self.updated_enemies = False               
-
-        return remaining_enemies
-
+        for enemy in enemies_above_treshold:
+            if len(enemies_available_to_add) > 0:                
+                self.updated_enemies =True
+                self.enemies.remove(enemy)                    
+                new_enemy = random.choice(enemies_available_to_add)                    
+                self.enemies.append(new_enemy)                    
+        
+        self.enemies.sort()
+        
     def fitness_function(self, player_life, enemy_life, time_game):
         max_health = len(player_life)*100
         
@@ -263,7 +261,7 @@ class EvoMan:
             if gains_array[i] > 0:
                 weights_gains[i] = 0.1
                 win_count += 1
-                time_game[i] = np.max(time_game[time_game != time_game[i]])
+                time_game[i] = max(time_game)
             elif gains_array[i] < -100:
                 weights_gains[i] = 2
             else:
@@ -383,12 +381,12 @@ class EvoMan:
                 #print(health_gain)
                 np.save(os.path.join(self.experiment_dir, "best_individual.npy"), best_individual)
 
-                if self.current_generation > 5:
+                if self.current_generation > 2:
                     #print('Old enemies:', self.enemies)
                     # change enemies if met threshold
-                    self.enemies = self.update_enemies(self.enemies, best_individual, health_gain)
+                    self.update_enemies(best_individual)
                     self.env.enemies = self.enemies
-                    #print('New enemies:', self.enemies)
+                    #print('New enemies:', self.enemies)                    
 
         end_time = time.time()
         elapsed_time = end_time - start_time
@@ -471,7 +469,7 @@ if __name__ == "__main__":
         parser.add_argument("--n_elitism", type=int, default=2, help="Number of best individuals from population that are always selected for the next generation.")
         parser.add_argument("--k_tournament", type=int, default= 2, help="The amount of individuals to do a tournament with for selection, the more the higher the selection pressure")
         parser.add_argument("--type_of_selection_pressure", type=str, default="exponential", help="if set to linear the selection pressure will linearly increase over time from k_tournament till k_tournament_final_linear_increase_factor*k_tournament, if set to exponential the selection pressure will increase exponentially from k_tournament till 2*k_tournament, if set to anything else the selection pressure will stay the same")
-        parser.add_argument("--k_tournament_final_linear_increase_factor", type=int, default= 1, help="The factor with which k_tournament should linearly increase (if type_of_selection_pressure = True), if the value is 4 the last quarter of generations have tournaments of size k_tournament*4")
+        parser.add_argument("--k_tournament_final_linear_increase_factor", type=int, default= 2, help="The factor with which k_tournament should linearly increase (if type_of_selection_pressure = True), if the value is 4 the last quarter of generations have tournaments of size k_tournament*4")
         parser.add_argument("--alpha", type=float, default=0.5, help="Weight for enemy damage")
         parser.add_argument("--enemy_threshold", type=int, default=15, help="The threshold health gain from which an enemy will be swapped with another enemy to train.")
         parser.add_argument("--lamba_mu_ratio", type=int, default=3, help="Ratio between lamda and mu")
