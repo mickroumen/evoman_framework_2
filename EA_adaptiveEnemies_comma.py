@@ -221,8 +221,8 @@ class EvoMan:
                 candidate_indices = np.delete(candidate_indices, np.where(candidate_indices == winner_index))
         
         return population[selected_indices.astype(int)], fitness, health_gain, time_game
-
-    def update_enemies(self, enemies, best_individual, healt_gain):
+    
+    def update_enemies(self, best_individual):
         #change the fitness and gain function so that it returns np.array of the fitness and gain for each enemy
         def cons_multi2(self,values):
             return values
@@ -234,29 +234,21 @@ class EvoMan:
         fitnesses, health_gains, times, player_lifes, enemy_lifes = self.simulation(best_individual[:-1])
         enemies_index = [x-1 for x in self.enemies]
         
-        enemies_above_treshold = [enemy for enemy, health_gain in zip(self.enemies, health_gains[enemies_index]) if health_gain > self.enemy_threshold]
+        enemies_above_treshold = [enemy for enemy, health_gain in zip(self.enemies, health_gains[enemies_index]) if health_gain >= self.enemy_threshold]
         enemies_defeat = [enemy for enemy, health_gain in zip(self.env.enemies, health_gains) if health_gain < 0]
-        remaining_enemies = [enemy for enemy, health_gain in zip(enemies, health_gains[enemies_index]) if health_gain < self.enemy_threshold]
-        enemies_available_to_add = [enemy for enemy in enemies_defeat if enemy not in remaining_enemies] 
+        enemies_available_to_add = [enemy for enemy in enemies_defeat if enemy not in self.enemies] 
+        self.updated_enemies = False      
         
-        if len(enemies_above_treshold) > 0:
-            self.updated_enemies = True
-            for _ in enemies_above_treshold:
-                if len(enemies_available_to_add) > 0:                
-                    new_enemy = random.choice(enemies_available_to_add)                    
-                    remaining_enemies.append(new_enemy)
-                    enemies_available_to_add.remove(new_enemy)
-                elif len(remaining_enemies) < 4:
-                    enemies_to_choose_from = [enemy for enemy in self.env.enemies if enemy not in self.enemies]
-                    new_enemy = random.choice(enemies_to_choose_from)                    
-                    remaining_enemies.append(new_enemy)
-                    enemies_to_choose_from.remove(new_enemy)
-            remaining_enemies.sort()       
-        else:
-            self.updated_enemies = False               
-
-        return remaining_enemies
-
+        for enemy in enemies_above_treshold:
+            if len(enemies_available_to_add) > 0:                
+                self.updated_enemies =True
+                self.enemies.remove(enemy)                         
+                new_enemy = random.choice(enemies_available_to_add)      
+                enemies_available_to_add.remove(new_enemy)              
+                self.enemies.append(new_enemy)                    
+        
+        self.enemies.sort()
+        
     def fitness_function(self, player_life, enemy_life, time_game):
         max_health = len(player_life)*100
         
@@ -389,12 +381,12 @@ class EvoMan:
                 #print(health_gain)
                 np.save(os.path.join(self.experiment_dir, "best_individual.npy"), best_individual)
 
-                if self.current_generation > 1:
+                if self.current_generation > 2:
                     #print('Old enemies:', self.enemies)
                     # change enemies if met threshold
-                    self.enemies = self.update_enemies(self.enemies, best_individual, health_gain)
+                    self.update_enemies(best_individual)
                     self.env.enemies = self.enemies
-                    #print('New enemies:', self.enemies)
+                    #print('New enemies:', self.enemies)                    
 
         end_time = time.time()
         elapsed_time = end_time - start_time
