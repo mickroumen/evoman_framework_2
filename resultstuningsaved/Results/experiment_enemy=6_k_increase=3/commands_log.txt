@@ -1,0 +1,54 @@
+c:/Users/Max/Documents/VU/Evo/evoman_framework/testenemies.py
+c:/Users/Max/Documents/VU/Evo/evoman_framework/testenemies.py
+c:/Users/Max/Documents/VU/Evo/evoman_framework/testenemies.py
+c:/Users/Max/Documents/VU/Evo/evoman_framework/testenemies.py
+c:/Users/Max/Documents/VU/Evo/evoman_framework/testenemies.py
+c:/Users/Max/Documents/VU/Evo/evoman_framework/testenemies.py
+c:/Users/Max/Documents/VU/Evo/evoman_framework/testenemies.py
+c:/Users/Max/Documents/VU/Evo/evoman_framework/testenemies.py
+c:/Users/Max/Documents/VU/Evo/evoman_framework/testenemies.py
+c:/Users/Max/Documents/VU/Evo/evoman_framework/testenemies.py
+c:/Users/Max/Documents/VU/Evo/evoman_framework/testenemies.py
+c:/Users/Max/Documents/VU/Evo/evoman_framework/testenemies.py
+c:/Users/Max/Documents/VU/Evo/evoman_framework/testenemies.py
+c:/Users/Max/Documents/VU/Evo/evoman_framework/testenemies.py
+c:/Users/Max/Documents/VU/Evo/evoman_framework/testenemies.py
+c:/Users/Max/Documents/VU/Evo/evoman_framework/testifworks.py
+c:/Users/Max/Documents/VU/Evo/evoman_framework/testbestEAmutation.py
+c:/Users/Max/Documents/VU/Evo/evoman_framework/testbestEAmutation.py
+c:/Users/Max/Documents/VU/Evo/evoman_framework/testbestEAmutation.py
+.\testperform.py --headless
+.\testperform.py --headless
+.\testperform.py --headless
+.\testperform.py --headless
+.\testperform.py --headless
+.\testperform.py --headless
+.\testperform.py --headless
+.\testperform.py --headless
+.\testperform.py --headless
+.\testperform.py --headless
+.\testperform.py --headless
+.\testperform.py --headless
+.\testperform.py --headless
+.\testperform.py --headless
+.\testperform.py --headless
+.\testperform.py --headless
+.\testperform.py --headless
+.\testperform.py --headless
+.\testperform.py --headless
+.\testperform.py --headless
+.\testperform.py --headless
+.\testperform.py --headless
+.\testperform.py --headless
+.\testperform.py --headless
+.\testperform.py --headless
+.\testperform.py --headless
+.\testperform.py --headless
+.\testperform.py --headless
+.\testperform.py --headless
+.\testperform.py --headless
+.\testperform.py --headless
+.\testperform.py --headless
+.\testenemies.py --headless --enemies 1 4 6
+.\testenemies.py --headless --enemies 1 4 6
+.\testenemies.py --headless --enemies 1 4 6
